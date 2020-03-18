@@ -1,0 +1,74 @@
+{
+    "Terapeuta":{
+
+            "idTerapeuta":{
+                "nombre":{"S":""},
+                "ApellidoPaterno":{"S":""},
+                "ApellidoMaterno":{"S":""},
+                "CedulaProfesional":{"S":""},
+                "Telefono":{"S":""},
+                "Email":{"S":""},
+                "Contrasenia":{"S":""}
+            }
+    },
+
+    "paciente":{
+
+        "idPaciente":{
+            "Nombre":"",
+            "Apellidos":"",
+            "Edad":"",
+            "Ocupacion":"",
+            "Sexo":""
+        }
+    },
+
+
+ 
+
+
+    "signosVitales":{
+        "idSignosVitales":"",
+        "FC":"",
+        "FR":"",
+        "TA":"",
+        "Peso":"",
+        "Talla":""
+    },
+
+    "AntecedentesHeredo-Familiares":{
+        "idAntecedentF":"",
+        "Enfermedad1":"",
+        "Enfermedad2":"",
+        "Enfermedad3":""
+    },
+
+    "AntecedentesPatológicos":{
+        "idAntecedentP":"",
+        "Enfermedad1":"",
+        "Enfermedad2":"",
+        "Enfermedad3":""
+    },
+
+    "EnfermedadesActuales":{
+        "idEnfermedadActual":"",
+        "Enfermedad1":"",
+        "Enfermedad2":"",
+        "Enfermedad3":""
+    },
+
+
+    "Habitos":{
+        "idHabitos":"",
+        "HabitosAlimenticios":"",
+        "HabitosdeHigiene":""
+    }
+
+    
+
+
+
+   
+
+
+}
