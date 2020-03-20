@@ -25,6 +25,7 @@ class _RegistrarPacienteState extends State<RegistrarPaciente> {
   TextEditingController _edadController;
   TextEditingController _ocupacionController;
   TextEditingController _sexoController;
+  String genero = 'Masculino';
 
 @override
   void initState() {
@@ -38,6 +39,8 @@ class _RegistrarPacienteState extends State<RegistrarPaciente> {
   }
   @override
   Widget build(BuildContext context) {
+   
+    
     return Scaffold(
       appBar: AppBar(
         title: Text('Registrar Paciente'),
@@ -84,19 +87,7 @@ class _RegistrarPacienteState extends State<RegistrarPaciente> {
                     leading: Radio(value: false, groupValue: null, onChanged: null),
                   ),
          
-                   DropdownButton<String>(
-                      items: const <String>['A', 'B', 'C', 'D'].map((String value) {
-                        return  DropdownMenuItem<String>(
-                       value: value,
-                        child: Text(value),
-                      );
-                       }).toList(),
-                        onChanged: (value) {
-                          setState(() {
-                            value=='b';
-                          });
-                        },
-                          ),
+                   generoOption(),
                
 
                   FlatButton(onPressed: (){
@@ -106,7 +97,7 @@ class _RegistrarPacienteState extends State<RegistrarPaciente> {
                         'apellidos':_apellidosController.text,
                         'edad': _edadController.text,
                         'ocupacion':_ocupacionController.text,
-                        'sexo': _sexoController.text,
+                        'sexo': genero,
                         'terapeuta':widget.userId
                       }).then((_){
                         Navigator.pop(context);
@@ -119,7 +110,7 @@ class _RegistrarPacienteState extends State<RegistrarPaciente> {
                         'apellidos':_apellidosController.text,
                         'edad': _edadController.text,
                         'ocupacion':_ocupacionController.text,
-                        'sexo': _sexoController.text,
+                        'sexo': genero,
                         'terapeuta': widget.userId
 
                       }).then((_){
@@ -146,7 +137,31 @@ class _RegistrarPacienteState extends State<RegistrarPaciente> {
     );
   }
 
-
+  Widget generoOption(){
+    return DropdownButton<String>(
+      value: genero,
+      icon: Icon(Icons.arrow_downward),
+      iconSize: 24,
+      elevation: 16,
+      style: TextStyle(color: Colors.deepPurple),
+      underline: Container(
+        height: 2,
+        color: Colors.deepPurpleAccent,
+      ),
+      onChanged: (String newValue) {
+        setState(() {
+          genero = newValue;
+        });
+      },
+      items: <String>['Masculino','Femenino']
+          .map<DropdownMenuItem<String>>((String value) {
+        return DropdownMenuItem<String>(
+          value: value,
+          child: Text(value),
+        );
+      }).toList(),
+    );
+  }
   
 
 }
