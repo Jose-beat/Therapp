@@ -37,7 +37,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
   }
   void _createNewTerapeuta(BuildContext context, String email, String userId)async {
     await Navigator.push(context,
-    MaterialPageRoute(builder: (context)=>RegistroPerfil(terapeuta: Terapeuta(userId,'', '','', email, '',''),id: userId, email: email,)));
+    MaterialPageRoute(builder: (context)=>RegistroPerfil(terapeuta: Terapeuta(userId,'', '','', email, '','',''),id: userId, email: email,)));
     
   }
 

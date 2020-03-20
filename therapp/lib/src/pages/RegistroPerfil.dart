@@ -31,7 +31,7 @@ class _RegistroPerfilState extends State<RegistroPerfil> {
   TextEditingController _especialidadController;
   TextEditingController _telefonoController;
   TextEditingController _emailController;
- 
+  TextEditingController _cedulaController;
 
 
 
@@ -47,6 +47,7 @@ class _RegistroPerfilState extends State<RegistroPerfil> {
     _especialidadController = new TextEditingController(text: widget.terapeuta.especialidad);
     _telefonoController = new TextEditingController(text: widget.terapeuta.telefono);
     _emailController = new TextEditingController(text: widget.email);
+    _cedulaController = new  TextEditingController(text: widget.terapeuta.cedula);
     
   }
 
@@ -98,12 +99,19 @@ class _RegistroPerfilState extends State<RegistroPerfil> {
                   labelText: 'Apellidos'),
                 ),
 
-                      TextField(
+                TextField(
                       keyboardType: TextInputType.text,
                    controller: _clinicaController,
                   style: TextStyle(fontSize: 17.0,color: Colors.deepOrangeAccent),
                   decoration: InputDecoration(icon: Icon(Icons.description),
                   labelText: 'Clinica Actual'),
+                ),
+                TextField(
+                      keyboardType: TextInputType.text,
+                   controller: _cedulaController,
+                  style: TextStyle(fontSize: 17.0,color: Colors.deepOrangeAccent),
+                  decoration: InputDecoration(icon: Icon(Icons.description),
+                  labelText: 'Cedula Profesional'),
                 ),
                  TextField(
                    keyboardType: TextInputType.text,
@@ -141,6 +149,7 @@ class _RegistroPerfilState extends State<RegistroPerfil> {
                    
                       'nombre': _nombreController.text,
                       'apellidos': _apellidosController.text,
+                      'cedula': _cedulaController.text,
                       'clinica': _clinicaController.text,
                       'especialidad': _especialidadController.text,
                       'telefono': _telefonoController.text,
@@ -158,6 +167,7 @@ class _RegistroPerfilState extends State<RegistroPerfil> {
                     terapeutaReference.push().set({
                          'nombre': _nombreController.text,
                          'apellidos': _apellidosController.text,
+                         'cedula': _cedulaController.text,
                          'clinica': _clinicaController.text,
                          'especialidad': _especialidadController.text,
                          'telefono': _telefonoController.text,
