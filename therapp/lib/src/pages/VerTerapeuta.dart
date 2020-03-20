@@ -105,9 +105,6 @@ class _VerTerapeutaState extends State<VerTerapeuta> {
 
 
 
-
-
-
 /*-------------------------------------FRONTEND-----------------------------*/
   
 
@@ -154,6 +151,7 @@ class _VerTerapeutaState extends State<VerTerapeuta> {
         children: <Widget>[
      
           ListTile(
+            contentPadding: EdgeInsets.all(10.0),
             title: Row(
         children: <Widget>[
           Text( '${items[position].nombre} ${items[position].apellidos}'),
@@ -186,8 +184,10 @@ class _VerTerapeutaState extends State<VerTerapeuta> {
     return ListTile(
       contentPadding: EdgeInsets.fromLTRB(0, 0, 0, 0),
       title: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text( '$variable'),
+
           IconButton(icon: Icon(Icons.edit), onPressed: ()=> _navigateToTerapeuta(context,items[position]))
         ],
       ),
@@ -195,7 +195,7 @@ class _VerTerapeutaState extends State<VerTerapeuta> {
 
         
     );
-
+  
   }
 
   Widget _delete(BuildContext context, Terapeuta terapeuta, int position){

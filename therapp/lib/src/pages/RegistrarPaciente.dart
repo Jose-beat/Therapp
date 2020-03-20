@@ -16,7 +16,8 @@ final pacienteReference = FirebaseDatabase.instance.reference().child('paciente'
 
 
 class _RegistrarPacienteState extends State<RegistrarPaciente> {
-
+  String _opcionSeleccionada = "Masculino";
+  List<String> _poderes = ['volar','RayosX','Super Aliento','Super Fuerza'];
   List<Paciente>items;
 
   TextEditingController _nombreController;
@@ -82,19 +83,21 @@ class _RegistrarPacienteState extends State<RegistrarPaciente> {
                     title: Text('data'),
                     leading: Radio(value: false, groupValue: null, onChanged: null),
                   ),
-
-                  CheckboxListTile(
-                  value:false, 
-                  onChanged: (valor){
-                    setState(() {
-                      
-                    });
-                  }
-                    
-
-
-  Widget registrar(){
-    return  FlatButton(onPressed: (){
+         
+                   DropdownButton<String>(
+                      items: const <String>['A', 'B', 'C', 'D'].map((String value) {
+                        return  DropdownMenuItem<String>(
+                       value: value,
+                        child: Text(value),
+                      );
+                       }).toList(),
+                        onChanged: (value) {
+                          setState(() {
+                            value=='b';
+                          });
+                        },
+                          ),
+               
 
                   FlatButton(onPressed: (){
                     if(widget.paciente.id!=null){
@@ -143,5 +146,7 @@ class _RegistrarPacienteState extends State<RegistrarPaciente> {
     );
   }
 
-  }
 
+  
+
+}

@@ -143,6 +143,11 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
       items[items.indexOf(oldPacienteValue)] = new Paciente.fromSnapshot(event.snapshot);
     });
   }
+  void _changePacienteInformation(BuildContext context,Paciente paciente) async {
+    await Navigator.push(context, 
+    MaterialPageRoute(builder: (context)=> RegistrarPaciente(paciente: paciente, userId: widget.userId,))
+    );
+  }
 /*-------------------------------------METODOS TERAPEUTA--------------------------*/
 
 void _navigateToTerapeuta(BuildContext context, String user) async {
@@ -151,6 +156,8 @@ void _navigateToTerapeuta(BuildContext context, String user) async {
     );
     print('jaja nkscbkjds${widget.userId}');
 }
+
+
 
    
 
@@ -194,11 +201,11 @@ void _navigateToTerapeuta(BuildContext context, String user) async {
                           leading: Column(
                             children: <Widget>[
                               CircleAvatar(
-                                backgroundColor: Colors.amberAccent,
+                                backgroundColor: Colors.blue,
                                 radius: 17.0,
                                 child: Text('${position + 1}',
                                 style: TextStyle(
-                                  color: Colors.blueGrey,
+                                  color: Colors.blue,
                                   fontSize: 21.0
                                 ),
                                 ),
@@ -208,11 +215,11 @@ void _navigateToTerapeuta(BuildContext context, String user) async {
                           onTap: ()=>_navigateToPaciente(context, items[position]),
           )
                         ),
-                    /*  IconButton(
-                      icon: Icon(Icons.delete, color: Colors.red,), 
-                      onPressed: () => _deleteProduct(context, items[position],position)),*/
+                      IconButton(
+                      icon: Icon(Icons.edit, color: Colors.red,), 
+                      onPressed: () => _changePacienteInformation(context,items[position])
                 
-                       
+                      )
                       ],
                     ),
                   ),
