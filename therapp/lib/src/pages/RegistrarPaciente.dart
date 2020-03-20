@@ -91,7 +91,10 @@ class _RegistrarPacienteState extends State<RegistrarPaciente> {
                     });
                   }
                     
-                    ),
+
+
+  Widget registrar(){
+    return  FlatButton(onPressed: (){
 
                   FlatButton(onPressed: (){
                     if(widget.paciente.id!=null){
