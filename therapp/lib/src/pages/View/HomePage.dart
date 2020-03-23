@@ -3,9 +3,9 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:therapp/src/models/Paciente.dart';
 import 'package:therapp/src/models/Terapeuta.dart';
-import 'package:therapp/src/pages/RegistrarPaciente.dart';
-import 'package:therapp/src/pages/VerPaciente.dart';
-import 'package:therapp/src/pages/VerTerapeuta.dart';
+import 'package:therapp/src/pages/Register/RegistrarPaciente.dart';
+import 'package:therapp/src/pages/View/VerPaciente.dart';
+import 'package:therapp/src/pages/View/VerTerapeuta.dart';
 import 'package:therapp/src/providers/authentApp.dart';
 
 class HomePage extends StatefulWidget {
@@ -121,7 +121,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
   void _createNewPaciente(BuildContext context) async {
 
     await Navigator.push(context,
-      MaterialPageRoute(builder: (context)=> RegistrarPaciente(paciente: Paciente(null, '', '', '', '', '',widget.userId),userId:widget.userId,))
+      MaterialPageRoute(builder: (context)=> RegistrarPaciente(paciente: Paciente(null, '', '', 0, '', '',widget.userId),userId:widget.userId,))
      );
   }
 
@@ -230,8 +230,9 @@ void _navigateToTerapeuta(BuildContext context, String user) async {
                 
               }else{
                 return Container(
-                  width: 0.0,
-                  height: 0.0,
+                  child: Text('no disponible'),
+                  width: 10.0,
+                  height: 10.0,
                 );
               }
   }

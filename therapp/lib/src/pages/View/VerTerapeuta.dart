@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:therapp/src/models/Terapeuta.dart';
-import 'package:therapp/src/pages/RegistroPerfil.dart';
+import 'package:therapp/src/pages/Register/RegistroPerfil.dart';
 import 'package:therapp/src/providers/authentApp.dart';
 
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:therapp/src/pages/homePage.dart';
-import 'package:therapp/src/pages/loginApp.dart';
-import 'package:therapp/src/pages/registroPerfil.dart';
+import 'package:therapp/src/pages/View/homePage.dart';
+import 'package:therapp/src/pages/Login/loginApp.dart';
+import 'package:therapp/src/pages/Register/registroPerfil.dart';
 import 'package:therapp/src/providers/authentApp.dart';
 
 

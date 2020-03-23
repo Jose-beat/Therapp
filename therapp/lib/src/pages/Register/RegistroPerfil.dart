@@ -2,7 +2,7 @@
 import 'package:therapp/src/models/Terapeuta.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:therapp/src/pages/LoginApp.dart';
+import 'package:therapp/src/pages/Login/LoginApp.dart';
 import 'package:therapp/src/providers/authentApp.dart';
 
 class RegistroPerfil extends StatefulWidget {

@@ -5,10 +5,10 @@ import 'package:firebase_database/firebase_database.dart';
 
 class SignosVitales{
   String _id;
-  String _fc;
-  String _fr;
-  String  _peso;
-  String  _talla;
+  String  _fc;
+  String  _fr;
+  double  _peso;
+  String   _talla;
   String _idpaciente;
   
   SignosVitales(this._id,this._fc,this._fr,this._peso,this._talla,this._idpaciente);
@@ -22,10 +22,10 @@ class SignosVitales{
   }
 
 String get id => _id;
-String get fc => _fc;
-String get fr => _fr;
-String get peso => _peso;
-String get talla => _talla;
+String  get fc => _fc;
+String  get fr => _fr;
+double get peso => _peso;
+String  get talla => _talla;
 String get paciente => _idpaciente;
 
 

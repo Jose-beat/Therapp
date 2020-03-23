@@ -16,8 +16,7 @@ final pacienteReference = FirebaseDatabase.instance.reference().child('paciente'
 
 
 class _RegistrarPacienteState extends State<RegistrarPaciente> {
-  String _opcionSeleccionada = "Masculino";
-  List<String> _poderes = ['volar','RayosX','Super Aliento','Super Fuerza'];
+  
   List<Paciente>items;
 
   TextEditingController _nombreController;
@@ -26,6 +25,7 @@ class _RegistrarPacienteState extends State<RegistrarPaciente> {
   TextEditingController _ocupacionController;
   TextEditingController _sexoController;
   String genero = 'Masculino';
+  int edad = 0;
 
 @override
   void initState() {
@@ -33,7 +33,7 @@ class _RegistrarPacienteState extends State<RegistrarPaciente> {
     super.initState();
     _nombreController = new TextEditingController(text:widget.paciente.nombre);
     _apellidosController = new TextEditingController(text:widget.paciente.apellidos);
-    _edadController = new   TextEditingController(text: widget.paciente.edad);
+    _edadController = new   TextEditingController(text: widget.paciente.edad.toString());
     _ocupacionController = new TextEditingController(text:widget.paciente.ocupacion);
     _sexoController = new TextEditingController(text:widget.paciente.sexo);
   }
@@ -65,37 +65,24 @@ class _RegistrarPacienteState extends State<RegistrarPaciente> {
                     decoration: InputDecoration(icon: Icon(Icons.ac_unit),
                     labelText: 'apellidos')),
                   
-                  TextFormField(
-                    controller: _edadController,
-                    style: TextStyle( fontSize: 17.0, color: Colors.deepPurple),
-                    decoration: InputDecoration(icon: Icon(Icons.ac_unit),
-                    labelText: 'edad')),
+                
 
                   TextFormField(
                     controller: _ocupacionController,
                     style: TextStyle( fontSize: 17.0, color: Colors.deepPurple),
                     decoration: InputDecoration(icon: Icon(Icons.ac_unit),
                     labelText: 'ocupacion')),
-
-                  TextFormField(
-                    controller: _sexoController,
-                    style: TextStyle( fontSize: 17.0, color: Colors.deepPurple),
-                    decoration: InputDecoration(icon: Icon(Icons.ac_unit),
-                    labelText: 'sexo')),
-                  ListTile(
-                    title: Text('data'),
-                    leading: Radio(value: false, groupValue: null, onChanged: null),
-                  ),
-         
+                   edadOption(),
                    generoOption(),
                
 
                   FlatButton(onPressed: (){
                     if(widget.paciente.id!=null){
+                      genero=widget.paciente.sexo;
                       pacienteReference.child(widget.paciente.id).set({
                         'nombre': _nombreController.text,
                         'apellidos':_apellidosController.text,
-                        'edad': _edadController.text,
+                        'edad': edad,
                         'ocupacion':_ocupacionController.text,
                         'sexo': genero,
                         'terapeuta':widget.userId
@@ -108,7 +95,7 @@ class _RegistrarPacienteState extends State<RegistrarPaciente> {
                       pacienteReference.push().set({
                         'nombre': _nombreController.text,
                         'apellidos':_apellidosController.text,
-                        'edad': _edadController.text,
+                        'edad': edad,
                         'ocupacion':_ocupacionController.text,
                         'sexo': genero,
                         'terapeuta': widget.userId
@@ -122,7 +109,7 @@ class _RegistrarPacienteState extends State<RegistrarPaciente> {
                   }, 
 
 
-                  child: Text('Registrar Paciente ${widget.paciente.id}')
+                  child: Text('Registrar Paciente')
                   
                   )
 
@@ -153,14 +140,75 @@ class _RegistrarPacienteState extends State<RegistrarPaciente> {
           genero = newValue;
         });
       },
-      items: <String>['Masculino','Femenino']
+      items: <String>['Femenino','Masculino']
           .map<DropdownMenuItem<String>>((String value) {
-        return DropdownMenuItem<String>(
-          value: value,
-          child: Text(value),
-        );
+              if(widget.paciente.id!=null){
+                 return DropdownMenuItem<String>(
+               value: value,
+               child: Text(widget.paciente.sexo)
+               
+               );
+              }else{
+                
+                 return DropdownMenuItem<String>(
+               value: value,
+               child: Text(value),
+               );
+              }
+             
+
+            
+       
       }).toList(),
     );
+  }
+
+
+   Widget edadOption(){
+    return DropdownButton<int>(
+      value: edad,
+      icon: Icon(Icons.arrow_downward),
+      iconSize: 24,
+      elevation: 16,
+      style: TextStyle(color: Colors.deepPurple),
+      underline: Container(
+        height: 2,
+        color: Colors.deepPurpleAccent,
+      ),
+      onChanged: (int newValue) {
+        setState(() {
+          
+          edad = newValue;
+
+        });
+      },
+      items: edades()
+          .map<DropdownMenuItem<int>>((dynamic value) {
+             if(widget.paciente.id!=null){
+                return DropdownMenuItem<int>(
+                value: value,
+                child: Text('$value'),
+               );
+             }else{
+                 return DropdownMenuItem<int>(
+                  value: value,
+                   child: Text('$value'),
+                   );
+             }
+       
+      }).toList(),
+    );
+  }
+
+  List edades(){
+    List<int>edades=[];
+   
+    for (var i = 0; i < 100; i++) {
+      edades.add(i);
+      print(i);
+     
+    }
+    return edades;
   }
   
 
