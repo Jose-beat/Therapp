@@ -4,11 +4,10 @@ import 'package:therapp/src/pages/Login/loginApp.dart';
 import 'package:therapp/src/pages/Register/registroPerfil.dart';
 import 'package:therapp/src/providers/authentApp.dart';
 
-
-Map<String,WidgetBuilder> routes = {
-  'home' : (BuildContext context) => LoginSignupPage(),
-  'homePage' :(BuildContext context) => HomePage(),
-  'registro' : (BuildContext context) => RegistroPerfil()
+Map<String, WidgetBuilder> routes = {
+  'home': (BuildContext context) => LoginSignupPage(),
+  'homePage': (BuildContext context) => HomePage(),
+  'registro': (BuildContext context) => RegistroPerfil()
 };
 
 enum AuthStatus {
@@ -16,7 +15,6 @@ enum AuthStatus {
   NOT_LOGGED_IN,
   LOGGED_IN,
 }
-
 
 class RootPage extends StatefulWidget {
   RootPage({this.auth});
@@ -79,7 +77,7 @@ class _RootPageState extends State<RootPage> {
         return buildWaitingScreen();
         break;
       case AuthStatus.NOT_LOGGED_IN:
-        return  LoginSignupPage(
+        return LoginSignupPage(
           auth: widget.auth,
           loginCallback: loginCallback,
         );

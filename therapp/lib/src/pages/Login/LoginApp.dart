@@ -3,7 +3,6 @@ import 'package:therapp/src/models/Terapeuta.dart';
 import 'package:therapp/src/pages/Register/RegistroPerfil.dart';
 import 'package:therapp/src/providers/authentApp.dart';
 
-
 class LoginSignupPage extends StatefulWidget {
   LoginSignupPage({this.auth, this.loginCallback});
 
@@ -16,7 +15,7 @@ class LoginSignupPage extends StatefulWidget {
 
 class _LoginSignupPageState extends State<LoginSignupPage> {
   TextEditingController correo;
-  
+
   final _formKey = new GlobalKey<FormState>();
   String _key;
   String _email;
@@ -35,10 +34,17 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
     }
     return false;
   }
-  void _createNewTerapeuta(BuildContext context, String email, String userId)async {
-    await Navigator.push(context,
-    MaterialPageRoute(builder: (context)=>RegistroPerfil(terapeuta: Terapeuta(userId,'', '','', email, '','',''),id: userId, email: email,)));
-    
+
+  void _createNewTerapeuta(
+      BuildContext context, String email, String userId) async {
+    await Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => RegistroPerfil(
+                  terapeuta: Terapeuta(userId, '', '', '', email, '', '', ''),
+                  id: userId,
+                  email: email,
+                )));
   }
 
   // Perform login or signup
@@ -48,21 +54,19 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
       _isLoading = true;
     });
     if (validateAndSave()) {
-       String userId = "";
+      String userId = "";
       try {
         if (_isLoginForm) {
           userId = await widget.auth.signIn(_email, _password);
           print('Signed in: $userId');
-          
         } else {
           userId = await widget.auth.signUp(_email, _password);
           //widget.auth.sendEmailVerification();
           //_showVerifyEmailSentDialog();
           _createNewTerapeuta(context, _email, userId);
           print('Signed up user: $userId');
-          _key=userId;
+          _key = userId;
           print(_key);
-          
         }
         setState(() {
           _isLoading = false;
@@ -194,7 +198,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
           backgroundColor: Colors.transparent,
           radius: 48.0,
           child: Image.asset('assets/flutter-icon.png'),
-        ), 
+        ),
       ),
     );
   }
@@ -252,15 +256,13 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
         child: SizedBox(
           height: 40.0,
           child: new RaisedButton(
-            elevation: 5.0,
-            shape: new RoundedRectangleBorder(
-                borderRadius: new BorderRadius.circular(30.0)),
-            color: Colors.blue,
-            child: new Text(_isLoginForm ? 'Login' : 'Create account',
-                style: new TextStyle(fontSize: 20.0, color: Colors.white)),
-            onPressed:  validateAndSubmit
-          
-          ),
+              elevation: 5.0,
+              shape: new RoundedRectangleBorder(
+                  borderRadius: new BorderRadius.circular(30.0)),
+              color: Colors.blue,
+              child: new Text(_isLoginForm ? 'Login' : 'Create account',
+                  style: new TextStyle(fontSize: 20.0, color: Colors.white)),
+              onPressed: validateAndSubmit),
         ));
   }
 }

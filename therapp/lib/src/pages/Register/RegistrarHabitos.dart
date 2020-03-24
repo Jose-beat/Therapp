@@ -4,15 +4,17 @@ import 'package:therapp/src/models/Habitos.dart';
 
 class ResHabitos extends StatefulWidget {
   final Habitos habitos;
- 
+
   ResHabitos({Key key, this.habitos}) : super(key: key);
 
   @override
   _ResHabitosState createState() => _ResHabitosState();
 }
+
 final habitosReference = FirebaseDatabase.instance.reference().child('habitos');
+
 class _ResHabitosState extends State<ResHabitos> {
-  List<Habitos>items;
+  List<Habitos> items;
   TextEditingController _habitoAlimenticioController;
   TextEditingController _habitoHigieneController;
 
@@ -20,17 +22,16 @@ class _ResHabitosState extends State<ResHabitos> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    _habitoAlimenticioController = new TextEditingController(text: widget.habitos.habitosAlimenticios);
-    _habitoHigieneController = new TextEditingController(text: widget.habitos.habitosHigiene);
-    
+    _habitoAlimenticioController =
+        new TextEditingController(text: widget.habitos.habitosAlimenticios);
+    _habitoHigieneController =
+        new TextEditingController(text: widget.habitos.habitosHigiene);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-
-      ),
+      appBar: AppBar(),
       body: ListView(
         children: <Widget>[
           Container(
@@ -41,42 +42,40 @@ class _ResHabitosState extends State<ResHabitos> {
                     TextFormField(
                       controller: _habitoAlimenticioController,
                       style: TextStyle(fontSize: 17.0, color: Colors.green),
-                      decoration: InputDecoration(icon: Icon(Icons.fastfood),
-                      labelText: 'Habitos ALimenticios'
-                      ),
+                      decoration: InputDecoration(
+                          icon: Icon(Icons.fastfood),
+                          labelText: 'Habitos Alimenticios'),
                     ),
                     TextFormField(
                       controller: _habitoHigieneController,
                       style: TextStyle(fontSize: 17.0, color: Colors.green),
-                      decoration: InputDecoration(icon: Icon(Icons.fastfood),
-                      labelText: 'Habitos ALimenticios'
-                      ),
+                      decoration: InputDecoration(
+                          icon: Icon(Icons.fastfood),
+                          labelText: 'Habitos Alimenticios'),
                     ),
-
-                    FlatButton(onPressed: (){
-                      if(widget.habitos.id!=null){
-                        habitosReference.child(widget.habitos.id).set({
-                          'habitos_Alimenticios':_habitoAlimenticioController.text,
-                          'habitos_higiene':_habitoHigieneController.text,
-                          'paciente':widget.habitos.paciente
-                        }).then((_){
-                          Navigator.pop(context);
-                        });
-                      }else{
-                        habitosReference.push().set({
-                          'habitos_Alimenticios':_habitoAlimenticioController.text,
-                          'habitos_higiene':_habitoHigieneController.text,
-                          'paciente':widget.habitos.paciente
-
-                        }).then((_){
-                          Navigator.pop(context);
-                        });
-                      }
-
-                    },  
-                    
-                    child: Text('Subir'))
-                    
+                    FlatButton(
+                        onPressed: () {
+                          if (widget.habitos.id != null) {
+                            habitosReference.child(widget.habitos.id).set({
+                              'habitos_alimenticios':
+                                  _habitoAlimenticioController.text,
+                              'habitos_higiene': _habitoHigieneController.text,
+                              'paciente': widget.habitos.paciente
+                            }).then((_) {
+                              Navigator.pop(context);
+                            });
+                          } else {
+                            habitosReference.push().set({
+                              'habitos_alimenticios':
+                                  _habitoAlimenticioController.text,
+                              'habitos_higiene': _habitoHigieneController.text,
+                              'paciente': widget.habitos.paciente
+                            }).then((_) {
+                              Navigator.pop(context);
+                            });
+                          }
+                        },
+                        child: Text('Subir'))
                   ],
                 ),
               ),
