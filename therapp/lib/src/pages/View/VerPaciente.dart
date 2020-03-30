@@ -6,8 +6,10 @@ import 'package:therapp/src/models/Paciente.dart';
 import 'package:therapp/src/models/SignosVitales.dart';
 import 'package:therapp/src/models/consultas.dart';
 import 'package:therapp/src/pages/Register/RegistrarHabitos.dart';
+import 'package:therapp/src/pages/View/ListaConsultas.dart';
+import 'package:therapp/src/pages/View/ListaSignosVitales.dart';
 
-import 'package:therapp/src/pages/View/VerAntecedentesFamiliares.dart';
+
 import 'package:therapp/src/pages/View/VerAntecedentesNoPatologicos.dart';
 import 'package:therapp/src/pages/View/VerAntecedentesPatologicos.dart';
 import 'package:therapp/src/pages/View/VerConsultas.dart';
@@ -16,7 +18,8 @@ import 'package:therapp/src/pages/View/verSignosVitales.dart';
 
 class VerPaciente extends StatefulWidget {
   final Paciente paciente;
-  VerPaciente({Key key, this.paciente}) : super(key: key);
+  final String idTerapeuta;
+  VerPaciente({Key key, this.paciente, this.idTerapeuta}) : super(key: key);
 
   @override
   _VerPacienteState createState() => _VerPacienteState();
@@ -40,7 +43,7 @@ class _VerPacienteState extends State<VerPaciente> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: DefaultTabController(
-      length: 7,
+      length: 6,
       child: NestedScrollView(
           headerSliverBuilder:
               (BuildContext context, bool innerBoxIsScrolling) {
@@ -50,7 +53,11 @@ class _VerPacienteState extends State<VerPaciente> {
                 floating: false,
                 flexibleSpace: FlexibleSpaceBar(
                   centerTitle: true,
-                  title: Text('Contenido'),
+                  title: Text('${widget.paciente.nombre}\n ${widget.paciente.apellidos}',
+                  style: TextStyle(
+                    fontSize: 15.0
+                  ),
+                  ),
                 ),
                 backgroundColor: Colors.amber,
                 expandedHeight: 200,
@@ -59,27 +66,25 @@ class _VerPacienteState extends State<VerPaciente> {
                 delegate: _SliverAppBarDelegate(TabBar(tabs: [
                   Tab(
                       icon: Icon(
-                    Icons.ac_unit,
+                    Icons.contact_mail,
                     color: Colors.black,
                   )),
                   Tab(
-                    icon: Icon(Icons.ac_unit, color: Colors.black),
+                    icon: Icon(Icons.favorite, color: Colors.black),
+                  ),
+                  Tab(
+                    icon: Icon(Icons.find_in_page, color: Colors.black),
+                  ),
+                  Tab(
+                    icon: Icon(Icons.flare, color: Colors.black),
+                  ),
+                  Tab(
+                    icon: Icon(Icons.people_outline, color: Colors.black),
                   ),
                   Tab(
                     icon: Icon(Icons.ac_unit, color: Colors.black),
                   ),
-                  Tab(
-                    icon: Icon(Icons.ac_unit, color: Colors.black),
-                  ),
-                  Tab(
-                    icon: Icon(Icons.ac_unit, color: Colors.black),
-                  ),
-                  Tab(
-                    icon: Icon(Icons.ac_unit, color: Colors.black),
-                  ),
-                  Tab(
-                    icon: Icon(Icons.ac_unit, color: Colors.black),
-                  ),
+                  
                 ])),
                 pinned: false,
               )
@@ -95,27 +100,22 @@ class _VerPacienteState extends State<VerPaciente> {
                         child: Column(
                           children: <Widget>[
                             Container(
-                              width: 20.0,
-                              height: 90.0,
+                              width: 10.0,
+                              height: 20.0,
                             ),
-                            Text("${widget.paciente.nombre}"),
+                            estiloLista('${widget.paciente.nombre}','Nombre del Paciente', context),
                             Divider(),
-                            Text("${widget.paciente.apellidos}"),
+                            estiloLista("${widget.paciente.apellidos}", 'Apellidos', context),
                             Divider(),
-                            Text("${widget.paciente.edad}"),
+                            estiloLista("${widget.paciente.edad}", 'Edad', context),
                             Divider(),
-                            Text("${widget.paciente.ocupacion}"),
+                            estiloLista("${widget.paciente.ocupacion}", 'Ocupacion', context),
                             Divider(),
-                            Text("${widget.paciente.sexo}"),
+                            estiloLista("${widget.paciente.sexo}", 'Sexo', context),
                             Divider(),
-                            Text("${widget.paciente.id}"),
+                           estiloLista("${widget.paciente.id}", 'Identificacion', context),
                             Divider(),
-                            FlatButton(
-                              child: Text('hABITOS'),
-                              onPressed: () {
-                                _navigateToSignos(context);
-                              },
-                            )
+                          
                           ],
                         ),
                       ),
@@ -123,14 +123,17 @@ class _VerPacienteState extends State<VerPaciente> {
                   ),
                 ],
               ),
-              VerSignosVitales(
+              ListaSignosVitales(
                 pacienteId: widget.paciente.id,
+                
               ),
               VerHabitos(
                 pacienteId: widget.paciente.id,
               ),
-              VerConsultas(
+              ListaConsultas(
                 idPaciente: widget.paciente.id,
+                idTerapeuta: widget.idTerapeuta,
+                
               ),
               VerAntecPatologicos(
                 pacienteId: widget.paciente.id,
@@ -138,7 +141,6 @@ class _VerPacienteState extends State<VerPaciente> {
               VerAntecNoPatologico(
                 pacienteId: widget.paciente.id,
               ),
-              VerAntecFamiliar(idPaciente: widget.paciente.id),
             ],
           )),
     ));
@@ -166,6 +168,16 @@ class _VerPacienteState extends State<VerPaciente> {
               )),
     );
   }
+
+
+   Widget estiloLista(String titulo, String subtitulo,BuildContext context){
+    return ListTile(
+      title: Text('$titulo',
+      style: Theme.of(context).textTheme.headline,
+      ),
+      subtitle: Text('$subtitulo'),
+    );  
+  }
 }
 
 class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
@@ -190,4 +202,10 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   bool shouldRebuild(_SliverAppBarDelegate oldDelegate) {
     return false;
   }
+
+
+ 
+
+
+
 }

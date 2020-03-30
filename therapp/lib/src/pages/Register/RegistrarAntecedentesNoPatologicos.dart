@@ -4,6 +4,8 @@ import 'package:therapp/src/models/AntecedentesNoPatologicos.dart';
 import 'package:therapp/src/models/AntecedntesPatologicos.dart';
 
 class ResAntecedentesNoPatologicos extends StatefulWidget {
+
+  
   final AntecedentesNoPatologicos antecedentesNoPatologicos;
 
   ResAntecedentesNoPatologicos({Key key, this.antecedentesNoPatologicos})
@@ -19,6 +21,7 @@ final antecedentesNoPatologicosReference =
 
 class _ResAntecedentesNoPatologicosState
     extends State<ResAntecedentesNoPatologicos> {
+      final _formKey = GlobalKey<FormState>();
   List<AntecedentesNoPatologicos> items;
 
   TextEditingController _enfermedadController;
@@ -39,38 +42,49 @@ class _ResAntecedentesNoPatologicosState
             Container(
               child: Card(
                 child: Center(
-                  child: Column(
-                    children: <Widget>[
-                      TextFormField(
-                        controller: _enfermedadController,
-                        style: TextStyle(fontSize: 17.0, color: Colors.pink),
-                        decoration: InputDecoration(
-                            icon: Icon(Icons.archive), labelText: 'Enfermedad'),
-                      ),
-                      FlatButton(
-                          onPressed: () {
-                            if (widget.antecedentesNoPatologicos.id != null) {
-                              antecedentesNoPatologicosReference
-                                  .child(widget.antecedentesNoPatologicos.id)
-                                  .set({
-                                'enfermedad': _enfermedadController.text,
-                                'paciente':
-                                    widget.antecedentesNoPatologicos.idpaciente
-                              }).then((_) {
-                                Navigator.pop(context);
-                              });
-                            } else {
-                              antecedentesNoPatologicosReference.push().set({
-                                'enfermedad': _enfermedadController.text,
-                                'paciente':
-                                    widget.antecedentesNoPatologicos.idpaciente
-                              }).then((_) {
-                                Navigator.pop(context);
-                              });
+                  child: Form(
+                    key: _formKey,
+                                      child: Column(
+                      children: <Widget>[
+                        TextFormField(
+                          controller: _enfermedadController,
+                          style: TextStyle(fontSize: 17.0, color: Colors.pink),
+                          decoration: InputDecoration(
+                              icon: Icon(Icons.archive), labelText: 'Enfermedad'),
+                             validator: (value){
+                              value=_enfermedadController.text;
+                            if(value.isEmpty){
+                              return 'Favor de añadir la fecha';
                             }
-                          },
-                          child: Text('Añadir Antecedente patologico'))
-                    ],
+                             },
+                        ),
+                        FlatButton(
+                            onPressed: () {
+                              if(_formKey.currentState.validate()){
+                              if (widget.antecedentesNoPatologicos.id != null) {
+                                antecedentesNoPatologicosReference
+                                    .child(widget.antecedentesNoPatologicos.id)
+                                    .set({
+                                  'enfermedad': _enfermedadController.text,
+                                  'paciente':
+                                      widget.antecedentesNoPatologicos.idpaciente
+                                }).then((_) {
+                                  Navigator.pop(context);
+                                });
+                              } else {
+                                antecedentesNoPatologicosReference.push().set({
+                                  'enfermedad': _enfermedadController.text,
+                                  'paciente':
+                                      widget.antecedentesNoPatologicos.idpaciente
+                                }).then((_) {
+                                  Navigator.pop(context);
+                                });
+                              }
+                              }
+                            },
+                            child: Text('Añadir Antecedente patologico'))
+                      ],
+                    ),
                   ),
                 ),
               ),

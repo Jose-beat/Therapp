@@ -18,6 +18,8 @@ final antecedentesPatologicosReference =
 
 class _ResAntecedentesPatologicosState
     extends State<ResAntecedentesPatologicos> {
+
+      final _formKey = GlobalKey<FormState>();
   List<AntecedentesPatologicos> items;
 
   TextEditingController _enfermedadController;
@@ -38,38 +40,53 @@ class _ResAntecedentesPatologicosState
             Container(
               child: Card(
                 child: Center(
-                  child: Column(
-                    children: <Widget>[
-                      TextFormField(
-                        controller: _enfermedadController,
-                        style: TextStyle(fontSize: 17.0, color: Colors.pink),
-                        decoration: InputDecoration(
-                            icon: Icon(Icons.archive), labelText: 'Enfermedad'),
-                      ),
-                      FlatButton(
-                          onPressed: () {
-                            if (widget.antecedentesPatologicos.id != null) {
-                              antecedentesPatologicosReference
-                                  .child(widget.antecedentesPatologicos.id)
-                                  .set({
-                                'enfermedad': _enfermedadController.text,
-                                'paciente':
-                                    widget.antecedentesPatologicos.idpaciente
-                              }).then((_) {
-                                Navigator.pop(context);
-                              });
-                            } else {
-                              antecedentesPatologicosReference.push().set({
-                                'enfermedad': _enfermedadController.text,
-                                'paciente':
-                                    widget.antecedentesPatologicos.idpaciente
-                              }).then((_) {
-                                Navigator.pop(context);
-                              });
-                            }
-                          },
-                          child: Text('Añadir Antecedente patologico'))
-                    ],
+                  child: Form(
+                             key: _formKey,
+                                      child: Column(
+                      children: <Widget>[
+                        TextFormField(
+                          controller: _enfermedadController,
+                          style: TextStyle(fontSize: 17.0, color: Colors.pink),
+                          decoration: InputDecoration(
+                              icon: Icon(Icons.archive), labelText: 'Enfermedad'),
+
+
+                                validator: (value){
+                                value=_enfermedadController.text;
+                              if(value.isEmpty){
+                                return 'Favor de añadir la fecha';
+                              }
+                               },
+                        ),
+
+                        
+                        FlatButton(
+                            onPressed: () {
+
+                              if(_formKey.currentState.validate()){
+                              if (widget.antecedentesPatologicos.id != null) {
+                                antecedentesPatologicosReference
+                                    .child(widget.antecedentesPatologicos.id)
+                                    .set({
+                                  'enfermedad': _enfermedadController.text,
+                                  'paciente':
+                                      widget.antecedentesPatologicos.idpaciente
+                                }).then((_) {
+                                  Navigator.pop(context);
+                                });
+                              } else {
+                                antecedentesPatologicosReference.push().set({
+                                  'enfermedad': _enfermedadController.text,
+                                  'paciente':
+                                      widget.antecedentesPatologicos.idpaciente
+                                }).then((_) {
+                                  Navigator.pop(context);
+                                });
+                              }}
+                            },
+                            child: Text('Añadir Antecedente patologico'))
+                      ],
+                    ),
                   ),
                 ),
               ),

@@ -14,6 +14,7 @@ class ResHabitos extends StatefulWidget {
 final habitosReference = FirebaseDatabase.instance.reference().child('habitos');
 
 class _ResHabitosState extends State<ResHabitos> {
+  final _formKey = GlobalKey<FormState>();
   List<Habitos> items;
   TextEditingController _habitoAlimenticioController;
   TextEditingController _habitoHigieneController;
@@ -37,46 +38,63 @@ class _ResHabitosState extends State<ResHabitos> {
           Container(
             child: Card(
               child: Center(
-                child: Column(
-                  children: <Widget>[
-                    TextFormField(
-                      controller: _habitoAlimenticioController,
-                      style: TextStyle(fontSize: 17.0, color: Colors.green),
-                      decoration: InputDecoration(
-                          icon: Icon(Icons.fastfood),
-                          labelText: 'Habitos Alimenticios'),
-                    ),
-                    TextFormField(
-                      controller: _habitoHigieneController,
-                      style: TextStyle(fontSize: 17.0, color: Colors.green),
-                      decoration: InputDecoration(
-                          icon: Icon(Icons.fastfood),
-                          labelText: 'Habitos Alimenticios'),
-                    ),
-                    FlatButton(
-                        onPressed: () {
-                          if (widget.habitos.id != null) {
-                            habitosReference.child(widget.habitos.id).set({
-                              'habitos_alimenticios':
-                                  _habitoAlimenticioController.text,
-                              'habitos_higiene': _habitoHigieneController.text,
-                              'paciente': widget.habitos.paciente
-                            }).then((_) {
-                              Navigator.pop(context);
-                            });
-                          } else {
-                            habitosReference.push().set({
-                              'habitos_alimenticios':
-                                  _habitoAlimenticioController.text,
-                              'habitos_higiene': _habitoHigieneController.text,
-                              'paciente': widget.habitos.paciente
-                            }).then((_) {
-                              Navigator.pop(context);
-                            });
-                          }
-                        },
-                        child: Text('Subir'))
-                  ],
+                child: Form(
+                  key: _formKey,
+                                  child: Column(
+                    children: <Widget>[
+                      TextFormField(
+                        controller: _habitoAlimenticioController,
+                        style: TextStyle(fontSize: 17.0, color: Colors.green),
+                        decoration: InputDecoration(
+                            icon: Icon(Icons.fastfood),
+                            labelText: 'Habitos Alimenticios'),
+                        validator: (value){
+                              value=_habitoAlimenticioController.text;
+                            if(value.isEmpty){
+                              return 'Favor de añadir la fecha';
+                            }
+                             },
+                      ),
+                      TextFormField(
+                        controller: _habitoHigieneController,
+                        style: TextStyle(fontSize: 17.0, color: Colors.green),
+                        decoration: InputDecoration(
+                            icon: Icon(Icons.fastfood),
+                            labelText: 'Habitos Alimenticios'),
+                        validator: (value){
+                              value=_habitoHigieneController.text;
+                            if(value.isEmpty){
+                              return 'Favor de añadir la fecha';
+                            }
+                             },
+                      ),
+                      FlatButton(
+                          onPressed: () {
+                            if(_formKey.currentState.validate()){
+                            if (widget.habitos.id != null) {
+                              habitosReference.child(widget.habitos.id).set({
+                                'habitos_alimenticios':
+                                    _habitoAlimenticioController.text,
+                                'habitos_higiene': _habitoHigieneController.text,
+                                'paciente': widget.habitos.paciente
+                              }).then((_) {
+                                Navigator.pop(context);
+                              });
+                            } else {
+                              habitosReference.push().set({
+                                'habitos_alimenticios':
+                                    _habitoAlimenticioController.text,
+                                'habitos_higiene': _habitoHigieneController.text,
+                                'paciente': widget.habitos.paciente
+                              }).then((_) {
+                                Navigator.pop(context);
+                              });
+                            }
+                            }
+                          },
+                          child: Text('Subir'))
+                    ],
+                  ),
                 ),
               ),
             ),

@@ -45,7 +45,9 @@ class _VerHabitosState extends State<VerHabitos> {
             itemCount: items.length,
             itemBuilder: (context, position) {
               return _filter(context, position);
-            }));
+            }),
+            floatingActionButton: FloatingActionButton(onPressed: ()=>_createNewHabitos(context)),
+            );
   }
 
 /*------------------------------------BACKEND----------------------------------------*/
@@ -105,18 +107,23 @@ class _VerHabitosState extends State<VerHabitos> {
       child: Column(
         children: <Widget>[
           Divider(),
-          _lista(items[position].habitosAlimenticios, context, position),
+          _lista(items[position].habitosAlimenticios, context, position,'Habito Alimenticio'),
           Divider(),
-          _lista(items[position].habitosHigiene, context, position),
+          _lista(items[position].habitosHigiene, context, position,'Habito de Higiene'),
         ],
       ),
     );
   }
 
-  Widget _lista(String variable, BuildContext context, int position) {
+  Widget _lista(String variable, BuildContext context, int position,String subtitulo) {
     return ListTile(
-      contentPadding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-      title: Row(
+
+      title: Text('$variable',style: Theme.of(context).textTheme.headline,),
+      subtitle: Text('$subtitulo'),
+
+      onTap: () => _navigateToHabitos(context, items[position]),
+     /* 
+      Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text('$variable'),
@@ -124,7 +131,7 @@ class _VerHabitosState extends State<VerHabitos> {
               icon: Icon(Icons.edit),
               onPressed: () => _navigateToHabitos(context, items[position]))
         ],
-      ),
+      ),*/
     );
   }
 }

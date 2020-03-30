@@ -135,51 +135,50 @@ class _VerTerapeutaState extends State<VerTerapeuta> {
       child: Column(
         children: <Widget>[
           ListTile(
+            subtitle: Text('Nombre del Terapeuta'),
             contentPadding: EdgeInsets.all(10.0),
             title: Row(
               children: <Widget>[
                 Text('${items[position].nombre} ${items[position].apellidos}'),
-                IconButton(
-                    icon: Icon(Icons.edit),
-                    onPressed: () =>
-                        _navigateToTerapeuta(context, items[position]))
+            
               ],
             ),
           ),
           Divider(),
-          _lista(items[position].email, context, position),
+          _lista('Correo Electronico', items[position].email, context, position),
           Divider(),
-          _lista(items[position].clinica, context, position),
+          _lista('Clinica',items[position].clinica, context, position),
           Divider(),
-          _lista(items[position].especialidad, context, position),
+           _lista('Cedula Profesional',items[position].cedula, context, position),
           Divider(),
-          _lista(items[position].telefono, context, position),
+          _lista('Especialidad',items[position].especialidad, context, position),
+          Divider(),
+          _lista('N.Telefonico',items[position].telefono, context, position),
+          _update(context, items[position], position),
           _delete(context, items[position], position)
         ],
       ),
     );
   }
 
-  Widget _lista(String variable, BuildContext context, int position) {
+  Widget _lista(String tipo, String variable, BuildContext context, int position) {
     return ListTile(
-      contentPadding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-      title: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text('$variable'),
-          IconButton(
+      subtitle: Text('$tipo'),
+          title: Text('$variable'),
+         /* IconButton(
               icon: Icon(Icons.edit),
-              onPressed: () => _navigateToTerapeuta(context, items[position]))
-        ],
-      ),
+              onPressed: () => _navigateToTerapeuta(context, items[position]))*/
+      
+    
     );
   }
 
   Widget _delete(BuildContext context, Terapeuta terapeuta, int position) {
     return ListTile(
+      
       contentPadding: EdgeInsets.fromLTRB(0, 0, 0, 0),
       title: Container(
-        color: Colors.red,
+
         child: Row(
           children: <Widget>[
             Text('Eliminar Perfil', textAlign: TextAlign.right),
@@ -193,4 +192,26 @@ class _VerTerapeutaState extends State<VerTerapeuta> {
       },
     );
   }
+
+
+
+    Widget _update(BuildContext context, Terapeuta terapeuta, int position) {
+    return ListTile(
+      
+      contentPadding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+      title: Container(
+
+        child: Row(
+          children: <Widget>[
+            Text('Editar Perfil', textAlign: TextAlign.right),
+          ],
+        ),
+      ),
+      onTap: () {
+        _navigateToTerapeuta(context, items[position]);
+        
+      },
+    );
+  }
 }
+

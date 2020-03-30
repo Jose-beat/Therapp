@@ -3,9 +3,10 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:therapp/src/models/Paciente.dart';
 import 'package:therapp/src/models/Terapeuta.dart';
+
 import 'package:therapp/src/pages/Register/RegistrarPaciente.dart';
 import 'package:therapp/src/pages/View/VerPaciente.dart';
-import 'package:therapp/src/pages/View/VerTerapeuta.dart';
+
 import 'package:therapp/src/providers/authentApp.dart';
 
 class HomePage extends StatefulWidget {
@@ -65,61 +66,27 @@ class _HomePageState extends State<HomePage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        actionsIconTheme: IconThemeData(color: Colors.black),
-        actions: <Widget>[
-          FlatButton(onPressed: signOut, child: Text('Cerrar Sesion')),
-          FlatButton(
-              onPressed: () {
-                _createNewPaciente(context);
-              },
-              child: Text('crear paciente')),
-          IconButton(
-            icon: CircleAvatar(
-              backgroundColor: Colors.red,
-              child: Icon(Icons.supervised_user_circle),
-              radius: 20.0,
-            ),
-            padding: EdgeInsets.all(0.0),
-            onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => VerTerapeuta(
-                            userId: widget.userId,
-                            auth: widget.auth,
-                            logoutCallback: widget.logoutCallback,
-                          )));
-            },
-          ),
-        ],
-      ),
+      
+     
       body: ListView.builder(
         itemCount: items.length,
         itemBuilder: (context, position) {
           return _filter(context, position);
         },
       ),
+
+      
     );
   }
 
 /*---------------------------METODOS PARA CREAR AL PÁCIENTE */
 
-  void _createNewPaciente(BuildContext context) async {
+ 
+  void _navigateToPaciente(BuildContext context, Paciente paciente, String idTerapeuta) async {
     await Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (context) => RegistrarPaciente(
-                  paciente: Paciente(null, '', '', 0, '', '', widget.userId),
-                  userId: widget.userId,
-                )));
-  }
-
-  void _navigateToPaciente(BuildContext context, Paciente paciente) async {
-    await Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => VerPaciente(paciente: paciente)));
+            builder: (context) => VerPaciente(paciente: paciente,idTerapeuta: idTerapeuta,)));
   }
 
   void _onPacienteAdded(Event event) {
@@ -149,15 +116,7 @@ class _HomePageState extends State<HomePage>
   }
 /*-------------------------------------METODOS TERAPEUTA--------------------------*/
 
-  void _navigateToTerapeuta(BuildContext context, String user) async {
-    await Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => VerTerapeuta(
-                  userId: user,
-                )));
-    print('jaja nkscbkjds${widget.userId}');
-  }
+  
 
   Widget _filter(BuildContext context, int position) {
     print("item :${items[position].id}");
@@ -198,7 +157,7 @@ class _HomePageState extends State<HomePage>
                       )
                     ],
                   ),
-                  onTap: () => _navigateToPaciente(context, items[position]),
+                  onTap: () => _navigateToPaciente(context, items[position],widget.userId),
                 )),
                 IconButton(
                     icon: Icon(
@@ -214,9 +173,8 @@ class _HomePageState extends State<HomePage>
       );
     } else {
       return Container(
-        child: Text('no disponible'),
-        width: 10.0,
-        height: 10.0,
+        width: 0.0,
+        height: 0.0,
       );
     }
   }

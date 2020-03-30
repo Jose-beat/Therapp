@@ -14,11 +14,14 @@ final signosVitalesReference =
     FirebaseDatabase.instance.reference().child('signos_vitales');
 
 class _RegistroSignosVitalesState extends State<RegistroSignosVitales> {
+    final _formKey = GlobalKey<FormState>();
   List<SignosVitales> items;
   String frecuenciaCardiActual = '70 - 190';
   String frecuenciaRespiratoryActual = '30 - 80';
-  double peso = 40.0;
+  int peso = 40;
   String talla = 'XS';
+  String _fecha;
+  TextEditingController _inputFieldDateController = new TextEditingController();
 
   TextEditingController _fcController;
   TextEditingController _frController;
@@ -54,8 +57,12 @@ class _RegistroSignosVitalesState extends State<RegistroSignosVitales> {
                     respiratoryOption(),
                     pesoOption(),
                     tallaOption(),
+                    _crearFecha(context),
+
+
                     FlatButton(
                         onPressed: () {
+                          if(_formKey.currentState.validate()){
                           if (widget.signosVitales.id != null) {
                             signosVitalesReference
                                 .child(widget.signosVitales.id)
@@ -65,8 +72,11 @@ class _RegistroSignosVitalesState extends State<RegistroSignosVitales> {
                                   frecuenciaRespiratoryActual,
                               'peso': peso,
                               'talla': talla,
+                              'fecha':_inputFieldDateController.text,
                               'paciente': widget.signosVitales.paciente
-                            }).then((_) {});
+                            }).then((_) {
+                              Navigator.pop(context);
+                            });
                           } else {
                             signosVitalesReference.push().set({
                               'frecuencia cardiaca': frecuenciaCardiActual,
@@ -74,8 +84,12 @@ class _RegistroSignosVitalesState extends State<RegistroSignosVitales> {
                                   frecuenciaRespiratoryActual,
                               'peso': peso,
                               'talla': talla,
+                              'fecha':_inputFieldDateController.text,
                               'paciente': widget.signosVitales.paciente
-                            }).then((_) {});
+                            }).then((_) {
+                               Navigator.pop(context);
+                            });
+                          }
                           }
                         },
                         child: Text('Siguiente'))
@@ -149,7 +163,7 @@ class _RegistroSignosVitalesState extends State<RegistroSignosVitales> {
   }
 
   Widget pesoOption() {
-    return DropdownButton<double>(
+    return DropdownButton<int>(
       value: peso,
       icon: Icon(Icons.arrow_downward),
       iconSize: 24,
@@ -159,13 +173,13 @@ class _RegistroSignosVitalesState extends State<RegistroSignosVitales> {
         height: 2,
         color: Colors.deepPurpleAccent,
       ),
-      onChanged: (double newValue) {
+      onChanged: (int newValue) {
         setState(() {
           peso = newValue;
         });
       },
-      items: pesos().map<DropdownMenuItem<double>>((dynamic value) {
-        return DropdownMenuItem<double>(
+      items: pesos().map<DropdownMenuItem<int>>((dynamic value) {
+        return DropdownMenuItem<int>(
           value: value,
           child: Text('$value'),
         );
@@ -176,7 +190,7 @@ class _RegistroSignosVitalesState extends State<RegistroSignosVitales> {
   List pesos() {
     List<int> peso = [];
 
-    for (var i = 30; i < 100.0; i += 10) {
+    for (var i = 30; i < 100; i += 10) {
       peso.add(i);
       print(i);
     }
@@ -208,4 +222,80 @@ class _RegistroSignosVitalesState extends State<RegistroSignosVitales> {
       }).toList(),
     );
   }
+
+
+Widget _crearFecha(BuildContext context){
+
+    return Form(
+      key: _formKey,
+          child: TextFormField(
+        validator: (value){
+          value=_inputFieldDateController.text;
+          if(value.isEmpty){
+            return 'Favor de añadir la fecha';
+          }
+        },
+        //Pasamos la fecha por aqui
+        controller: _inputFieldDateController,
+        //Desactivamos la accion interactiva
+        enableInteractiveSelection: false,
+       //Añadir estilo a la caja de texto
+        decoration: InputDecoration(
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(20.0),
+          ),
+          
+          //Sera un texto original en la caja
+          hintText: 'Fecha de nacimiento',
+          //Sera el titulo de nuestra caja
+          labelText: 'Fecha de nacimiento',
+          suffixIcon: Icon(Icons.calendar_today),
+          icon: Icon(Icons.calendar_view_day),  
+          ),
+   
+           
+        
+          onTap: (){
+            //Quitar el foco que significa que el teclado no se activara
+            FocusScope.of(context).requestFocus(new FocusNode());
+            _selectDay(context);
+          },
+      ),
+    );
+
+}
+  
+
+  //Si un metodo recibe un future entonces hay que añadirle el asyn y await
+  //donde corresponda
+  _selectDay(BuildContext context) async {
+
+    DateTime picked = await showDatePicker(
+      context: context,
+      initialDate: new DateTime.now(),
+      firstDate: new DateTime(2018),
+      lastDate: new DateTime(2025),
+     //Cambiar el idioma del cuadro de fechas
+     //mOSTRARA UN ERROR DE FORMA NORMAL SI NO EXISTE UNA DEPENDENCIA
+     // locale: Locale('fr','CH'),
+
+    );
+    //Con esta condicional vamos a meter la informacion de la fecha en el cuadro de texto
+
+    if (picked != null){
+      setState(() {
+        _fecha = picked.toString();
+        _inputFieldDateController.text = _fecha;
+      });
+    }
+
+  }
+
+
+
+
+
+
+
+
 }

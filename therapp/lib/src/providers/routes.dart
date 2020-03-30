@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:therapp/src/pages/View/NavigationBar.dart';
 import 'package:therapp/src/pages/View/homePage.dart';
 import 'package:therapp/src/pages/Login/loginApp.dart';
 import 'package:therapp/src/pages/Register/registroPerfil.dart';
@@ -84,11 +85,12 @@ class _RootPageState extends State<RootPage> {
         break;
       case AuthStatus.LOGGED_IN:
         if (_userId.length > 0 && _userId != null) {
-          return new HomePage(
+          return new NavigationAppBar(
             userId: _userId,
             auth: widget.auth,
             logoutCallback: logoutCallback,
           );
+
         } else
           return buildWaitingScreen();
         break;

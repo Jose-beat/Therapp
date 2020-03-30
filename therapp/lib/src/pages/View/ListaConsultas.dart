@@ -4,24 +4,23 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:therapp/src/models/consultas.dart';
 import 'package:therapp/src/pages/Register/RegistrarConsultas.dart';
+import 'package:therapp/src/pages/View/VerConsultas.dart';
 
+class ListaConsultas extends StatefulWidget {
 
-class VerConsultas extends StatefulWidget {
-  final String fechaConsulta;
   final String idTerapeuta;
   final String idPaciente;
   final Consultas consultas;
-
-  VerConsultas({Key key, this.idPaciente, this.consultas, this.idTerapeuta, this.fechaConsulta}) : super(key: key);
+  ListaConsultas({Key key, this.idTerapeuta, this.idPaciente, this.consultas}) : super(key: key);
 
   @override
-  _VerConsultasState createState() => _VerConsultasState();
+  _ListaConsultasState createState() => _ListaConsultasState();
 }
-
 final consultasReference =
     FirebaseDatabase.instance.reference().child('Consultas');
+class _ListaConsultasState extends State<ListaConsultas> {
 
-class _VerConsultasState extends State<VerConsultas> {
+
   StreamSubscription<Event> _onConsultaAddedSubscription;
   StreamSubscription<Event> _onConsultaChangedSubscription;
 
@@ -43,20 +42,27 @@ class _VerConsultasState extends State<VerConsultas> {
   }
 
   List<Consultas> items;
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      
         body: ListView.builder(
             itemCount: items.length,
             itemBuilder: (context, position) {
               return _filter(context, position);
             }),
-            floatingActionButton: FloatingActionButton(onPressed: ()=>_createNewConsultas(context)),
-            );
+            
+            floatingActionButton: FloatingActionButton(onPressed: ()=>_createNewConsultas(context)));
+            
   }
 
-  /*------------------------------------BACKEND----------------------------------------*/
-  void _onConsultasAdded(Event event) {
+
+
+/*--------------------------------///////////////////////////////////////---------------------------------------*/
+
+ void _onConsultasAdded(Event event) {
     setState(() {
       items.add(new Consultas.fromSnapshot(event.snapshot));
     });
@@ -91,10 +97,25 @@ class _VerConsultasState extends State<VerConsultas> {
                 )));
   }
 
+  void _navigateToConsulta(BuildContext context,Consultas consultas, String idPaciente,String fechaConsulta,String idTerapeuta) async {
+
+    await Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => VerConsultas(
+             idPaciente: idPaciente,
+             consultas: consultas,
+             idTerapeuta: idTerapeuta,
+             fechaConsulta: fechaConsulta,
+            )));
+  }
+
+/*-----------------------------------------------------------------------////////////////////////////_-------------------------------------*/
+
   Widget _filter(BuildContext context, int position) {
     print('VE ESTE MENSAJE');
 
-    if (items[position].idPaciente == widget.idPaciente&&items[position].fechaConsulta==widget.fechaConsulta) {
+    if ( items[position].idPaciente == widget.idPaciente) {
       print('WE NO MAMES ESTA ES LA ID DE LA CONSULTA ${items[position].id}');
       print('MOTIVOS ${items[position].motivos}');
       print('PACIENTE: ${items[position].idPaciente} ${widget.idPaciente}');
@@ -115,8 +136,7 @@ class _VerConsultasState extends State<VerConsultas> {
       child: Column(
         children: <Widget>[
           Divider(),
-          _lista(items[position].motivos, context, position,'Motivo de la Consulta'),
-          _lista(items[position].fechaConsulta, context, position,'Fecha'),
+          _lista(items[position].fechaConsulta, context, position,'Motivo de la Consulta'),
         ],
       ),
     );
@@ -135,7 +155,8 @@ class _VerConsultasState extends State<VerConsultas> {
               onPressed: () => _navigateToConsultas(context, items[position]))
         ],
       ),
-       subtitle: Text('$subtitulo')
+       subtitle: Text('$subtitulo'),
+       onTap: ()=>_navigateToConsulta(context, items[position],items[position].idPaciente,items[position].fechaConsulta,items[position].idTerapeuta),
     );
   }
 }

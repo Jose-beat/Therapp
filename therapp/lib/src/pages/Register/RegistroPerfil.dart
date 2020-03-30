@@ -27,6 +27,8 @@ final terapeutaReference =
     FirebaseDatabase.instance.reference().child('terapeuta');
 
 class _RegistroPerfilState extends State<RegistroPerfil> {
+
+  final _formKey = GlobalKey<FormState>();
   List<Terapeuta> item;
 
   TextEditingController _nombreController;
@@ -81,90 +83,159 @@ class _RegistroPerfilState extends State<RegistroPerfil> {
   }
 
   Widget registro() {
-    return Column(
-      children: <Widget>[
-        TextField(
-          keyboardType: TextInputType.text,
-          controller: _nombreController,
-          style: TextStyle(fontSize: 17.0, color: Colors.deepOrangeAccent),
-          decoration:
-              InputDecoration(icon: Icon(Icons.person), labelText: 'Nombre'),
-        ),
-        TextField(
-          keyboardType: TextInputType.text,
-          controller: _apellidosController,
-          style: TextStyle(fontSize: 17.0, color: Colors.deepOrangeAccent),
-          decoration:
-              InputDecoration(icon: Icon(Icons.code), labelText: 'Apellidos'),
-        ),
-        TextField(
-          keyboardType: TextInputType.text,
-          controller: _clinicaController,
-          style: TextStyle(fontSize: 17.0, color: Colors.deepOrangeAccent),
-          decoration: InputDecoration(
-              icon: Icon(Icons.description), labelText: 'Clinica Actual'),
-        ),
-        TextField(
-          keyboardType: TextInputType.text,
-          controller: _cedulaController,
-          style: TextStyle(fontSize: 17.0, color: Colors.deepOrangeAccent),
-          decoration: InputDecoration(
-              icon: Icon(Icons.description), labelText: 'Cedula Profesional'),
-        ),
-        TextField(
-          keyboardType: TextInputType.text,
-          controller: _especialidadController,
-          style: TextStyle(fontSize: 17.0, color: Colors.deepOrangeAccent),
-          decoration: InputDecoration(
-              icon: Icon(Icons.attach_money), labelText: 'Especialidad'),
-        ),
-        TextField(
-          keyboardType: TextInputType.phone,
-          controller: _telefonoController,
-          style: TextStyle(fontSize: 17.0, color: Colors.deepOrangeAccent),
-          decoration: InputDecoration(
-              icon: Icon(Icons.satellite), labelText: 'Telefono'),
-        ),
-        TextField(
-          keyboardType: TextInputType.emailAddress,
-          controller: _emailController,
-          style: TextStyle(fontSize: 17.0, color: Colors.deepOrangeAccent),
-          decoration: InputDecoration(
-            icon: Icon(Icons.satellite),
-            labelText: 'Correo Electronico',
-          ),
-        ),
-        FlatButton(
-            onPressed: () {
-              if (widget.terapeuta.id != null) {
-                terapeutaReference.child(widget.terapeuta.id).set({
-                  'nombre': _nombreController.text,
-                  'apellidos': _apellidosController.text,
-                  'cedula': _cedulaController.text,
-                  'clinica': _clinicaController.text,
-                  'especialidad': _especialidadController.text,
-                  'telefono': _telefonoController.text,
-                  'email': _emailController.text
-                }).then((_) {
-                  Navigator.pop(context);
-                });
-              } else {
-                terapeutaReference.push().set({
-                  'nombre': _nombreController.text,
-                  'apellidos': _apellidosController.text,
-                  'cedula': _cedulaController.text,
-                  'clinica': _clinicaController.text,
-                  'especialidad': _especialidadController.text,
-                  'telefono': _telefonoController.text,
-                  'email': _emailController.text
-                }).then((_) {
-                  Navigator.pop(context);
-                });
+    return Form(
+      key: _formKey,
+          child: Column(
+        
+        children: <Widget>[
+          
+          TextFormField(
+            
+            keyboardType: TextInputType.text,
+            controller: _nombreController,
+            
+            style: TextStyle(fontSize: 17.0, color: Colors.deepOrangeAccent),
+            decoration:
+                InputDecoration(icon: Icon(Icons.person), labelText: 'Nombre'),
+            validator: (value){
+              value=_nombreController.text;
+              if(value.isEmpty){
+                   return 'Please enter some text';
+              }else{
+                 
               }
-              print('jajaja no mames ${_emailController.text}');
+             
             },
-            child: Text('Registrar'))
-      ],
+          
+          ),
+          TextFormField(
+            keyboardType: TextInputType.text,
+            controller: _apellidosController,
+            style: TextStyle(fontSize: 17.0, color: Colors.deepOrangeAccent),
+            decoration:
+                InputDecoration(icon: Icon(Icons.code), labelText: 'Apellidos'),
+            validator: (value){
+              value=_apellidosController.text;
+              if(value.isEmpty){
+                   return 'Please enter some text';
+              }else{
+                 
+              }
+            },
+          ),
+          TextFormField(
+            keyboardType: TextInputType.text,
+            controller: _clinicaController,
+            style: TextStyle(fontSize: 17.0, color: Colors.deepOrangeAccent),
+            decoration: InputDecoration(
+                icon: Icon(Icons.description), labelText: 'Clinica Actual'),
+            validator: (value){
+              value=_clinicaController.text;
+              if(value.isEmpty){
+                   return 'Please enter some text';
+              }else{
+                 
+              }
+            },
+          ),
+          TextFormField(
+            keyboardType: TextInputType.text,
+            controller: _cedulaController,
+            style: TextStyle(fontSize: 17.0, color: Colors.deepOrangeAccent),
+            decoration: InputDecoration(
+                icon: Icon(Icons.description), labelText: 'Cedula Profesional'),
+            validator: (value){
+              value=_cedulaController.text;
+              if(value.isEmpty){
+                   return 'Please enter some text';
+              }else{
+                 
+              }
+            },
+          ),
+          TextFormField(
+            keyboardType: TextInputType.text,
+            controller: _especialidadController,
+            style: TextStyle(fontSize: 17.0, color: Colors.deepOrangeAccent),
+            decoration: InputDecoration(
+                icon: Icon(Icons.attach_money), labelText: 'Especialidad'),
+            validator: (value){
+             value=_cedulaController.text;
+              if(value.isEmpty){
+                   return 'Please enter some text';
+              }else{
+                 
+              }
+            },
+          ),
+          TextFormField(
+            keyboardType: TextInputType.phone,
+            controller: _telefonoController,
+            style: TextStyle(fontSize: 17.0, color: Colors.deepOrangeAccent),
+            decoration: InputDecoration(
+                icon: Icon(Icons.satellite), labelText: 'Telefono'),
+            validator: (value){
+              value=_telefonoController.text;
+              if(value.isEmpty){
+                   return 'Please enter some text';
+              }else{
+                 
+              }
+            },
+          ),
+          TextFormField(
+            keyboardType: TextInputType.emailAddress,
+            controller: _emailController,
+            style: TextStyle(fontSize: 17.0, color: Colors.deepOrangeAccent),
+            decoration: InputDecoration(
+              icon: Icon(Icons.satellite),
+              labelText: 'Correo Electronico',
+            ),
+            validator: (value){
+              value=_emailController.text;
+              if(value.isEmpty){
+                   return 'Please enter some text';
+              }else{
+                 
+              }
+            },
+          ),
+        
+          FlatButton(
+              onPressed: () {
+                if(_formKey.currentState.validate()){
+                  if (widget.terapeuta.id != null) {
+                  terapeutaReference.child(widget.terapeuta.id).set({
+                    'nombre': _nombreController.text,
+                    'apellidos': _apellidosController.text,
+                    'cedula': _cedulaController.text,
+                    'clinica': _clinicaController.text,
+                    'especialidad': _especialidadController.text,
+                    'telefono': _telefonoController.text,
+                    'email': _emailController.text
+                  }).then((_) {
+                    Navigator.pop(context);
+                  });
+                } else {
+                  terapeutaReference.push().set({
+                    'nombre': _nombreController.text,
+                    'apellidos': _apellidosController.text,
+                    'cedula': _cedulaController.text,
+                    'clinica': _clinicaController.text,
+                    'especialidad': _especialidadController.text,
+                    'telefono': _telefonoController.text,
+                    'email': _emailController.text
+                  }).then((_) {
+                    Navigator.pop(context);
+                  });
+                }
+                }
+                
+                print('jajaja no mames ${_emailController.text}');
+              },
+              child: Text('Registrar'))
+        ],
+      ),
     );
   }
 }

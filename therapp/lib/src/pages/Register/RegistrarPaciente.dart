@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:therapp/src/models/Paciente.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:therapp/src/pages/View/NavigationBar.dart';
+import 'package:therapp/src/pages/View/VerPaciente.dart';
 
 class RegistrarPaciente extends StatefulWidget {
   final Paciente paciente;
@@ -15,6 +17,8 @@ final pacienteReference =
     FirebaseDatabase.instance.reference().child('paciente');
 
 class _RegistrarPacienteState extends State<RegistrarPaciente> {
+
+  final _formKey = GlobalKey<FormState>();
   List<Paciente> items;
 
   TextEditingController _nombreController;
@@ -42,66 +46,106 @@ class _RegistrarPacienteState extends State<RegistrarPaciente> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Registrar Paciente'),
-      ),
       body: ListView(
         children: <Widget>[
           Container(
             child: Card(
               child: Center(
-                child: Column(
-                  children: <Widget>[
-                    TextFormField(
-                        controller: _nombreController,
-                        style:
-                            TextStyle(fontSize: 17.0, color: Colors.deepPurple),
-                        decoration: InputDecoration(
-                            icon: Icon(Icons.ac_unit), labelText: 'nombre')),
-                    TextFormField(
-                        controller: _apellidosController,
-                        style:
-                            TextStyle(fontSize: 17.0, color: Colors.deepPurple),
-                        decoration: InputDecoration(
-                            icon: Icon(Icons.ac_unit), labelText: 'apellidos')),
-                    TextFormField(
-                        controller: _ocupacionController,
-                        style:
-                            TextStyle(fontSize: 17.0, color: Colors.deepPurple),
-                        decoration: InputDecoration(
-                            icon: Icon(Icons.ac_unit), labelText: 'ocupacion')),
-                    edadOption(),
-                    generoOption(),
-                    FlatButton(
-                        onPressed: () {
-                          if (widget.paciente.id != null) {
-                            genero = widget.paciente.sexo;
-                            pacienteReference.child(widget.paciente.id).set({
-                              'nombre': _nombreController.text,
-                              'apellidos': _apellidosController.text,
-                              'edad': edad,
-                              'ocupacion': _ocupacionController.text,
-                              'sexo': genero,
-                              'terapeuta': widget.userId
-                            }).then((_) {
-                              Navigator.pop(context);
-                            });
-                          } else {
-                            pacienteReference.push().set({
-                              'nombre': _nombreController.text,
-                              'apellidos': _apellidosController.text,
-                              'edad': edad,
-                              'ocupacion': _ocupacionController.text,
-                              'sexo': genero,
-                              'terapeuta': widget.userId
-                            }).then((_) {
-                              Navigator.pop(context);
-                            });
-                          }
-                          print('${_nombreController.text}');
-                        },
-                        child: Text('Registrar Paciente'))
-                  ],
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    children: <Widget>[
+                      TextFormField(
+                          controller: _nombreController,
+                          style:
+                              TextStyle(fontSize: 17.0, color: Colors.deepPurple),
+                          decoration: InputDecoration(
+                              icon: Icon(Icons.ac_unit), labelText: 'nombre'),
+                           validator: (value){
+                              value=_nombreController.text;
+                                    if(value.isEmpty){
+                                      return 'Please enter some text';
+                                    }else{
+                 
+                                        }},
+                              ),
+                      TextFormField(
+                          controller: _apellidosController,
+                          style:
+                              TextStyle(fontSize: 17.0, color: Colors.deepPurple),
+                          decoration: InputDecoration(
+                              icon: Icon(Icons.ac_unit), labelText: 'apellidos'),
+                          
+                           validator: (value){
+                              value=_apellidosController.text;
+                                    if(value.isEmpty){
+                                      return 'Please enter some text';
+                                    }else{
+                 
+                                        }},
+                              ),
+                      TextFormField(
+                          controller: _ocupacionController,
+                          style:
+                              TextStyle(fontSize: 17.0, color: Colors.deepPurple),
+                          decoration: InputDecoration(
+                              icon: Icon(Icons.ac_unit), labelText: 'ocupacion'),
+                          
+                           validator: (value){
+                              value=_ocupacionController.text;
+                                    if(value.isEmpty){
+                                      return 'Please enter some text';
+                                    }else{
+                 
+                                        }},
+
+                              ),
+                      edadOption(),
+                      generoOption(),
+                     // generoOption(),
+                      FlatButton(
+                          onPressed: () {
+                             if(_formKey.currentState.validate()){
+
+                                 if (widget.paciente.id != null) {
+                              genero = widget.paciente.sexo;
+                              pacienteReference.child(widget.paciente.id).set({
+                                'nombre': _nombreController.text,
+                                'apellidos': _apellidosController.text,
+                                'edad': edad,
+                                'ocupacion': _ocupacionController.text,
+                                'sexo': genero,
+                                'terapeuta': widget.userId
+                              }).then((_) {
+                                Navigator.pop(context);
+                              });
+                            } else {
+                              pacienteReference.push().set({
+                                'nombre': _nombreController.text,
+                                'apellidos': _apellidosController.text,
+                                'edad': edad,
+                                'ocupacion': _ocupacionController.text,
+                                'sexo': genero,
+                                'terapeuta': widget.userId
+                              }).then((_) {
+                               
+                                final snackBar = SnackBar(
+                                  content: Text('Paciente ${_nombreController.text} Registrado'),
+                                
+                                  );
+
+                                Scaffold.of(context).showSnackBar(snackBar);
+                              });
+                            }
+
+
+                             }
+                          
+                            print('${_nombreController.text}');
+                          },
+                          child: Text('Registrar Paciente'))
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -110,6 +154,7 @@ class _RegistrarPacienteState extends State<RegistrarPaciente> {
       ),
     );
   }
+
 
   Widget generoOption() {
     return DropdownButton<String>(
@@ -125,13 +170,17 @@ class _RegistrarPacienteState extends State<RegistrarPaciente> {
       onChanged: (String newValue) {
         setState(() {
           genero = newValue;
+          newValue=_sexoController.text;
         });
       },
       items: <String>['Femenino', 'Masculino']
           .map<DropdownMenuItem<String>>((String value) {
         if (widget.paciente.id != null) {
           return DropdownMenuItem<String>(
-              value: value, child: Text(widget.paciente.sexo));
+              value: value,
+              child: Text(value)
+              );
+
         } else {
           return DropdownMenuItem<String>(
             value: value,
@@ -141,6 +190,9 @@ class _RegistrarPacienteState extends State<RegistrarPaciente> {
       }).toList(),
     );
   }
+
+
+
 
   Widget edadOption() {
     return DropdownButton<int>(
@@ -156,6 +208,7 @@ class _RegistrarPacienteState extends State<RegistrarPaciente> {
       onChanged: (int newValue) {
         setState(() {
           edad = newValue;
+         
         });
       },
       items: edades().map<DropdownMenuItem<int>>((dynamic value) {

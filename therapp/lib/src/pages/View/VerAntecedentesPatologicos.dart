@@ -48,7 +48,10 @@ class _VerAntecPatologicosState extends State<VerAntecPatologicos> {
             itemCount: items.length,
             itemBuilder: (context, position) {
               return _filter(context, position);
-            }));
+            }),
+            floatingActionButton: FloatingActionButton(onPressed: ()=>_createNewAntecPatologico(context)),
+            
+            );
   }
 
   /*------------------------------------BACKEND----------------------------------------*/
@@ -112,24 +115,27 @@ class _VerAntecPatologicosState extends State<VerAntecPatologicos> {
       child: Column(
         children: <Widget>[
           Divider(),
-          _lista(items[position].enfermedad, context, position),
+          _lista(items[position].enfermedad, context, position,'Antecedente Patologico'),
         ],
       ),
     );
   }
 
-  Widget _lista(String variable, BuildContext context, int position) {
+  Widget _lista(String variable, BuildContext context, int position, String subtitulo) {
     return ListTile(
       contentPadding: EdgeInsets.fromLTRB(0, 0, 0, 0),
       title: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text('$variable'),
+          Text('$variable',style: Theme.of(context).textTheme.headline ),
+
           IconButton(
               icon: Icon(Icons.edit),
               onPressed: () => _navigateToAntPat(context, items[position]))
         ],
+        
       ),
+      subtitle: Text('$subtitulo'),
     );
   }
 }

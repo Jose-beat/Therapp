@@ -1,29 +1,27 @@
 import 'dart:async';
+
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:therapp/src/models/SignosVitales.dart';
 import 'package:therapp/src/pages/Register/RegistrarSignosVitales.dart';
+import 'package:therapp/src/pages/View/verSignosVitales.dart';
 
-class VerSignosVitales extends StatefulWidget {
-  final String fechasignoVital;
-  final SignosVitales signosVitales;
+class ListaSignosVitales extends StatefulWidget {
+   final SignosVitales signosVitales;
   final String pacienteId;
-
-  VerSignosVitales({Key key, this.signosVitales, this.pacienteId,this.fechasignoVital})
-      : super(key: key);
+  ListaSignosVitales({Key key, this.signosVitales, this.pacienteId}) : super(key: key);
 
   @override
-  _VerSignosVitalesState createState() => _VerSignosVitalesState();
+  _ListaSignosVitalesState createState() => _ListaSignosVitalesState();
 }
-
 final signosReference =
     FirebaseDatabase.instance.reference().child('signos_vitales');
-
-class _VerSignosVitalesState extends State<VerSignosVitales> {
-  StreamSubscription<Event> _onSignosAddedSubscription;
+class _ListaSignosVitalesState extends State<ListaSignosVitales> {
+    StreamSubscription<Event> _onSignosAddedSubscription;
   StreamSubscription<Event> _onSignosChangedSubscription;
 
-  @override
+
+    @override
   void initState() {
     super.initState();
     items = new List();
@@ -44,9 +42,6 @@ class _VerSignosVitalesState extends State<VerSignosVitales> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-
-      ),
         body: ListView.builder(
             itemCount: items.length,
             itemBuilder: (context, position) {
@@ -55,10 +50,14 @@ class _VerSignosVitalesState extends State<VerSignosVitales> {
             
             floatingActionButton: FloatingActionButton(onPressed: ()=>_createNewSignosVitales(context)),
             );
+       
+    
   }
 
-  /*------------------------------------BACKEND----------------------------------------*/
-  void _onSignosAdded(Event event) {
+
+
+
+   void _onSignosAdded(Event event) {
     setState(() {
       items.add(new SignosVitales.fromSnapshot(event.snapshot));
     });
@@ -93,9 +92,20 @@ class _VerSignosVitalesState extends State<VerSignosVitales> {
                       SignosVitales(null, '', '', 0, '', widget.pacienteId,''),
                 )));
   }
+  void _navigateToSignosVitales(BuildContext context,SignosVitales signosVitales, String idPaciente,String fechaSignos) async {
+    await Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => VerSignosVitales(
+              signosVitales: signosVitales,
+              pacienteId: idPaciente,
+              fechasignoVital: fechaSignos,
+            )));
+  }
+
 
   Widget _filter(BuildContext context, int position) {
-    if (items[position].fechaSignos == widget.fechasignoVital&&items[position].paciente==widget.pacienteId) {
+    if (items[position].paciente == widget.pacienteId) {
       print('SIGNOS VITALES${items[position].id}');
 
       return Column(
@@ -114,25 +124,16 @@ class _VerSignosVitalesState extends State<VerSignosVitales> {
       child: Column(
         children: <Widget>[
           Divider(),
-          _lista(items[position].fc, context, position,'Frecuencia Cardiaca'),
-          Divider(),
-          _lista(items[position].fr, context, position,'Frecuencia Respiratoria'),
-          Divider(),
-          _lista(items[position].peso.toString(), context, position,'Peso'),
-          Divider(),
-          _lista(items[position].talla, context, position,'Talla'),
-           Divider(),
-          _lista(items[position].fechaSignos, context, position,'Fecha'),
-          
+          _lista(items[position].fechaSignos, context, position,'Frecuencia Cardiaca'),
         ],
       ),
     );
   }
-
   Widget _lista(String variable, BuildContext context, int position,String subtitulo) {
     return ListTile(
       title: Text('$variable',style: Theme.of(context).textTheme.headline,),
       subtitle: Text('$subtitulo'),
+      onTap: () =>_navigateToSignosVitales(context,items[position],items[position].paciente,items[position].fechaSignos));
       
       
      /* Row(
@@ -145,7 +146,7 @@ class _VerSignosVitalesState extends State<VerSignosVitales> {
               onPressed: () => _navigateToSignos(context, items[position]))
         ],
       ),*/
-    );
+    
   }
 
 
