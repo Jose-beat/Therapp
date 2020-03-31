@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:therapp/src/UI/splashScreen.dart';
 import 'package:therapp/src/providers/authentApp.dart';
 import 'package:therapp/src/providers/routes.dart';
 
@@ -16,9 +17,7 @@ class TherApp extends StatelessWidget {
       title: 'TherApp',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(primarySwatch: Colors.blue),
-      home: RootPage(
-        auth: Autho(),
-      ),
+      home: SplashScreen(),
       routes: routes,
     );
   }

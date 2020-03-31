@@ -26,7 +26,13 @@ class NavigationAppBar extends StatefulWidget {
   _NavigationAppBarState createState() => _NavigationAppBarState();
 }
 
+
+enum WhyFarther { harder, smarter, selfStarter, tradingCharter }
+
 class _NavigationAppBarState extends State<NavigationAppBar> {
+
+   WhyFarther _onSelected;
+
   int _cIndex = 0;
 
   void _incrementTab(int index) {
@@ -61,20 +67,23 @@ class _NavigationAppBarState extends State<NavigationAppBar> {
       Configure(),
     ];
     return Scaffold(
+      
         appBar: AppBar(
+          leading: Builder(
+            builder: (BuildContext context) {
+              return _simplePopup();
+            },
+          ), 
+          actionsIconTheme: IconThemeData(
+            color: Colors.black
+          ),
           actions: <Widget>[
-            FlatButton(
-                onPressed: () {
-                  _createNewPaciente(context);
-                },
-                child: Text('crear paciente')),
+          
             FlatButton(onPressed: signOut, child: Text('Cerrar Sesion')),
             IconButton(
-              icon: CircleAvatar(
-                backgroundColor: Colors.red,
-                child: Icon(Icons.supervised_user_circle),
-                radius: 20.0,
-              ),
+             
+             icon: Icon(Icons.supervised_user_circle),
+                
               padding: EdgeInsets.all(0.0),
               onPressed: () {
                 Navigator.push(
@@ -138,4 +147,21 @@ class _NavigationAppBarState extends State<NavigationAppBar> {
                   userId: widget.userId,
                 )));
   }
+
+
+Widget _simplePopup() => PopupMenuButton<int>(
+  child: Icon(Icons.menu),
+          itemBuilder: (context) => [
+                PopupMenuItem(
+                  value: 1,
+                  child: Text("First"),
+                ),
+                PopupMenuItem(
+                  value: 2,
+                  child: Text("Second"),
+                ),
+              ],
+        );
+
+
 }
