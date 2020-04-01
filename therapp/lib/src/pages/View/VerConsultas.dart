@@ -87,7 +87,7 @@ class _VerConsultasState extends State<VerConsultas> {
         context,
         MaterialPageRoute(
             builder: (context) => ResConsultas(
-                  consultas: Consultas(null, '', widget.idPaciente,widget.idTerapeuta,''),
+                  consultas: Consultas(null, '', widget.idPaciente,widget.idTerapeuta,'',''),
                 )));
   }
 
@@ -117,6 +117,7 @@ class _VerConsultasState extends State<VerConsultas> {
           Divider(),
           _lista(items[position].motivos, context, position,'Motivo de la Consulta'),
           _lista(items[position].fechaConsulta, context, position,'Fecha'),
+          _lista(items[position].horaConsulta, context, position,'Hora'),
         ],
       ),
     );

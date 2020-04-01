@@ -27,6 +27,7 @@ final terapeutaReference =
     FirebaseDatabase.instance.reference().child('terapeuta');
 
 class _RegistroPerfilState extends State<RegistroPerfil> {
+   TextEditingController _inputFieldDateController = new TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
   List<Terapeuta> item;
@@ -63,7 +64,7 @@ class _RegistroPerfilState extends State<RegistroPerfil> {
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       appBar: AppBar(
-        title: Text('Productos DB'),
+        title: Text('Registro'),
         backgroundColor: Colors.deepOrange,
       ),
       body: Container(
@@ -74,7 +75,7 @@ class _RegistroPerfilState extends State<RegistroPerfil> {
           children: <Widget>[
             registro(),
             Container(
-              height: 300.0,
+              height: 100.0,
             )
           ],
         )),
@@ -123,6 +124,7 @@ class _RegistroPerfilState extends State<RegistroPerfil> {
               }
             },
           ),
+           _crearFecha(context),
           TextFormField(
             keyboardType: TextInputType.text,
             controller: _clinicaController,
@@ -184,6 +186,7 @@ class _RegistroPerfilState extends State<RegistroPerfil> {
             },
           ),
           TextFormField(
+           enabled: false,
             keyboardType: TextInputType.emailAddress,
             controller: _emailController,
             style: TextStyle(fontSize: 17.0, color: Colors.deepOrangeAccent),
@@ -200,6 +203,7 @@ class _RegistroPerfilState extends State<RegistroPerfil> {
               }
             },
           ),
+         
         
           FlatButton(
               onPressed: () {
@@ -208,6 +212,7 @@ class _RegistroPerfilState extends State<RegistroPerfil> {
                   terapeutaReference.child(widget.terapeuta.id).set({
                     'nombre': _nombreController.text,
                     'apellidos': _apellidosController.text,
+                    'nacimiento': _inputFieldDateController.text,
                     'cedula': _cedulaController.text,
                     'clinica': _clinicaController.text,
                     'especialidad': _especialidadController.text,
@@ -220,6 +225,7 @@ class _RegistroPerfilState extends State<RegistroPerfil> {
                   terapeutaReference.push().set({
                     'nombre': _nombreController.text,
                     'apellidos': _apellidosController.text,
+                    'nacimiento': _inputFieldDateController.text,
                     'cedula': _cedulaController.text,
                     'clinica': _clinicaController.text,
                     'especialidad': _especialidadController.text,
@@ -233,9 +239,82 @@ class _RegistroPerfilState extends State<RegistroPerfil> {
                 
                 print('jajaja no mames ${_emailController.text}');
               },
-              child: Text('Registrar'))
+              child: widget.terapeuta.id != null ? Text('Actualizar Perfil') : Text('Crear Perfil')
+              )
         ],
       ),
     );
   }
+
+
+
+  
+  
+
+Widget _crearFecha(BuildContext context){
+
+    return TextFormField(
+       validator: (value){
+                              value=_inputFieldDateController.text;
+                            if(value.isEmpty){
+                              return 'Favor de añadir la fecha';
+                            }
+                             },
+      //Pasamos la fecha por aqui
+      controller: _inputFieldDateController,
+      //Desactivamos la accion interactiva
+      enableInteractiveSelection: false,
+     //Añadir estilo a la caja de texto
+      decoration: InputDecoration(
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(20.0),
+        ),
+        
+        //Sera un texto original en la caja
+        hintText: 'Fecha de nacimiento',
+        //Sera el titulo de nuestra caja
+        labelText: 'Fecha de nacimiento',
+        suffixIcon: Icon(Icons.calendar_today),
+        icon: Icon(Icons.calendar_view_day),  
+        ),
+   
+         
+      
+        onTap: (){
+          //Quitar el foco que significa que el teclado no se activara
+          FocusScope.of(context).requestFocus(new FocusNode());
+          _selectDay(context);
+        },
+    );
+
+
+
+}
+
+
+  //Si un metodo recibe un future entonces hay que añadirle el asyn y await
+  //donde corresponda
+  _selectDay(BuildContext context) async {
+    
+    DateTime picked = await showDatePicker(
+      context: context,
+      initialDate: new DateTime.now(),
+      firstDate: new DateTime(2018),
+      lastDate: new DateTime(2025),
+     //Cambiar el idioma del cuadro de fechas
+     //mOSTRARA UN ERROR DE FORMA NORMAL SI NO EXISTE UNA DEPENDENCIA
+     // locale: Locale('fr','CH'),
+
+    );
+    //Con esta condicional vamos a meter la informacion de la fecha en el cuadro de texto
+  
+    if (picked != null){
+      setState(() {
+        String _fecha = "${picked.day} / ${picked.month} / ${picked.year}";
+        _inputFieldDateController.text = _fecha;
+      });
+    }
+
+  }
+
 }

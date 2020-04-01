@@ -90,7 +90,7 @@ class _VerSignosVitalesState extends State<VerSignosVitales> {
         MaterialPageRoute(
             builder: (context) => RegistroSignosVitales(
                   signosVitales:
-                      SignosVitales(null, '', '', 0, '', widget.pacienteId,''),
+                      SignosVitales(null, '', '', 0, '', widget.pacienteId,'',''),
                 )));
   }
 
@@ -123,6 +123,8 @@ class _VerSignosVitalesState extends State<VerSignosVitales> {
           _lista(items[position].talla, context, position,'Talla'),
            Divider(),
           _lista(items[position].fechaSignos, context, position,'Fecha'),
+          Divider(),
+          _lista(items[position].hora, context, position,'Hora'),
           
         ],
       ),

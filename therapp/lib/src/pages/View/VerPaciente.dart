@@ -106,6 +106,8 @@ class _VerPacienteState extends State<VerPaciente> {
                             estiloLista('${widget.paciente.nombre}','Nombre del Paciente', context),
                             Divider(),
                             estiloLista("${widget.paciente.apellidos}", 'Apellidos', context),
+                             Divider(),
+                            estiloLista("${widget.paciente.nacimiento}", 'Fecha de Nacimiento', context),
                             Divider(),
                             estiloLista("${widget.paciente.edad}", 'Edad', context),
                             Divider(),

@@ -22,6 +22,7 @@ class _RegistroSignosVitalesState extends State<RegistroSignosVitales> {
   String talla = 'XS';
   String _fecha;
   TextEditingController _inputFieldDateController = new TextEditingController();
+  TextEditingController _inputFieldHoraController = new TextEditingController();
 
   TextEditingController _fcController;
   TextEditingController _frController;
@@ -51,49 +52,55 @@ class _RegistroSignosVitalesState extends State<RegistroSignosVitales> {
           Container(
             child: Card(
               child: Center(
-                child: Column(
-                  children: <Widget>[
-                    cardiacOption(),
-                    respiratoryOption(),
-                    pesoOption(),
-                    tallaOption(),
-                    _crearFecha(context),
+                child: Form(
+                  key: _formKey,
+                                  child: Column(
+                    children: <Widget>[
+                      cardiacOption(),
+                      respiratoryOption(),
+                      pesoOption(),
+                      tallaOption(),
+                      _crearFecha(context),
+                      _crearHora(context),
 
 
-                    FlatButton(
-                        onPressed: () {
-                          if(_formKey.currentState.validate()){
-                          if (widget.signosVitales.id != null) {
-                            signosVitalesReference
-                                .child(widget.signosVitales.id)
-                                .set({
-                              'frecuencia cardiaca': frecuenciaCardiActual,
-                              'frecuencia respiratoria':
-                                  frecuenciaRespiratoryActual,
-                              'peso': peso,
-                              'talla': talla,
-                              'fecha':_inputFieldDateController.text,
-                              'paciente': widget.signosVitales.paciente
-                            }).then((_) {
-                              Navigator.pop(context);
-                            });
-                          } else {
-                            signosVitalesReference.push().set({
-                              'frecuencia cardiaca': frecuenciaCardiActual,
-                              'frecuencia respiratoria':
-                                  frecuenciaRespiratoryActual,
-                              'peso': peso,
-                              'talla': talla,
-                              'fecha':_inputFieldDateController.text,
-                              'paciente': widget.signosVitales.paciente
-                            }).then((_) {
-                               Navigator.pop(context);
-                            });
-                          }
-                          }
-                        },
-                        child: Text('Siguiente'))
-                  ],
+                      FlatButton(
+                          onPressed: () {
+                            if(_formKey.currentState.validate()){
+                            if (widget.signosVitales.id != null) {
+                              signosVitalesReference
+                                  .child(widget.signosVitales.id)
+                                  .set({
+                                'frecuencia cardiaca': frecuenciaCardiActual,
+                                'frecuencia respiratoria':
+                                    frecuenciaRespiratoryActual,
+                                'peso': peso,
+                                'talla': talla,
+                                'fecha':_inputFieldDateController.text,
+                                'hora':_inputFieldHoraController.text,
+                                'paciente': widget.signosVitales.paciente
+                              }).then((_) {
+                                Navigator.pop(context);
+                              });
+                            } else {
+                              signosVitalesReference.push().set({
+                                'frecuencia cardiaca': frecuenciaCardiActual,
+                                'frecuencia respiratoria':
+                                    frecuenciaRespiratoryActual,
+                                'peso': peso,
+                                'talla': talla,
+                                'fecha':_inputFieldDateController.text,
+                                'hora':_inputFieldHoraController.text,
+                                'paciente': widget.signosVitales.paciente
+                              }).then((_) {
+                                 Navigator.pop(context);
+                              });
+                            }
+                            }
+                          },
+                          child: Text('Siguiente'))
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -226,9 +233,7 @@ class _RegistroSignosVitalesState extends State<RegistroSignosVitales> {
 
 Widget _crearFecha(BuildContext context){
 
-    return Form(
-      key: _formKey,
-          child: TextFormField(
+    return  TextFormField(
         validator: (value){
           value=_inputFieldDateController.text;
           if(value.isEmpty){
@@ -260,8 +265,8 @@ Widget _crearFecha(BuildContext context){
             FocusScope.of(context).requestFocus(new FocusNode());
             _selectDay(context);
           },
-      ),
-    );
+      );
+    
 
 }
   
@@ -282,15 +287,77 @@ Widget _crearFecha(BuildContext context){
     );
     //Con esta condicional vamos a meter la informacion de la fecha en el cuadro de texto
 
-    if (picked != null){
+     if (picked != null){
       setState(() {
-        _fecha = picked.toString();
+        _fecha = "${picked.day} / ${picked.month} / ${picked.year}";
         _inputFieldDateController.text = _fecha;
       });
     }
 
   }
 
+
+
+
+
+
+  Widget _crearHora(BuildContext context){
+    
+     return TextFormField(
+       validator: (value){
+           value=_inputFieldHoraController.text;
+           if(value.isEmpty){
+             return 'Favor de añadir la fecha';
+           }
+                             },
+      //Pasamos la fecha por aqui
+      controller: _inputFieldHoraController,
+      //Desactivamos la accion interactiva
+      enableInteractiveSelection: false,
+     //Añadir estilo a la caja de texto
+      decoration: InputDecoration(
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(20.0),
+        ),
+        
+        //Sera un texto original en la caja
+        hintText: 'Fecha de nacimiento',
+        //Sera el titulo de nuestra caja
+        labelText: 'Fecha de nacimiento',
+        suffixIcon: Icon(Icons.calendar_today),
+        icon: Icon(Icons.calendar_view_day),  
+        ),
+   
+         
+      
+        onTap: (){
+          //Quitar el foco que significa que el teclado no se activara
+          FocusScope.of(context).requestFocus(new FocusNode());
+          _seleccionHora(context);
+        }
+        );
+
+  }
+
+
+
+   _seleccionHora(BuildContext context) async {
+
+      TimeOfDay hora = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+    );
+    //Con esta condicional vamos a meter la informacion de la fecha en el cuadro de texto
+
+    if (hora != null){
+      setState(() {
+       String _hora = hora.format(context);
+       
+       _inputFieldHoraController.text = _hora;
+      });
+    }
+
+  }
 
 
 

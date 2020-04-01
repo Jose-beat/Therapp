@@ -89,7 +89,7 @@ class _ListaSignosVitalesState extends State<ListaSignosVitales> {
         MaterialPageRoute(
             builder: (context) => RegistroSignosVitales(
                   signosVitales:
-                      SignosVitales(null, '', '', 0, '', widget.pacienteId,''),
+                      SignosVitales(null, '', '', 0, '', widget.pacienteId,'',''),
                 )));
   }
   void _navigateToSignosVitales(BuildContext context,SignosVitales signosVitales, String idPaciente,String fechaSignos) async {

@@ -9,9 +9,10 @@ class SignosVitales {
   String _talla;
   String _idpaciente;
   String _fechaSignosVitales;
+  String _hora;
 
   SignosVitales(
-      this._id, this._fc, this._fr, this._peso, this._talla, this._idpaciente,this._fechaSignosVitales);
+      this._id, this._fc, this._fr, this._peso, this._talla, this._idpaciente,this._fechaSignosVitales,this._hora);
 
 
   SignosVitales.map(dynamic obj) {
@@ -20,6 +21,7 @@ class SignosVitales {
     this._peso=obj['peso'];
     this._talla = obj['talla'];
     this._fechaSignosVitales=obj['fecha'];
+    this._hora=obj['hora'];
     this._idpaciente = obj['paciente'];
   }
 
@@ -29,6 +31,7 @@ class SignosVitales {
   int get peso => _peso;
   String get talla => _talla;
   String get fechaSignos => _fechaSignosVitales;
+  String get hora => _hora;
   String get paciente => _idpaciente;
 
   SignosVitales.fromSnapshot(DataSnapshot snapshot) {
@@ -38,6 +41,7 @@ class SignosVitales {
     _peso = snapshot.value['peso'];
     _talla = snapshot.value['talla'];
     _fechaSignosVitales = snapshot.value['fecha'];
+    _hora = snapshot.value['hora'];
     _idpaciente = snapshot.value['paciente'];
   }
 }

@@ -1,6 +1,9 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:therapp/src/models/consultas.dart';
+
+
 
 class ResConsultas extends StatefulWidget {
   final String idTerapeuta;
@@ -17,12 +20,15 @@ final consultasReference =
 
 class _ResConsultasState extends State<ResConsultas> {
 
+
+
   final _formKey = GlobalKey<FormState>();
   List<Consultas> items;
   String _fecha;
 
   TextEditingController _motivoController;
   TextEditingController _inputFieldDateController = new TextEditingController();
+  TextEditingController _inputFieldHoraController = new TextEditingController();
   @override
   void initState() {
     // TODO: implement initState
@@ -59,6 +65,7 @@ class _ResConsultasState extends State<ResConsultas> {
                               
                         ),
                         _crearFecha(context),
+                        _crearHora(context),
                         FlatButton(
                             onPressed: () {
 
@@ -70,7 +77,8 @@ class _ResConsultasState extends State<ResConsultas> {
                                   'motivos_consulta': _motivoController.text,
                                   'paciente': widget.consultas.idPaciente,
                                   'terapeuta':widget.consultas.idTerapeuta,
-                                  'fecha':_inputFieldDateController.text
+                                  'fecha':_inputFieldDateController.text,
+                                  'hora':_inputFieldHoraController.text
                                 }).then((_) {
                                   Navigator.pop(context);
                                 });
@@ -79,7 +87,8 @@ class _ResConsultasState extends State<ResConsultas> {
                                   'motivos_consulta': _motivoController.text,
                                   'paciente': widget.consultas.idPaciente,
                                   'terapeuta':widget.consultas.idTerapeuta,
-                                  'fecha':_inputFieldDateController.text
+                                  'fecha':_inputFieldDateController.text,
+                                  'hora':_inputFieldHoraController.text
                                 }).then((_) {
                                   Navigator.pop(context);
                                 });
@@ -96,6 +105,8 @@ class _ResConsultasState extends State<ResConsultas> {
           ],
         ));
   }
+
+
 
 Widget _crearFecha(BuildContext context){
 
@@ -133,13 +144,15 @@ Widget _crearFecha(BuildContext context){
         },
     );
 
+
+
 }
-  
+
 
   //Si un metodo recibe un future entonces hay que añadirle el asyn y await
   //donde corresponda
   _selectDay(BuildContext context) async {
-
+    
     DateTime picked = await showDatePicker(
       context: context,
       initialDate: new DateTime.now(),
@@ -151,15 +164,80 @@ Widget _crearFecha(BuildContext context){
 
     );
     //Con esta condicional vamos a meter la informacion de la fecha en el cuadro de texto
-
+  
     if (picked != null){
       setState(() {
-        _fecha = picked.toString();
+        _fecha = "${picked.day} / ${picked.month} / ${picked.year}";
         _inputFieldDateController.text = _fecha;
       });
     }
 
   }
+
+
+
+  Widget _crearHora(BuildContext context){
+    
+     return TextFormField(
+       validator: (value){
+                              value=_inputFieldHoraController.text;
+                            if(value.isEmpty){
+                              return 'Favor de añadir la fecha';
+                            }
+                             },
+      //Pasamos la fecha por aqui
+      controller: _inputFieldHoraController,
+      //Desactivamos la accion interactiva
+      enableInteractiveSelection: false,
+     //Añadir estilo a la caja de texto
+      decoration: InputDecoration(
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(20.0),
+        ),
+        
+        //Sera un texto original en la caja
+        hintText: 'Fecha de nacimiento',
+        //Sera el titulo de nuestra caja
+        labelText: 'Fecha de nacimiento',
+        suffixIcon: Icon(Icons.calendar_today),
+        icon: Icon(Icons.calendar_view_day),  
+        ),
+   
+         
+      
+        onTap: (){
+          //Quitar el foco que significa que el teclado no se activara
+          FocusScope.of(context).requestFocus(new FocusNode());
+          _seleccionHora(context);
+        }
+        );
+
+  }
+
+   _seleccionHora(BuildContext context) async {
+
+      TimeOfDay hora = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+    );
+    //Con esta condicional vamos a meter la informacion de la fecha en el cuadro de texto
+
+    if (hora != null){
+      setState(() {
+       String _hora = hora.format(context);
+       
+       _inputFieldHoraController.text = _hora;
+      });
+    }
+
+  }
+
+
+
+
+
+
+
 
   
 }

@@ -145,6 +145,8 @@ class _VerTerapeutaState extends State<VerTerapeuta> {
             ),
           ),
           Divider(),
+          _lista('Fecha de Nacimiento', items[position].nacimiento, context, position),
+          Divider(),
           _lista('Correo Electronico', items[position].email, context, position),
           Divider(),
           _lista('Clinica',items[position].clinica, context, position),
@@ -152,6 +154,7 @@ class _VerTerapeutaState extends State<VerTerapeuta> {
            _lista('Cedula Profesional',items[position].cedula, context, position),
           Divider(),
           _lista('Especialidad',items[position].especialidad, context, position),
+          
           Divider(),
           _lista('N.Telefonico',items[position].telefono, context, position),
           _update(context, items[position], position),

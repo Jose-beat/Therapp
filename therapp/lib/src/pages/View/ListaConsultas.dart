@@ -93,7 +93,7 @@ class _ListaConsultasState extends State<ListaConsultas> {
         context,
         MaterialPageRoute(
             builder: (context) => ResConsultas(
-                  consultas: Consultas(null, '', widget.idPaciente,widget.idTerapeuta,''),
+                  consultas: Consultas(null, '', widget.idPaciente,widget.idTerapeuta,'',''),
                 )));
   }
 
