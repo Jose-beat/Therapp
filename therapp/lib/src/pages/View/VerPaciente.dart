@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:therapp/src/UI/estadoFlexible.dart';
+import 'package:therapp/src/UI/titulo.dart';
 import 'package:therapp/src/models/Habitos.dart';
 
 import 'package:therapp/src/models/Paciente.dart';
@@ -29,6 +31,8 @@ final pacienteReference =
     FirebaseDatabase.instance.reference().child('paciente');
 
 class _VerPacienteState extends State<VerPaciente> {
+
+
   Consultas consultas;
 
   List<Paciente> items;
@@ -41,7 +45,11 @@ class _VerPacienteState extends State<VerPaciente> {
 
   @override
   Widget build(BuildContext context) {
+      String nombre = widget.paciente.nombre; 
+      String apellidos = widget.paciente.apellidos;
+
     return Scaffold(
+     
         body: DefaultTabController(
       length: 6,
       child: NestedScrollView(
@@ -49,17 +57,23 @@ class _VerPacienteState extends State<VerPaciente> {
               (BuildContext context, bool innerBoxIsScrolling) {
             return <Widget>[
               SliverAppBar(
+                 title: Titulo(
+                   nombre: nombre,
+                   apellidos: apellidos,
+                 ),
                 pinned: true,
                 floating: false,
-                flexibleSpace: FlexibleSpaceBar(
+                flexibleSpace:
+                 FlexibleSpaceBar(
+                   background: EspacioFlexible(
+                     imagen:  widget.paciente.imagenPaciente =='' ?
+                      'No hay imagen' :
+                      widget.paciente.imagenPaciente
+                     ),
                   centerTitle: true,
-                  title: Text('${widget.paciente.nombre}\n ${widget.paciente.apellidos}',
-                  style: TextStyle(
-                    fontSize: 15.0
-                  ),
-                  ),
+                 
                 ),
-                backgroundColor: Colors.amber,
+              
                 expandedHeight: 200,
               ),
               SliverPersistentHeader(

@@ -11,6 +11,34 @@ class SplashScreen extends StatefulWidget {
   _SplashScreenState createState() => _SplashScreenState();
 }
 
+
+class BatmanPageRoute extends PageRouteBuilder{
+
+  final Widget child;
+
+  BatmanPageRoute(this.child)
+  :super (
+    pageBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation){
+      return child;
+    },
+    transitionsBuilder:(BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child){
+      return Transform.scale(
+        scale: animation.value,
+              child: FadeTransition(
+          child: child,
+          opacity: animation,
+          ),
+      );
+    }
+  );
+
+
+
+}
+
+
+
+
 class _SplashScreenState extends State<SplashScreen> {
 
   
@@ -21,7 +49,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
    void navigationPage()async{
     Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (context)=> RootPage(auth: Autho(),) ));
+      BatmanPageRoute( RootPage(auth: Autho(),) ));
   }
 
   @override

@@ -1,9 +1,17 @@
+import 'dart:io';
+
+import 'package:date_format/date_format.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:therapp/src/models/Paciente.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:therapp/src/pages/View/NavigationBar.dart';
 import 'package:therapp/src/pages/View/VerPaciente.dart';
 
+
+File image;
+String filename;
 class RegistrarPaciente extends StatefulWidget {
   final Paciente paciente;
   final String userId;
@@ -29,6 +37,26 @@ class _RegistrarPacienteState extends State<RegistrarPaciente> {
   TextEditingController _sexoController;
   String genero = 'Masculino';
   int edad = 0;
+  String pacienteImage;
+
+
+  pickerCam() async {
+    File img = await ImagePicker.pickImage(source: ImageSource.camera);
+    // File img = await ImagePicker.pickImage(source: ImageSource.camera);
+    if (img != null) {
+      image = img;
+      setState(() {});
+    }
+  }
+
+  pickerGallery() async {
+    File img = await ImagePicker.pickImage(source: ImageSource.gallery);
+    // File img = await ImagePicker.pickImage(source: ImageSource.camera);
+    if (img != null) {
+      image = img;
+      setState(() {});
+    }
+  }
 
   @override
   void initState() {
@@ -42,6 +70,9 @@ class _RegistrarPacienteState extends State<RegistrarPaciente> {
     _ocupacionController =
         new TextEditingController(text: widget.paciente.ocupacion);
     _sexoController = new TextEditingController(text: widget.paciente.sexo);
+
+    pacienteImage = widget.paciente.imagenPaciente;
+    print(pacienteImage);
   }
 
   @override
@@ -49,6 +80,7 @@ class _RegistrarPacienteState extends State<RegistrarPaciente> {
     return Scaffold(
       body: ListView(
         children: <Widget>[
+          imagenes(),
           Container(
             child: Card(
               child: Center(
@@ -110,6 +142,18 @@ class _RegistrarPacienteState extends State<RegistrarPaciente> {
                              if(_formKey.currentState.validate()){
 
                                  if (widget.paciente.id != null) {
+                                    var fecha = formatDate(
+                                    new DateTime.now(), [yyyy, '-', mm, '-', dd]);
+                               var fullImageName = 'paciente-${_nombreController.text}-$fecha' + '.jpg';
+                               var fullImageName2 = 'paciente-${_nombreController.text}-$fecha' + '.jpg';
+                               final StorageReference ref = FirebaseStorage.instance.ref().child(fullImageName);
+                               final StorageUploadTask task = ref.putFile(image);
+
+                               var part1 = 'https://firebasestorage.googleapis.com/v0/b/therapp-33c50.appspot.com/o/';
+
+                               var fullPathImage = part1 + fullImageName2;
+                               print(fullPathImage);
+                   
                               genero = widget.paciente.sexo;
                               pacienteReference.child(widget.paciente.id).set({
                                 'nombre': _nombreController.text,
@@ -118,11 +162,26 @@ class _RegistrarPacienteState extends State<RegistrarPaciente> {
                                 'edad': edad,
                                 'ocupacion': _ocupacionController.text,
                                 'sexo': genero,
-                                'terapeuta': widget.userId
+                                'terapeuta': widget.userId,
+                                'imagen': '$fullPathImage'
                               }).then((_) {
                                 Navigator.pop(context);
                               });
                             } else {
+                              var fecha = formatDate(
+                                    new DateTime.now(), [yyyy, '-', mm, '-', dd]);
+
+                               var fullImageName = 'terapeuta-${_nombreController.text}-$fecha' + '.jpg';
+                               var fullImageName2 = 'terapeuta-${_nombreController.text}-$fecha' + '.jpg';
+                               final StorageReference ref = FirebaseStorage.instance.ref().child(fullImageName);
+                               final StorageUploadTask task = ref.putFile(image);
+
+                               var part1 = 'https://firebasestorage.googleapis.com/v0/b/therapp-33c50.appspot.com/o/';
+
+                               var fullPathImage = part1 + fullImageName2;
+                               print(fullPathImage);
+
+
                               pacienteReference.push().set({
                                 'nombre': _nombreController.text,
                                 'apellidos': _apellidosController.text,
@@ -130,7 +189,8 @@ class _RegistrarPacienteState extends State<RegistrarPaciente> {
                                 'edad': edad,
                                 'ocupacion': _ocupacionController.text,
                                 'sexo': genero,
-                                'terapeuta': widget.userId
+                                'terapeuta': widget.userId,
+                                'imagen': '$fullPathImage'
                               }).then((_) {
                                
                                 final snackBar = SnackBar(
@@ -309,6 +369,55 @@ Widget _crearFecha(BuildContext context){
     }
 
   }
+
+
+  Widget imagenes(){
+  return Column(
+     
+      children: <Widget>[
+        Form(
+          child: Column(
+            children: <Widget>[
+            
+                
+                  Container(
+                    height: 200.0,
+                    width: 200.0,
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Colors.blueAccent
+                      ),
+                    ),
+                    padding: EdgeInsets.all(5.0),
+                    child: image == null ? Text('Add') : Image.file(image),
+                  ),
+               
+              
+              IconButton(
+                icon: Icon(Icons.camera_alt),
+                onPressed: pickerCam,
+              ),
+            
+              IconButton(
+                icon: Icon(Icons.calendar_today),
+                onPressed: pickerGallery,
+              ),
+              
+            
+            
+            ],
+            
+
+          ),
+        ),
+    
+      ]
+    );
+
+
+
+
+}
 
 
 

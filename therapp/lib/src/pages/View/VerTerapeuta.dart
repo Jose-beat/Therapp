@@ -33,6 +33,7 @@ class _VerTerapeutaState extends State<VerTerapeuta> {
   StreamSubscription<Event> _onTerapeutaAddedSubscription;
   StreamSubscription<Event> _onTerapeutaChangedSubscription;
   List<Terapeuta> items;
+  String imagenTerapeuta;
   @override
   void initState() {
     super.initState();
@@ -41,6 +42,8 @@ class _VerTerapeutaState extends State<VerTerapeuta> {
         terapeutaReference.onChildAdded.listen(_onTerapeutaAdded);
     _onTerapeutaChangedSubscription =
         terapeutaReference.onChildChanged.listen(_onTerapeutaUpdated);
+        
+    
   }
 
   @override
@@ -115,6 +118,9 @@ class _VerTerapeutaState extends State<VerTerapeuta> {
         children: <Widget>[
           CircleAvatar(
             radius: 70.0,
+            child: items[position].imagen == '' ? 
+            Text('No hay imagen aun') :
+            Image.network(items[position].imagen + '?alt=media')
           ),
           Divider(
             height: 7.0,

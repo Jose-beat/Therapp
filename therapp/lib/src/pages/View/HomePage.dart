@@ -150,10 +150,11 @@ class _HomePageState extends State<HomePage>
                       CircleAvatar(
                         backgroundColor: Colors.blue,
                         radius: 17.0,
-                        child: Text(
-                          '${position + 1}',
-                          style: TextStyle(color: Colors.blue, fontSize: 21.0),
-                        ),
+                        child: '${items[position].imagenPaciente}'== ''
+                        ? Text('No hay imagen'):
+                        Image.network('${items[position].imagenPaciente}' + '?alt=media',
+                          fit: BoxFit.fill,
+                        )
                       )
                     ],
                   ),

@@ -9,6 +9,7 @@ import 'package:therapp/src/pages/View/VerTerapeuta.dart';
 import 'package:therapp/src/providers/authentApp.dart';
 
 
+
 class NavigationAppBar extends StatefulWidget {
   final BaseAuth auth;
   final VoidCallback loginCallback;
@@ -67,10 +68,11 @@ class _NavigationAppBarState extends State<NavigationAppBar> {
 
 /*Pagina para crear el expediente de paciente */
      RegistrarPaciente(
-        paciente: Paciente(null, '', '','' ,0, '', '', widget.userId),
+        paciente: Paciente(null, '', '','' ,0, '', '', widget.userId,''),
         userId: widget.userId,
       ),
-      Configure(),
+
+
     ];
 
 
@@ -151,7 +153,7 @@ class _NavigationAppBarState extends State<NavigationAppBar> {
         context,
         MaterialPageRoute(
             builder: (context) => RegistrarPaciente(
-                  paciente: Paciente(null, '', '','', 0, '', '', widget.userId),
+                  paciente: Paciente(null, '', '','', 0, '', '', widget.userId,''),
                   userId: widget.userId,
                 )));
   }

@@ -41,7 +41,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
         context,
         MaterialPageRoute(
             builder: (context) => RegistroPerfil(
-                  terapeuta: Terapeuta(userId, '', '', '','', email, '', '', ''),
+                  terapeuta: Terapeuta(userId, '', '', '','', email, '', '', '',''),
                   id: userId,
                   email: email,
                 )));

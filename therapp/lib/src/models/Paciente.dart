@@ -9,9 +9,10 @@ class Paciente {
   String _ocupacion;
   String _sexo;
   String _terapeuta;
+  String _imagenPaciente;
 
   Paciente(this._id, this._nombre, this._apellidos,this._nacimiento ,this._edad, this._ocupacion,
-      this._sexo, this._terapeuta);
+      this._sexo, this._terapeuta,this._imagenPaciente);
 
   Paciente.map(dynamic obj) {
     this._nombre = obj['nombre'];
@@ -21,6 +22,7 @@ class Paciente {
     this._ocupacion = obj['ocupacion'];
     this._sexo = obj['sexo'];
     this._terapeuta = obj['terapeuta'];
+    this._imagenPaciente = obj['imagen'];
   }
 
   String get id => _id;
@@ -31,6 +33,7 @@ class Paciente {
   String get ocupacion => _ocupacion;
   String get sexo => _sexo;
   String get terapeuta => _terapeuta;
+  String get imagenPaciente => _imagenPaciente;
 
   Paciente.fromSnapshot(DataSnapshot snapshot) {
     _id = snapshot.key;
@@ -41,5 +44,6 @@ class Paciente {
     _ocupacion = snapshot.value['ocupacion'];
     _sexo = snapshot.value['sexo'];
     _terapeuta = snapshot.value['terapeuta'];
+    _imagenPaciente = snapshot.value['imagen'];
   }
 }

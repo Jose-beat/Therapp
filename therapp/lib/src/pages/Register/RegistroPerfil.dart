@@ -1,3 +1,9 @@
+import 'dart:io';
+
+import 'package:date_format/date_format.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:therapp/src/models/Terapeuta.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +16,7 @@ class RegistroPerfil extends StatefulWidget {
   final Terapeuta terapeuta;
   final String id;
   final String email;
+  
   RegistroPerfil(
       {Key key,
       this.terapeuta,
@@ -27,7 +34,8 @@ final terapeutaReference =
     FirebaseDatabase.instance.reference().child('terapeuta');
 
 class _RegistroPerfilState extends State<RegistroPerfil> {
-   TextEditingController _inputFieldDateController = new TextEditingController();
+   File imagen;
+   TextEditingController _inputFieldDateController;
 
   final _formKey = GlobalKey<FormState>();
   List<Terapeuta> item;
@@ -39,6 +47,7 @@ class _RegistroPerfilState extends State<RegistroPerfil> {
   TextEditingController _telefonoController;
   TextEditingController _emailController;
   TextEditingController _cedulaController;
+  String imagenTerapeuta;
 
   @override
   void initState() {
@@ -57,6 +66,11 @@ class _RegistroPerfilState extends State<RegistroPerfil> {
     _emailController = new TextEditingController(text: widget.email);
     _cedulaController =
         new TextEditingController(text: widget.terapeuta.cedula);
+    imagenTerapeuta = widget.terapeuta.imagen;
+    _inputFieldDateController  = new TextEditingController(text: widget.terapeuta.nacimiento);
+
+
+
   }
 
   @override
@@ -73,6 +87,7 @@ class _RegistroPerfilState extends State<RegistroPerfil> {
         child: Center(
             child: ListView(
           children: <Widget>[
+            imagenes(),
             registro(),
             Container(
               height: 100.0,
@@ -89,6 +104,7 @@ class _RegistroPerfilState extends State<RegistroPerfil> {
           child: Column(
         
         children: <Widget>[
+            
           
           TextFormField(
             
@@ -203,13 +219,28 @@ class _RegistroPerfilState extends State<RegistroPerfil> {
               }
             },
           ),
-         
-        
+          
           FlatButton(
               onPressed: () {
                 if(_formKey.currentState.validate()){
                   if (widget.terapeuta.id != null) {
+                  var fecha = formatDate(
+                      new DateTime.now(), [yyyy, '-', mm, '-', dd]);
+                   var fullImageName = 'terapeuta-${_nombreController.text}-$fecha' + '.jpg';
+                   var fullImageName2 = 'terapeuta-${_nombreController.text}-$fecha' + '.jpg';
+                   final StorageReference ref = FirebaseStorage.instance.ref().child(fullImageName);
+                   final StorageUploadTask task = ref.putFile(imagen);
+
+                   var part1 = 'https://firebasestorage.googleapis.com/v0/b/therapp-33c50.appspot.com/o/';
+
+                   var fullPathImage = part1 + fullImageName2;
+                   print(fullPathImage);
+                    
+
+
+
                   terapeutaReference.child(widget.terapeuta.id).set({
+
                     'nombre': _nombreController.text,
                     'apellidos': _apellidosController.text,
                     'nacimiento': _inputFieldDateController.text,
@@ -217,11 +248,27 @@ class _RegistroPerfilState extends State<RegistroPerfil> {
                     'clinica': _clinicaController.text,
                     'especialidad': _especialidadController.text,
                     'telefono': _telefonoController.text,
-                    'email': _emailController.text
+                    'email': _emailController.text,
+                    'imagen':'$fullPathImage'
+                    
                   }).then((_) {
                     Navigator.pop(context);
                   });
                 } else {
+                    var fecha = formatDate(
+                    new DateTime.now(), [yyyy, '-', mm, '-', dd]);
+                   var fullImageName = 'terapeuta-${_nombreController.text}-$fecha' + '.jpg';
+                   var fullImageName2 = 'terapeuta-${_nombreController.text}-$fecha' + '.jpg';
+                   final StorageReference ref = FirebaseStorage.instance.ref().child(fullImageName);
+                   final StorageUploadTask task = ref.putFile(imagen);
+
+                   var part1 = 'https://firebasestorage.googleapis.com/v0/b/therapp-33c50.appspot.com/o/';
+
+                   var fullPathImage = part1 + fullImageName2;
+                   print(fullPathImage);
+                    
+
+                  
                   terapeutaReference.push().set({
                     'nombre': _nombreController.text,
                     'apellidos': _apellidosController.text,
@@ -230,7 +277,8 @@ class _RegistroPerfilState extends State<RegistroPerfil> {
                     'clinica': _clinicaController.text,
                     'especialidad': _especialidadController.text,
                     'telefono': _telefonoController.text,
-                    'email': _emailController.text
+                    'email': _emailController.text,
+                    'imagen':'$fullPathImage'
                   }).then((_) {
                     Navigator.pop(context);
                   });
@@ -317,4 +365,86 @@ Widget _crearFecha(BuildContext context){
 
   }
 
+   pickerCam()async{
+    File img = await ImagePicker.pickImage(source: ImageSource.camera);
+  if(img != null){
+    imagen = img;
+    setState(() {
+      
+    });
+  }
+  } 
+
+  pickerGallery()async{
+    File img = await ImagePicker.pickImage(source: ImageSource.gallery);
+
+  if(img != null){
+    imagen = img;
+    setState(() {
+      
+    });
+  }
+  }
+
+  void createData()async {
+     
+     var fullImageName = 'terapeuta-${_nombreController.text}' + '.jpg';
+     var fullImageName2 = 'terapeuta-${_nombreController.text}' + '.jpg';
+     final StorageReference ref = FirebaseStorage.instance.ref().child(fullImageName);
+     final StorageUploadTask task = ref.putFile(imagen);
+
+     var part1 = 'https://firebasestorage.googleapis.com/v0/b/therapp-33c50.appspot.com/o/';
+
+     var fullPathImage = part1 + fullImageName2;
+     print(fullPathImage);
+  
+  }
+
+Widget imagenes(){
+  return Column(
+     
+      children: <Widget>[
+        Form(
+          child: Column(
+            children: <Widget>[
+            
+                
+                  Container(
+                    height: 200.0,
+                    width: 200.0,
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Colors.blueAccent
+                      ),
+                    ),
+                    padding: EdgeInsets.all(5.0),
+                    child: imagen == null ? Text('Add') : Image.file(imagen),
+                  ),
+               
+              
+              IconButton(
+                icon: Icon(Icons.camera_alt),
+                onPressed: pickerCam,
+              ),
+            
+              IconButton(
+                icon: Icon(Icons.calendar_today),
+                onPressed: pickerGallery,
+              ),
+              
+            
+            
+            ],
+            
+
+          ),
+        ),
+    
+      ]
+    );
+
+
+
+
+}
 }
