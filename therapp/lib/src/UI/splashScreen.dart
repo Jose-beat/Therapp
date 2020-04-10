@@ -61,9 +61,10 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Mira esta pantalla'),
-      ),
+     
+     body: Container(
+       
+     ),
     );
   }
 }

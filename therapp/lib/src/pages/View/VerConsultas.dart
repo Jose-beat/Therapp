@@ -87,7 +87,7 @@ class _VerConsultasState extends State<VerConsultas> {
         context,
         MaterialPageRoute(
             builder: (context) => ResConsultas(
-                  consultas: Consultas(null, '', widget.idPaciente,widget.idTerapeuta,'',''),
+                  consultas: Consultas(null, '', widget.idPaciente,widget.idTerapeuta,'','','',''),
                 )));
   }
 
@@ -97,6 +97,7 @@ class _VerConsultasState extends State<VerConsultas> {
     if (items[position].idPaciente == widget.idPaciente&&items[position].fechaConsulta==widget.fechaConsulta) {
       print('WE NO MAMES ESTA ES LA ID DE LA CONSULTA ${items[position].id}');
       print('MOTIVOS ${items[position].motivos}');
+      print('NUKLITO ${items[position].nombre}');
       print('PACIENTE: ${items[position].idPaciente} ${widget.idPaciente}');
 
       return Column(

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:therapp/src/UI/splashScreen.dart';
 import 'package:therapp/src/providers/authentApp.dart';
 import 'package:therapp/src/providers/routes.dart';
 
 void main() {
-  runApp(TherApp());
+  
+  initializeDateFormatting().then((_) => runApp(TherApp()));
 }
 
 class TherApp extends StatelessWidget {

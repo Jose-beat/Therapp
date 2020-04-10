@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 class EspacioFlexible extends StatelessWidget {
   final String imagen;
   final double appBarHeight = 66.0;
-  const EspacioFlexible({Key key,this.imagen}) : super(key: key);
+  final String sexo;
+  final String edad;
+  const EspacioFlexible({Key key,this.imagen, this.sexo, this.edad}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,10 +24,12 @@ class EspacioFlexible extends StatelessWidget {
                   children: <Widget>[
                     CircleAvatar(
                       radius: 50.0,
-                    
-                      child:  imagen == null ?
-                      Text('No hay imagen')
-                      :Image.network(imagen + '?alt=media', fit: BoxFit.fill,)
+                     
+                      backgroundImage: imagen != null ? 
+                      NetworkImage(imagen + '?alt=media'):
+                      AssetImage('assets/photo-null.jpeg'),
+                     
+                     
                     
                     ),
                    
@@ -41,7 +45,7 @@ class EspacioFlexible extends StatelessWidget {
                     Container(child: Padding(
                       padding: const EdgeInsets.only(bottom: 8.0,left:8.0),
                       child: new Text(
-                          "Currency",
+                          "Sexo: $sexo",
                           style: const TextStyle(
                               color: Colors.white70,
                               fontFamily: 'Poppins',
@@ -54,12 +58,10 @@ class EspacioFlexible extends StatelessWidget {
                       padding: const EdgeInsets.only(bottom: 8.0,right:8.0),
                       child: Container(
                           child: Row(children: <Widget>[
-                            Container(child: Icon(
-                              Icons.ac_unit, color: Colors.white,
-                            ),),
+                           
                             SizedBox(width: 10,),
                             Container(child: Text(
-                              'Janaury 2019', style: const TextStyle(
+                              'Edad: $edad años', style: const TextStyle(
                                 color: Colors.white70,
                                 fontFamily: 'Poppins',
                                 fontSize: 16.0

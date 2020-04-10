@@ -288,8 +288,12 @@ Widget _crearFecha(BuildContext context){
     //Con esta condicional vamos a meter la informacion de la fecha en el cuadro de texto
 
      if (picked != null){
-      setState(() {
-        _fecha = "${picked.day} / ${picked.month} / ${picked.year}";
+     setState(() {
+        dynamic estorboDia = picked.day < 10 ? 0 : '';
+        dynamic estorboMes = picked.month < 10 ? 0 : '';
+        String _fecha = "${picked.year}-$estorboMes${picked.month}-$estorboDia${picked.day}";
+
+
         _inputFieldDateController.text = _fecha;
       });
     }
@@ -359,6 +363,16 @@ Widget _crearFecha(BuildContext context){
 
   }
 
+InputDecoration decoracion(String nombre, IconData icono){
+  return InputDecoration(
+            filled: true,
+            fillColor: Colors.grey[200],
+            hintText: 'Nombre',
+            prefixIcon: new Icon(
+              Icons.person,
+              color: Colors.grey,
+            ));
+}
 
 
 

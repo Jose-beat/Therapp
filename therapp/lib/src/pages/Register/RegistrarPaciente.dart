@@ -92,8 +92,7 @@ class _RegistrarPacienteState extends State<RegistrarPaciente> {
                           controller: _nombreController,
                           style:
                               TextStyle(fontSize: 17.0, color: Colors.deepPurple),
-                          decoration: InputDecoration(
-                              icon: Icon(Icons.ac_unit), labelText: 'nombre'),
+                          decoration: decoracion('Nombre',Icons.people),
                            validator: (value){
                               value=_nombreController.text;
                                     if(value.isEmpty){
@@ -102,12 +101,12 @@ class _RegistrarPacienteState extends State<RegistrarPaciente> {
                  
                                         }},
                               ),
+                              Divider(),
                       TextFormField(
                           controller: _apellidosController,
                           style:
                               TextStyle(fontSize: 17.0, color: Colors.deepPurple),
-                          decoration: InputDecoration(
-                              icon: Icon(Icons.ac_unit), labelText: 'apellidos'),
+                          decoration: decoracion('Apellidos',Icons.people),
                           
                            validator: (value){
                               value=_apellidosController.text;
@@ -117,13 +116,14 @@ class _RegistrarPacienteState extends State<RegistrarPaciente> {
                  
                                         }},
                               ),
+                              Divider(),
                               _crearFecha(context),
+                              Divider(),
                       TextFormField(
                           controller: _ocupacionController,
                           style:
                               TextStyle(fontSize: 17.0, color: Colors.deepPurple),
-                          decoration: InputDecoration(
-                              icon: Icon(Icons.ac_unit), labelText: 'ocupacion'),
+                          decoration: decoracion('Ocupacion',Icons.assignment),
                           
                            validator: (value){
                               value=_ocupacionController.text;
@@ -134,12 +134,21 @@ class _RegistrarPacienteState extends State<RegistrarPaciente> {
                                         }},
 
                               ),
-                      edadOption(),
+                              Divider(),
+                     
+                      Divider(),
                       generoOption(),
+                      _crearGenero(context),
+                      Divider(),
+                      edadOption(),
+                      _crearEdad(context),
+                      Divider(),
+                      
                      // generoOption(),
                       FlatButton(
                           onPressed: () {
-                             if(_formKey.currentState.validate()){
+                           try{
+                               if(_formKey.currentState.validate()){
 
                                  if (widget.paciente.id != null) {
                                     var fecha = formatDate(
@@ -194,8 +203,13 @@ class _RegistrarPacienteState extends State<RegistrarPaciente> {
                               }).then((_) {
                                
                                 final snackBar = SnackBar(
-                                  content: Text('Paciente ${_nombreController.text} Registrado'),
-                                
+                                  
+                                  content: Text('Paciente  Registrado Exitosamente',
+                                   style: TextStyle(
+                                     decorationColor: Colors.white
+                                   )
+                                   ),
+                                  backgroundColor: Colors.green,
                                   );
 
                                 Scaffold.of(context).showSnackBar(snackBar);
@@ -204,6 +218,21 @@ class _RegistrarPacienteState extends State<RegistrarPaciente> {
 
 
                              }
+                            }catch(e){
+                              print('$e JAJAJAJA QUE MAMADA');
+                              final snackBar = SnackBar(
+                                   content: Text('Debe insertar una foto del paciente',
+                                   style: TextStyle(
+                                     decorationColor: Colors.white
+                                   ),
+                                   ),
+                                   backgroundColor: Colors.red,
+                                   );
+             
+                                    Scaffold.of(context).showSnackBar(snackBar);
+                            
+                            }
+                            
                           
                             print('${_nombreController.text}');
                           },
@@ -219,6 +248,27 @@ class _RegistrarPacienteState extends State<RegistrarPaciente> {
     );
   }
 
+Widget _crearGenero(BuildContext context){
+    _sexoController.text = genero;
+    return TextFormField(
+      
+       validator: (value){
+                       value=_sexoController.text;
+                     if(value.isEmpty){
+                       return 'Favor de añadir un genero';
+                     }
+                      },
+      //Pasamos la fecha por aqui
+      controller: _sexoController,
+      //Desactivamos la accion interactiva
+      enableInteractiveSelection: false,
+     //Añadir estilo a la caja de texto
+      decoration: decoracion('Genero',Icons.account_balance),
+    );
+
+
+
+}
 
   Widget generoOption() {
     return DropdownButton<String>(
@@ -256,6 +306,34 @@ class _RegistrarPacienteState extends State<RegistrarPaciente> {
   }
 
 
+Widget _crearEdad(BuildContext context){
+     _edadController.text = edad.toString();
+    return TextFormField(
+       validator: (value){
+                       value=_inputFieldDateController.text;
+                     if(value.isEmpty){
+                       return 'Favor de añadir la edad';
+                     }
+                      },
+      //Pasamos la fecha por aqui
+      controller: _edadController,
+      //Desactivamos la accion interactiva
+      enableInteractiveSelection: false,
+     //Añadir estilo a la caja de texto
+      decoration: decoracion('Edad',Icons.person_outline),
+
+         
+      
+        onTap: (){
+          //Quitar el foco que significa que el teclado no se activara
+          FocusScope.of(context).requestFocus(new FocusNode());
+          edadOption();
+        },
+    );
+
+
+
+}
 
 
   Widget edadOption() {
@@ -308,29 +386,18 @@ Widget _crearFecha(BuildContext context){
 
     return TextFormField(
        validator: (value){
-                              value=_inputFieldDateController.text;
-                            if(value.isEmpty){
-                              return 'Favor de añadir la fecha';
-                            }
-                             },
+                       value=_inputFieldDateController.text;
+                     if(value.isEmpty){
+                       return 'Favor de añadir la fecha';
+                     }
+                      },
       //Pasamos la fecha por aqui
       controller: _inputFieldDateController,
       //Desactivamos la accion interactiva
       enableInteractiveSelection: false,
      //Añadir estilo a la caja de texto
-      decoration: InputDecoration(
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20.0),
-        ),
-        
-        //Sera un texto original en la caja
-        hintText: 'Fecha de nacimiento',
-        //Sera el titulo de nuestra caja
-        labelText: 'Fecha de nacimiento',
-        suffixIcon: Icon(Icons.calendar_today),
-        icon: Icon(Icons.calendar_view_day),  
-        ),
-   
+      decoration: decoracion('Fecha de nacimiento',Icons.calendar_today),
+
          
       
         onTap: (){
@@ -343,6 +410,7 @@ Widget _crearFecha(BuildContext context){
 
 
 }
+
 
 
   //Si un metodo recibe un future entonces hay que añadirle el asyn y await
@@ -362,8 +430,12 @@ Widget _crearFecha(BuildContext context){
     //Con esta condicional vamos a meter la informacion de la fecha en el cuadro de texto
   
     if (picked != null){
-      setState(() {
-        String _fecha = "${picked.day} / ${picked.month} / ${picked.year}";
+       setState(() {
+        dynamic estorboDia = picked.day < 10 ? 0 : '';
+        dynamic estorboMes = picked.month < 10 ? 0 : '';
+        String _fecha = "${picked.year}-$estorboMes${picked.month}-$estorboDia${picked.day}";
+
+
         _inputFieldDateController.text = _fecha;
       });
     }
@@ -381,27 +453,53 @@ Widget _crearFecha(BuildContext context){
             
                 
                   Container(
+                    
                     height: 200.0,
                     width: 200.0,
                     decoration: BoxDecoration(
+                      //color: Colors.black,
                       border: Border.all(
-                        color: Colors.blueAccent
+                        color: Colors.black
                       ),
                     ),
                     padding: EdgeInsets.all(5.0),
-                    child: image == null ? Text('Add') : Image.file(image),
+                    child: FadeInImage(
+                           width: 150.0,
+                           height: 150.0,
+                           fadeInCurve: Curves.bounceIn,
+                           placeholder:  AssetImage('assets/images/icon-app.jpeg'), 
+                           image:image == null ? AssetImage('assets/images/photo-null.jpeg') : FileImage(image)//Image.file(image), 
+              ),
+                    /*image == null ? Image.asset('assets/images/photo-null.jpeg') : Image.file(image),*/
                   ),
                
-              
-              IconButton(
-                icon: Icon(Icons.camera_alt),
-                onPressed: pickerCam,
-              ),
+              Container(
+                //height: 200.0,
+                width: 200.0,
+                decoration: BoxDecoration(
+                      color: Colors.black,
+                      border: Border.all(
+                        color: Colors.black
+                      )),
+
+                child: Row(
+                  
+                  mainAxisAlignment: MainAxisAlignment.center,
+
+                  children: <Widget>[
+                     IconButton(
+                  icon: Icon(Icons.camera_alt, color: Colors.white,),
+                  onPressed: pickerCam,
+                ),
             
-              IconButton(
-                icon: Icon(Icons.calendar_today),
-                onPressed: pickerGallery,
+                IconButton(
+                  icon: Icon(Icons.calendar_today, color: Colors.white),
+                  onPressed: pickerGallery,
+                ),
+                  ],
+                ),
               ),
+             
               
             
             
@@ -418,7 +516,20 @@ Widget _crearFecha(BuildContext context){
 
 
 }
-
+InputDecoration decoracion(String nombre, IconData icono){
+  return InputDecoration(
+    
+    border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(0.0),
+        ),
+            filled: true,
+            fillColor: Colors.grey[200],
+            hintText: nombre,
+            prefixIcon: new Icon(
+              icono,
+              color: Colors.grey,
+            ));
+}
 
 
 

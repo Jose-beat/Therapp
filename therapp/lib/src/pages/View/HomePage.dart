@@ -32,19 +32,33 @@ final pacienteReference =
 
 class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
+  
+  bool datos = true;
+  int numeroPacientes = 0;
+  double valor = 0.0;
+  bool _cargando = true;
+
   List<Paciente> items;
 
   StreamSubscription<Event> _onPacienteAddedSubscription;
   StreamSubscription<Event> _onPacienteupdatedSubscription;
 
+    
+  Future<Timer>startTime()async{
+    var _duration = Duration(seconds: 5);
+    return Timer(_duration, cambioDatos);
+  }
+
   @override
   void initState() {
+    startTime();
     super.initState();
     items = new List();
     _onPacienteAddedSubscription =
         pacienteReference.onChildAdded.listen(_onPacienteAdded);
     _onPacienteupdatedSubscription =
         pacienteReference.onChildChanged.listen(_onPacienteUpdated);
+ 
   }
 
   @override
@@ -68,11 +82,29 @@ class _HomePageState extends State<HomePage>
     return Scaffold(
       
      
-      body: ListView.builder(
-        itemCount: items.length,
-        itemBuilder: (context, position) {
-          return _filter(context, position);
-        },
+      body: Stack(
+          
+            children:<Widget>[
+            
+             Center(
+               child: _progresoCircular(),
+             ),
+           
+            ListView.builder(
+              itemCount: items.length,
+               itemBuilder: (context, position) {
+               
+
+                 return   _filter(context, position); 
+                 
+                 },
+                ), 
+            
+
+              
+               
+            ]
+             
       ),
 
       
@@ -117,66 +149,123 @@ class _HomePageState extends State<HomePage>
 /*-------------------------------------METODOS TERAPEUTA--------------------------*/
 
   
+  Widget _progresoCircular(){
+   
+      print(_cargando.toString());
+   
+      if(_cargando == true){
+          print(_cargando.toString());
+     
+      return CircularProgressIndicator(
+      value:null,
+      valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
+        );
+      
+    }else{
+      return Container();
+    }
+     
+
+      
+
+    
+    
+  }
+  void cambioDatos(){
+    setState(() {
+         datos = !datos;
+        _cargando = false;
+    });
+   
+  }
 
   Widget _filter(BuildContext context, int position) {
+    
+  
     print("item :${items[position].id}");
-
+    
     if (items[position].terapeuta == widget.userId) {
+     
+      print(_cargando.toString());
+      numeroPacientes += 1;
       print('${items[position].id}');
+      print('$position');
+      print('NUMERO DE PACIENTES $numeroPacientes');
+      return _paciente(context,position);
 
-      return Column(
-        children: <Widget>[
-          Divider(
-            height: 7.0,
-          ),
-          Card(
-            child: Row(
-              children: <Widget>[
-                Expanded(
-                    child: ListTile(
-                  title: Text(
-                    '${items[position].nombre}',
-                    style: TextStyle(color: Colors.blueAccent, fontSize: 21.0),
+
+
+    } else {
+      
+      return Container();
+    }
+
+
+    
+  }
+
+Widget _paciente(BuildContext context, int position){
+
+  
+  
+     return Card(
+       
+        child: Center(
+                  child: Column(
+            children: <Widget>[
+                  CircleAvatar(
+                    radius: 40.0,
+                    backgroundImage: items[position].imagenPaciente != null ?
+                    NetworkImage('${items[position].imagenPaciente}' + '?alt=media'):
+                    AssetImage('assets/photo-null.jpeg')
                   ),
-                  subtitle: Text(
-                    '${items[position].apellidos}',
-                    style: TextStyle(
-                      color: Colors.blueGrey,
-                      fontSize: 21.0,
-                    ),
-                  ),
-                  leading: Column(
+                 
+                 Text('${items[position].nombre} ${items[position].apellidos}'),
+                Divider(),
+               
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      CircleAvatar(
-                        backgroundColor: Colors.blue,
-                        radius: 17.0,
-                        child: '${items[position].imagenPaciente}'== ''
-                        ? Text('No hay imagen'):
-                        Image.network('${items[position].imagenPaciente}' + '?alt=media',
-                          fit: BoxFit.fill,
-                        )
-                      )
+                       FlatButton(
+                         color: Colors.green,
+                         hoverColor: Colors.teal[300],
+                     onPressed: ()=> _navigateToPaciente(context, items[position],widget.userId), 
+                     child: Text('Ver Expediente')
+                     ),
+                     VerticalDivider(
+                       width: 10.0,
+                       color: Colors.black
+                     ),
+                      FlatButton(
+                         color: Colors.blue,
+                     onPressed: ()=> _navigateToPaciente(context, items[position],widget.userId), 
+                     child: Text('Editar Expediente')
+                     )
+
                     ],
                   ),
-                  onTap: () => _navigateToPaciente(context, items[position],widget.userId),
-                )),
-                IconButton(
-                    icon: Icon(
-                      Icons.edit,
-                      color: Colors.red,
-                    ),
-                    onPressed: () =>
-                        _changePacienteInformation(context, items[position]))
-              ],
-            ),
+              
+                
+              
+          
+              
+                
+            
+
+            ],
+
           ),
-        ],
+        ),
       );
-    } else {
-      return Container(
-        width: 0.0,
-        height: 0.0,
-      );
+  
+     
+      
     }
-  }
+
+    
+
+
+      
+
+
 }

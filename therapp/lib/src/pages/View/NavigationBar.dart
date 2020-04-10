@@ -31,7 +31,7 @@ class NavigationAppBar extends StatefulWidget {
 enum WhyFarther { harder, smarter, selfStarter, tradingCharter }
 
 class _NavigationAppBarState extends State<NavigationAppBar> {
-
+  String titulo = 'Lista de pacientes';
    WhyFarther _onSelected;
 
   int _cIndex = 0;
@@ -64,7 +64,9 @@ class _NavigationAppBarState extends State<NavigationAppBar> {
         userId: widget.userId,
       ),
       /*Pagina de calendario*/
-     ConsultasActuales(),
+     ConsultasActuales(
+       idTerapeuta: widget.userId,
+     ),
 
 /*Pagina para crear el expediente de paciente */
      RegistrarPaciente(
@@ -83,6 +85,9 @@ class _NavigationAppBarState extends State<NavigationAppBar> {
       themeMode: ThemeMode.dark,
           home: Scaffold(
           appBar: AppBar(
+            elevation: 0.0,
+            title: Text(titulo),
+            backgroundColor: Colors.orange,
             leading: Builder(
               builder: (BuildContext context) {
                 return perfil();
@@ -101,10 +106,13 @@ class _NavigationAppBarState extends State<NavigationAppBar> {
           /*Aqui se muestra la pantalla indicada por el metodo elementAt seugn la lista*/
           body: Center(child: _opciones.elementAt(_cIndex)),
           bottomNavigationBar: BottomNavigationBar(
+          
             selectedItemColor: Colors.blue,
+            
             currentIndex: _cIndex,
             type: BottomNavigationBarType.fixed,
             /*-----------------------------------CONJUNTO DE ICONOS DE NAVEGACION ENTRE INTERFACES DE LA APP-----------------------*/
+    
             items: [
               BottomNavigationBarItem(
                 icon: Icon(
@@ -130,13 +138,12 @@ class _NavigationAppBarState extends State<NavigationAppBar> {
                     'Añadir Paciente',
                     style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
                   )),
-              BottomNavigationBarItem(
-                  icon: Icon(Icons.build, color: Colors.grey,  size: 20.5,),
-                  title: Text('Configuracion', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold)))
+             
             ],
             /*Ejecucion del metodo que incrementa la variable index que controla la posicion de las paginas en la pantalla principal */
             onTap: (index) {
               _incrementTab(index);
+              titulos(index);
             },
           )),
     );
@@ -180,23 +187,30 @@ Widget perfil(){
             );
 }
 
+void titulos(int posicion){
+  switch (posicion) {
+    case 0:
+      titulo = 'Lista de pacientes';
+      break;
+    case 1:
+      titulo = 'Calendario de consultas';
+      break;
+    case 2:
+      titulo = 'Registro de pacientes';
+      break;
+    case 3:
+      titulo = 'perfil';
+      break;
+    case 4:
+      titulo = 'Otra funcion';
+      break;
 
+    default:
+  }
+}
 
 /*-------------------------------------OPCIONES DESPLEGABLES----------------------------*/
 
-Widget _simplePopup() => PopupMenuButton<int>(
-  child: Icon(Icons.menu),
-          itemBuilder: (context) => [
-                PopupMenuItem(
-                  value: 1,
-                  child: Text("First"),
-                ),
-                PopupMenuItem(
-                  value: 2,
-                  child: Text("Second"),
-                ),
-              ],
-        );
 
 
 }

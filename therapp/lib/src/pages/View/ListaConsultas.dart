@@ -7,11 +7,12 @@ import 'package:therapp/src/pages/Register/RegistrarConsultas.dart';
 import 'package:therapp/src/pages/View/VerConsultas.dart';
 
 class ListaConsultas extends StatefulWidget {
-
+  final String nombrePaciente;
+  final String apellidosPaciente;
   final String idTerapeuta;
   final String idPaciente;
   final Consultas consultas;
-  ListaConsultas({Key key, this.idTerapeuta, this.idPaciente, this.consultas}) : super(key: key);
+  ListaConsultas({Key key, this.idTerapeuta, this.idPaciente, this.consultas, this.nombrePaciente, this.apellidosPaciente}) : super(key: key);
 
   @override
   _ListaConsultasState createState() => _ListaConsultasState();
@@ -93,7 +94,7 @@ class _ListaConsultasState extends State<ListaConsultas> {
         context,
         MaterialPageRoute(
             builder: (context) => ResConsultas(
-                  consultas: Consultas(null, '', widget.idPaciente,widget.idTerapeuta,'',''),
+                  consultas: Consultas(null, '', widget.idPaciente,widget.idTerapeuta,'','',widget.nombrePaciente,widget.apellidosPaciente),
                 )));
   }
 

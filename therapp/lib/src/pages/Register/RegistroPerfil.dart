@@ -16,14 +16,14 @@ class RegistroPerfil extends StatefulWidget {
   final Terapeuta terapeuta;
   final String id;
   final String email;
-  
+  final bool imagenPerfil;
   RegistroPerfil(
       {Key key,
       this.terapeuta,
       this.auth,
       this.loginCallback,
       this.id,
-      this.email})
+      this.email, this.imagenPerfil})
       : super(key: key);
 
   @override
@@ -34,6 +34,7 @@ final terapeutaReference =
     FirebaseDatabase.instance.reference().child('terapeuta');
 
 class _RegistroPerfilState extends State<RegistroPerfil> {
+  
    File imagen;
    TextEditingController _inputFieldDateController;
 
@@ -76,29 +77,64 @@ class _RegistroPerfilState extends State<RegistroPerfil> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+     
       resizeToAvoidBottomPadding: false,
       appBar: AppBar(
-        title: Text('Registro'),
-        backgroundColor: Colors.deepOrange,
+        
+      
+      
+        
+         backgroundColor: Colors.teal[300],
+        elevation: 0.0,
+        title: Text('Registrate'),
+        
+        leading: IconButton(
+          icon: Icon(Icons.portrait,
+          color: Colors.white,
+          ), 
+          onPressed: null
+          ),
       ),
-      body: Container(
+      body: Builder(
+        builder: (BuildContext context){
+          return Container(
         height: 570.0,
         padding: const EdgeInsets.all(20.0),
         child: Center(
             child: ListView(
           children: <Widget>[
-            imagenes(),
-            registro(),
+            Container(
+              child: widget.imagenPerfil == false ? 
+              _fotoPerifl():imagenes()
+            ),
+            Divider(),
+           
+            registro(context),
             Container(
               height: 100.0,
             )
           ],
         )),
-      ),
+      );
+
+        }
+        )
     );
   }
 
-  Widget registro() {
+
+
+
+
+
+
+
+
+
+
+
+
+  Widget registro(BuildContext context) {
     return Form(
       key: _formKey,
           child: Column(
@@ -112,8 +148,19 @@ class _RegistroPerfilState extends State<RegistroPerfil> {
             controller: _nombreController,
             
             style: TextStyle(fontSize: 17.0, color: Colors.deepOrangeAccent),
-            decoration:
-                InputDecoration(icon: Icon(Icons.person), labelText: 'Nombre'),
+             decoration: new InputDecoration(
+            filled: true,
+            fillColor: Colors.grey[200],
+            hintText: 'Nombre',
+            prefixIcon: new Icon(
+              Icons.person,
+              color: Colors.grey,
+            ),
+            border: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: Colors.green
+              ),)),
+
             validator: (value){
               value=_nombreController.text;
               if(value.isEmpty){
@@ -125,12 +172,23 @@ class _RegistroPerfilState extends State<RegistroPerfil> {
             },
           
           ),
+          Divider(),
           TextFormField(
             keyboardType: TextInputType.text,
             controller: _apellidosController,
             style: TextStyle(fontSize: 17.0, color: Colors.deepOrangeAccent),
-            decoration:
-                InputDecoration(icon: Icon(Icons.code), labelText: 'Apellidos'),
+            decoration: new InputDecoration(
+            prefixIcon: new Icon(
+              Icons.person,
+              color: Colors.grey,
+            ),
+            filled: true,
+            fillColor: Colors.grey[200],
+            hintText: 'Apellidos',
+            border: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: Colors.green
+              ),)),
             validator: (value){
               value=_apellidosController.text;
               if(value.isEmpty){
@@ -140,13 +198,25 @@ class _RegistroPerfilState extends State<RegistroPerfil> {
               }
             },
           ),
+          Divider(),
            _crearFecha(context),
+           Divider(),
           TextFormField(
             keyboardType: TextInputType.text,
             controller: _clinicaController,
             style: TextStyle(fontSize: 17.0, color: Colors.deepOrangeAccent),
-            decoration: InputDecoration(
-                icon: Icon(Icons.description), labelText: 'Clinica Actual'),
+             decoration: new InputDecoration(
+               prefixIcon: new Icon(
+              Icons.local_hospital,
+              color: Colors.grey,
+            ),
+            filled: true,
+            fillColor: Colors.grey[200],
+            hintText: 'Clinica-Hospital',
+            border: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: Colors.green
+              ),)),
             validator: (value){
               value=_clinicaController.text;
               if(value.isEmpty){
@@ -156,12 +226,23 @@ class _RegistroPerfilState extends State<RegistroPerfil> {
               }
             },
           ),
+          Divider(),
           TextFormField(
             keyboardType: TextInputType.text,
             controller: _cedulaController,
             style: TextStyle(fontSize: 17.0, color: Colors.deepOrangeAccent),
-            decoration: InputDecoration(
-                icon: Icon(Icons.description), labelText: 'Cedula Profesional'),
+             decoration: new InputDecoration(
+               prefixIcon: new Icon(
+              Icons.book,
+              color: Colors.grey,
+            ),
+            filled: true,
+            fillColor: Colors.grey[200],
+            hintText: 'Cedula Profesional',
+            border: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: Colors.green
+              ),)),
             validator: (value){
               value=_cedulaController.text;
               if(value.isEmpty){
@@ -171,12 +252,23 @@ class _RegistroPerfilState extends State<RegistroPerfil> {
               }
             },
           ),
+          Divider(),
           TextFormField(
             keyboardType: TextInputType.text,
             controller: _especialidadController,
             style: TextStyle(fontSize: 17.0, color: Colors.deepOrangeAccent),
-            decoration: InputDecoration(
-                icon: Icon(Icons.attach_money), labelText: 'Especialidad'),
+             decoration: new InputDecoration(
+               prefixIcon: new Icon(
+              Icons.turned_in_not,
+              color: Colors.grey,
+            ),
+            filled: true,
+            fillColor: Colors.grey[200],
+            hintText: 'Especialidad',
+            border: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: Colors.green
+              ),)),
             validator: (value){
              value=_cedulaController.text;
               if(value.isEmpty){
@@ -186,12 +278,23 @@ class _RegistroPerfilState extends State<RegistroPerfil> {
               }
             },
           ),
+          Divider(),
           TextFormField(
             keyboardType: TextInputType.phone,
             controller: _telefonoController,
             style: TextStyle(fontSize: 17.0, color: Colors.deepOrangeAccent),
-            decoration: InputDecoration(
-                icon: Icon(Icons.satellite), labelText: 'Telefono'),
+             decoration: new InputDecoration(
+               prefixIcon: new Icon(
+              Icons.phone_iphone,
+              color: Colors.grey,
+            ),
+            filled: true,
+            fillColor: Colors.grey[200],
+            hintText: 'Telefono',
+            border: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: Colors.green
+              ),)),
             validator: (value){
               value=_telefonoController.text;
               if(value.isEmpty){
@@ -201,15 +304,24 @@ class _RegistroPerfilState extends State<RegistroPerfil> {
               }
             },
           ),
+          Divider(),
           TextFormField(
            enabled: false,
             keyboardType: TextInputType.emailAddress,
             controller: _emailController,
             style: TextStyle(fontSize: 17.0, color: Colors.deepOrangeAccent),
-            decoration: InputDecoration(
-              icon: Icon(Icons.satellite),
-              labelText: 'Correo Electronico',
+            decoration: new InputDecoration(
+              prefixIcon: new Icon(
+              Icons.mail,
+              color: Colors.grey,
             ),
+            filled: true,
+            fillColor: Colors.grey[200],
+            hintText: 'Correo Electronico',
+            border: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: Colors.green
+              ),)),
             validator: (value){
               value=_emailController.text;
               if(value.isEmpty){
@@ -219,11 +331,15 @@ class _RegistroPerfilState extends State<RegistroPerfil> {
               }
             },
           ),
-          
+          Divider(),
           FlatButton(
               onPressed: () {
-                if(_formKey.currentState.validate()){
+
+                try{
+                   if(_formKey.currentState.validate()){
                   if (widget.terapeuta.id != null) {
+                   
+                       
                   var fecha = formatDate(
                       new DateTime.now(), [yyyy, '-', mm, '-', dd]);
                    var fullImageName = 'terapeuta-${_nombreController.text}-$fecha' + '.jpg';
@@ -254,7 +370,12 @@ class _RegistroPerfilState extends State<RegistroPerfil> {
                   }).then((_) {
                     Navigator.pop(context);
                   });
+                   
+                 
                 } else {
+
+
+                  
                     var fecha = formatDate(
                     new DateTime.now(), [yyyy, '-', mm, '-', dd]);
                    var fullImageName = 'terapeuta-${_nombreController.text}-$fecha' + '.jpg';
@@ -284,10 +405,24 @@ class _RegistroPerfilState extends State<RegistroPerfil> {
                   });
                 }
                 }
+                }catch(e){
+                    print('ERROR: $e');
+                    final snackBar = SnackBar(
+                      content: Text('Debe insertar una foto de perfil',
+                      style: TextStyle(
+                        decorationColor: Colors.white
+                      ),
+                      ),
+                      backgroundColor: Colors.red,
+                      );
+
+                       Scaffold.of(context).showSnackBar(snackBar);
+                }
+               
                 
                 print('jajaja no mames ${_emailController.text}');
               },
-              child: widget.terapeuta.id != null ? Text('Actualizar Perfil') : Text('Crear Perfil')
+              child: widget.terapeuta.nombre != null ? Text('Actualizar Perfil') : Text('Crear Perfil')
               )
         ],
       ),
@@ -298,6 +433,77 @@ class _RegistroPerfilState extends State<RegistroPerfil> {
 
   
   
+
+
+  Widget _fotoPerifl(){
+
+    return Column(
+     
+      children: <Widget>[
+        Form(
+          child: Column(
+            children: <Widget>[
+            
+                
+                  Container(
+                    height: 200.0,
+                    width: 200.0,
+                   
+                     decoration: BoxDecoration(
+                   
+                      border: Border.all(
+                        width: 5.5,
+                        color: Colors.black
+                      ),
+                    ),
+                    
+                    padding: EdgeInsets.all(5.0),
+                    child:  widget.terapeuta.imagen != null ? 
+                     Image.network(widget.terapeuta.imagen + '?alt=media') :
+                     Image.asset('assets/images/photo-null.jpeg'),
+                  ),
+               
+              
+              Container(
+                width: 200.0,
+                decoration: BoxDecoration(
+                      color: Colors.black,
+                      border: Border.all(
+                        color: Colors.black
+                      )),
+                      
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    IconButton(
+                      icon: Icon(Icons.camera_alt),
+                      onPressed: pickerCam,
+                      color: Colors.white,
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.calendar_today),
+                      onPressed: pickerGallery,
+                      color: Colors.white,
+                    ),
+                  ],
+                ),
+              ),
+            
+              
+              
+            
+            
+            ],
+            
+
+          ),
+        ),
+    
+      ]
+    );
+
+    
+  }
 
 Widget _crearFecha(BuildContext context){
 
@@ -313,18 +519,18 @@ Widget _crearFecha(BuildContext context){
       //Desactivamos la accion interactiva
       enableInteractiveSelection: false,
      //Añadir estilo a la caja de texto
-      decoration: InputDecoration(
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20.0),
-        ),
-        
-        //Sera un texto original en la caja
-        hintText: 'Fecha de nacimiento',
-        //Sera el titulo de nuestra caja
-        labelText: 'Fecha de nacimiento',
-        suffixIcon: Icon(Icons.calendar_today),
-        icon: Icon(Icons.calendar_view_day),  
-        ),
+       decoration: new InputDecoration(
+         prefixIcon: new Icon(
+              Icons.calendar_today,
+              color: Colors.grey,
+            ),
+            filled: true,
+            fillColor: Colors.grey[200],
+            hintText: 'Fecha de nacimiento',
+            border: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: Colors.green
+              ),)),
    
          
       
@@ -358,7 +564,11 @@ Widget _crearFecha(BuildContext context){
   
     if (picked != null){
       setState(() {
-        String _fecha = "${picked.day} / ${picked.month} / ${picked.year}";
+        dynamic estorboDia = picked.day < 10 ? 0 : '';
+        dynamic estorboMes = picked.month < 10 ? 0 : '';
+        String _fecha = "${picked.year}-$estorboMes${picked.month}-$estorboDia${picked.day}";
+
+
         _inputFieldDateController.text = _fecha;
       });
     }
@@ -412,25 +622,45 @@ Widget imagenes(){
                   Container(
                     height: 200.0,
                     width: 200.0,
-                    decoration: BoxDecoration(
+                     decoration: BoxDecoration(
+                   
                       border: Border.all(
-                        color: Colors.blueAccent
+                        width: 5.5,
+                        color: Colors.black
                       ),
                     ),
+
                     padding: EdgeInsets.all(5.0),
-                    child: imagen == null ? Text('Add') : Image.file(imagen),
+                    child: imagen == null ? Image.asset('assets/images/photo-null.jpeg') : Image.file(imagen),
                   ),
                
               
-              IconButton(
-                icon: Icon(Icons.camera_alt),
-                onPressed: pickerCam,
+              Container(
+
+                 width: 200.0,
+                decoration: BoxDecoration(
+                      color: Colors.black,
+                      border: Border.all(
+                        color: Colors.black
+                      )),
+                      
+                child: Row(
+                  children: <Widget>[
+                    IconButton(
+                      icon: Icon(Icons.camera_alt),
+                      onPressed: pickerCam,
+                      color: Colors.white,
+                    ),
+                     IconButton(
+                      icon: Icon(Icons.calendar_today),
+                      onPressed: pickerGallery,
+                      color: Colors.white
+                    ),
+                  ],
+                ),
               ),
             
-              IconButton(
-                icon: Icon(Icons.calendar_today),
-                onPressed: pickerGallery,
-              ),
+             
               
             
             
@@ -447,4 +677,7 @@ Widget imagenes(){
 
 
 }
+
+
+
 }

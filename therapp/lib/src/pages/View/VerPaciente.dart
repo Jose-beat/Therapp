@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:therapp/src/UI/estadoFlexible.dart';
@@ -10,7 +11,6 @@ import 'package:therapp/src/models/consultas.dart';
 import 'package:therapp/src/pages/Register/RegistrarHabitos.dart';
 import 'package:therapp/src/pages/View/ListaConsultas.dart';
 import 'package:therapp/src/pages/View/ListaSignosVitales.dart';
-
 
 import 'package:therapp/src/pages/View/VerAntecedentesNoPatologicos.dart';
 import 'package:therapp/src/pages/View/VerAntecedentesPatologicos.dart';
@@ -31,8 +31,6 @@ final pacienteReference =
     FirebaseDatabase.instance.reference().child('paciente');
 
 class _VerPacienteState extends State<VerPaciente> {
-
-
   Consultas consultas;
 
   List<Paciente> items;
@@ -45,11 +43,10 @@ class _VerPacienteState extends State<VerPaciente> {
 
   @override
   Widget build(BuildContext context) {
-      String nombre = widget.paciente.nombre; 
-      String apellidos = widget.paciente.apellidos;
+    String nombre = widget.paciente.nombre;
+    String apellidos = widget.paciente.apellidos;
 
     return Scaffold(
-     
         body: DefaultTabController(
       length: 6,
       child: NestedScrollView(
@@ -57,51 +54,57 @@ class _VerPacienteState extends State<VerPaciente> {
               (BuildContext context, bool innerBoxIsScrolling) {
             return <Widget>[
               SliverAppBar(
-                 title: Titulo(
-                   nombre: nombre,
-                   apellidos: apellidos,
-                 ),
+                elevation: 0.0,
+                title: Titulo(
+                  nombre: nombre,
+                  apellidos: apellidos,
+                ),
                 pinned: true,
                 floating: false,
-                flexibleSpace:
-                 FlexibleSpaceBar(
-                   background: EspacioFlexible(
-                     imagen:  widget.paciente.imagenPaciente =='' ?
-                      'No hay imagen' :
-                      widget.paciente.imagenPaciente
-                     ),
+                flexibleSpace: FlexibleSpaceBar(
+                  background: EspacioFlexible(
+                      imagen: widget.paciente.imagenPaciente == ''
+                          ? 'No hay imagen'
+                          : widget.paciente.imagenPaciente,
+                          sexo: widget.paciente.sexo,
+                          edad: widget.paciente.edad.toString()
+
+                          ),
+                    
+
                   centerTitle: true,
-                 
                 ),
-              
                 expandedHeight: 200,
               ),
               SliverPersistentHeader(
-                delegate: _SliverAppBarDelegate(TabBar(tabs: [
-                  Tab(
-                      icon: Icon(
-                    Icons.contact_mail,
-                    color: Colors.black,
-                  )),
-                  Tab(
-                    icon: Icon(Icons.favorite, color: Colors.black),
-                  ),
-                  Tab(
-                    icon: Icon(Icons.find_in_page, color: Colors.black),
-                  ),
-                  Tab(
-                    icon: Icon(Icons.flare, color: Colors.black),
-                  ),
-                  Tab(
-                    icon: Icon(Icons.people_outline, color: Colors.black),
-                  ),
-                  Tab(
-                    icon: Icon(Icons.ac_unit, color: Colors.black),
-                  ),
-                  
-                ])),
-                pinned: false,
-              )
+                delegate: _SliverAppBarDelegate(TabBar(
+                    indicatorSize: TabBarIndicatorSize.label,
+                    indicatorWeight: 1.0,
+                    indicatorColor: Colors.white,
+                    labelColor: Colors.white,
+                    isScrollable: true,
+                    tabs: [
+                      Tab(
+                        text: 'Ficha Personal',
+                      ),
+                      Tab(
+                        text: 'Signos Vitales',
+                      ),
+                      Tab(
+                        text: 'Habitos',
+                      ),
+                      Tab(
+                        text: 'Consultas',
+                      ),
+                      Tab(
+                        text: 'Antecedentes Patologicos',
+                      ),
+                      Tab(
+                        text: 'Antecedentes No Patologicos',
+                      ),
+                    ])),
+                pinned: true,
+              ),
             ];
           },
           body: TabBarView(
@@ -113,35 +116,36 @@ class _VerPacienteState extends State<VerPaciente> {
                       child: Center(
                         child: Column(
                           children: <Widget>[
-                            Container(
-                              width: 10.0,
-                              height: 20.0,
-                            ),
-                            estiloLista('${widget.paciente.nombre}','Nombre del Paciente', context),
+                            estiloLista('${widget.paciente.nombre}',
+                                'Nombre del Paciente', context),
                             Divider(),
-                            estiloLista("${widget.paciente.apellidos}", 'Apellidos', context),
-                             Divider(),
-                            estiloLista("${widget.paciente.nacimiento}", 'Fecha de Nacimiento', context),
+                            estiloLista("${widget.paciente.apellidos}",
+                                'Apellidos', context),
                             Divider(),
-                            estiloLista("${widget.paciente.edad}", 'Edad', context),
+                            estiloLista("${widget.paciente.nacimiento}",
+                                'Fecha de Nacimiento', context),
                             Divider(),
-                            estiloLista("${widget.paciente.ocupacion}", 'Ocupacion', context),
+                            estiloLista(
+                                "${widget.paciente.edad}", 'Edad', context),
                             Divider(),
-                            estiloLista("${widget.paciente.sexo}", 'Sexo', context),
+                            estiloLista("${widget.paciente.ocupacion}",
+                                'Ocupacion', context),
                             Divider(),
-                           estiloLista("${widget.paciente.id}", 'Identificacion', context),
+                            estiloLista(
+                                "${widget.paciente.sexo}", 'Sexo', context),
                             Divider(),
-                          
+                            estiloLista("${widget.paciente.id}",
+                                'Identificacion', context),
+                            Divider(),
                           ],
                         ),
                       ),
                     ),
-                  ),
+                  )
                 ],
               ),
               ListaSignosVitales(
                 pacienteId: widget.paciente.id,
-                
               ),
               VerHabitos(
                 pacienteId: widget.paciente.id,
@@ -149,7 +153,8 @@ class _VerPacienteState extends State<VerPaciente> {
               ListaConsultas(
                 idPaciente: widget.paciente.id,
                 idTerapeuta: widget.idTerapeuta,
-                
+                nombrePaciente: widget.paciente.nombre,
+                apellidosPaciente: widget.paciente.apellidos,
               ),
               VerAntecPatologicos(
                 pacienteId: widget.paciente.id,
@@ -173,26 +178,24 @@ class _VerPacienteState extends State<VerPaciente> {
     );
   }
 
-  
   void _navigateToSignos(BuildContext context) async {
     await Navigator.push(
       context,
       MaterialPageRoute(
           builder: (context) => VerSignosVitales(
-      
                 pacienteId: widget.paciente.id,
               )),
     );
   }
 
-
-   Widget estiloLista(String titulo, String subtitulo,BuildContext context){
+  Widget estiloLista(String titulo, String subtitulo, BuildContext context) {
     return ListTile(
-      title: Text('$titulo',
-      style: Theme.of(context).textTheme.headline,
+      title: Text(
+        '$titulo',
+        style: Theme.of(context).textTheme.headline,
       ),
       subtitle: Text('$subtitulo'),
-    );  
+    );
   }
 }
 
@@ -210,6 +213,7 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     return new Container(
+      color: Colors.blue,
       child: _tabBar,
     );
   }
@@ -218,10 +222,4 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   bool shouldRebuild(_SliverAppBarDelegate oldDelegate) {
     return false;
   }
-
-
- 
-
-
-
 }

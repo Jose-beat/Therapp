@@ -76,6 +76,8 @@ class _ResConsultasState extends State<ResConsultas> {
                                     .set({
                                   'motivos_consulta': _motivoController.text,
                                   'paciente': widget.consultas.idPaciente,
+                                  'nombre_paciente': widget.consultas.nombre,
+                                  'apellidos_paciente': widget.consultas.apellidos,
                                   'terapeuta':widget.consultas.idTerapeuta,
                                   'fecha':_inputFieldDateController.text,
                                   'hora':_inputFieldHoraController.text
@@ -86,6 +88,8 @@ class _ResConsultasState extends State<ResConsultas> {
                                 consultasReference.push().set({
                                   'motivos_consulta': _motivoController.text,
                                   'paciente': widget.consultas.idPaciente,
+                                  'nombre_paciente': widget.consultas.nombre,
+                                  'apellidos_paciente': widget.consultas.apellidos,
                                   'terapeuta':widget.consultas.idTerapeuta,
                                   'fecha':_inputFieldDateController.text,
                                   'hora':_inputFieldHoraController.text
@@ -167,7 +171,11 @@ Widget _crearFecha(BuildContext context){
   
     if (picked != null){
       setState(() {
-        _fecha = "${picked.day} / ${picked.month} / ${picked.year}";
+        dynamic estorboDia = picked.day < 10 ? 0 : '';
+        dynamic estorboMes = picked.month < 10 ? 0 : '';
+        String _fecha = "${picked.year}-$estorboMes${picked.month}-$estorboDia${picked.day}";
+
+
         _inputFieldDateController.text = _fecha;
       });
     }

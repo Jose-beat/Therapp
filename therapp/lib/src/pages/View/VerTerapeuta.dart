@@ -21,6 +21,8 @@ final terapeutaReference =
     FirebaseDatabase.instance.reference().child('terapeuta');
 
 class _VerTerapeutaState extends State<VerTerapeuta> {
+
+  String nombres;
   signOut() async {
     try {
       await widget.auth.signOut();
@@ -90,6 +92,8 @@ class _VerTerapeutaState extends State<VerTerapeuta> {
     await terapeutaReference.child(terapeuta.id).remove().then((_) {
       setState(() {
         items.removeAt(position);
+        widget.auth.deleteUser();
+        return signOut;
       });
     });
   }
@@ -101,11 +105,15 @@ class _VerTerapeutaState extends State<VerTerapeuta> {
           builder: (context) => RegistroPerfil(
                 terapeuta: terapeuta,
                 email: terapeuta.email,
+                imagenPerfil: false,
               )),
     );
   }
 
 /*-------------------------------------FRONTEND-----------------------------*/
+
+
+
 
   Widget _filter(BuildContext context, int position) {
     print("Usuario Actual :${items[position].id}");
@@ -116,12 +124,55 @@ class _VerTerapeutaState extends State<VerTerapeuta> {
 
       return Column(
         children: <Widget>[
-          CircleAvatar(
-            radius: 70.0,
-            child: items[position].imagen == '' ? 
-            Text('No hay imagen aun') :
-            Image.network(items[position].imagen + '?alt=media')
+         /* FadeInImage(
+            fadeInCurve: Curves.bounceIn,
+            placeholder: AssetImage('assets/images/icon-app.jpeg'), 
+            image: items[position].imagen != null ?
+            NetworkImage(items[position].imagen + '?alt=media'):
+            AssetImage('assets/images/photo-null.jpeg'),
+            ),*/
+
+
+
+          Container(
+            height: 200.0,
+            width: 200.0,
+             decoration: BoxDecoration(
+                
+                      border: Border.all(
+                        color: Colors.black,
+                        width: 5.5
+                      )),
+            
+            child: FadeInImage(
+             
+              width: 150.0,
+              height: 150.0,
+              fadeInCurve: Curves.bounceIn,
+              placeholder:  AssetImage('assets/images/icon-app.jpeg'), 
+              image: items[position].imagen != null ?
+              NetworkImage(items[position].imagen + '?alt=media'):
+              AssetImage('assets/images/photo-null.jpeg'),
+              ),
+
           ),
+          
+           Container(
+                //height: 200.0,
+                width: 200.0,
+                decoration: BoxDecoration(
+                      color: Colors.black,
+                      border: Border.all(
+                        color: Colors.black
+                      )),
+
+                
+              ),
+           
+           /* child: items[position].imagen == '' ? 
+            Text('No hay imagen aun') :
+            Image.network(items[position].imagen + '?alt=media')*/
+          
           Divider(
             height: 7.0,
           ),
@@ -150,6 +201,7 @@ class _VerTerapeutaState extends State<VerTerapeuta> {
               ],
             ),
           ),
+         
           Divider(),
           _lista('Fecha de Nacimiento', items[position].nacimiento, context, position),
           Divider(),
@@ -182,6 +234,7 @@ class _VerTerapeutaState extends State<VerTerapeuta> {
     );
   }
 
+
   Widget _delete(BuildContext context, Terapeuta terapeuta, int position) {
     return ListTile(
       
@@ -194,12 +247,37 @@ class _VerTerapeutaState extends State<VerTerapeuta> {
           ],
         ),
       ),
-      onTap: () {
-        _deleteTerapeuta(context, items[position], position);
-        widget.auth.deleteUser();
-        return signOut;
-      },
+      onTap: () => _confirmacion(context,items[position],position),
     );
+  }
+
+
+  void _confirmacion(BuildContext context, Terapeuta terapeuta, int position){
+    showDialog(
+      context: context,
+      builder: (BuildContext context){
+        return AlertDialog(
+          title: Text('¿Esta seguro de eliminar su perfil?'),
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(
+                Icons.delete
+              ),
+              onPressed: ()=> _deleteTerapeuta(context, items[position], position),
+             
+            ),
+            FlatButton(
+              child: Text('Cancelar'),
+              onPressed: (){
+                Navigator.pop(context);
+              },
+            )
+          ],
+        );
+
+      }
+
+      );
   }
 
 

@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 
 
 import 'package:firebase_database/firebase_database.dart';
+import 'package:table_calendar/table_calendar.dart';
+import 'package:therapp/src/models/Paciente.dart';
 
 
 import 'package:therapp/src/models/consultas.dart';
@@ -20,28 +22,140 @@ class ConsultasActuales extends StatefulWidget {
 }
 
 final consultasReference = FirebaseDatabase.instance.reference().child('Consultas');
- 
+
 
 class _ConsultasActualesState extends State<ConsultasActuales> {
+  CalendarController _calendarController;
+  Map<DateTime,List<dynamic>> _consultas;
+  TextEditingController _consultaController;
+  List<dynamic> _selectedEvents;
+  
+
+
+
 /*-------------------------------------------------------ATRIBUTOS DE BASE DE DATOS---------------------------------------------*/
   StreamSubscription<Event> _onConsultaAddedSubscription;
   StreamSubscription<Event> _onConsultaChangedSubscription;
 
 
- dynamic _filter(BuildContext context, int position) {
 
+    @override
+  void initState() {
+ 
+  
+    super.initState();
+    final _selectedDay = DateTime.now();
+    items = new List();
+    itemPaciente = new List();
+    _onConsultaAddedSubscription =
+        consultasReference.onChildAdded.listen(_onConsultasAdded);
+    _onConsultaChangedSubscription =
+        consultasReference.onChildChanged.listen(_onConsultasUpdate);
+
+     
+
+    _calendarController = CalendarController();
+    _consultas = {};
+    _consultaController = TextEditingController();
+    _selectedEvents = [];
+  }
+
+
+
+
+
+
+
+ dynamic _filter(BuildContext context, int position) {
+   print('TERAPEUTA1: ${items[position].idTerapeuta}');
+   print('TERAPEUTA2: ${widget.idTerapeuta}');
+ 
     if (items[position].idTerapeuta == widget.idTerapeuta) {
      
+
+
+
+  
+         DateTime dia = DateTime.parse('${items[position].fechaConsulta}');
+         print(dia);
+        
+
+        if(_consultas[dia]!=null){
+                  _consultas[dia].add(
+                      Card(
+                  child: Column(
+                    children: <Widget>[
+                      Text('${items[position].fechaConsulta}'),
+                      Text('${items[position].horaConsulta}'),
+                      Text('${items[position].nombre} ${items[position].nombre}'),
+                    ],
+                  ),
+                )
+                  );
+                }
+                else{
+                  _consultas[dia] = [
+                    Card(
+                  child: Column(
+                    children: <Widget>[
+                      Text('${items[position].fechaConsulta}'),
+                      Text('${items[position].horaConsulta}'),
+                      Text('${items[position].nombre} ${items[position].nombre}'),
+                    ],
+                  ),
+                )];
+                }
+
+        
+        
+         
+         print(_consultas);
+
+
+
+     
+       
+                
+            
+                 
+   
+        
+            
+          
+               
+               
+     
+            
+    
+      
       print('WE NO MAMES ESTA ES LA ID DE LA CONSULTA ${items[position].id}');
+     
       print('MOTIVOS ${items[position].motivos}');
       print('PACIENTE: ${items[position].idPaciente} ${widget.idPaciente}');
+      print('VFRNVJNVL ${items[position].nombre}');
       print('TERAPEUTA: ${items[position].idTerapeuta}');
+      return Container(
+         
+              child: Column(
+                children: <Widget>[
+                  Divider(
 
+                  ),
+                   Text('${items[position].fechaConsulta}'),
+                    Text('${items[position].horaConsulta}'),
+                    Text('${items[position].nombre} ${items[position].nombre}'),
+                  
+        
+
+        
+                ],
+              ),
+      );
        
     } else {
       return Container(
-        width: 0.0,
-        height: 0.0,
+        width: 100.0,
+        height: 100.0,
       );
     }
 
@@ -55,18 +169,7 @@ class _ConsultasActualesState extends State<ConsultasActuales> {
 
 
 
-  @override
-  void initState() {
- 
-  
-    super.initState();
-    items = new List();
-    _onConsultaAddedSubscription =
-        consultasReference.onChildAdded.listen(_onConsultasAdded);
-    _onConsultaChangedSubscription =
-        consultasReference.onChildChanged.listen(_onConsultasUpdate);
-        
-  }
+
 
   @override
   void dispose() {
@@ -75,7 +178,7 @@ class _ConsultasActualesState extends State<ConsultasActuales> {
     _onConsultaChangedSubscription.cancel();
   
   }
-
+  List<Paciente>itemPaciente;
   List<Consultas> items;
 
   
@@ -84,17 +187,89 @@ class _ConsultasActualesState extends State<ConsultasActuales> {
 
   @override
   Widget build(BuildContext context) {
-        
+    
      return Scaffold(
-        body: Container(
+        body: ListView.builder(
+          itemCount: items.length,
+          itemBuilder:(context, position){
+            if (position == 0) {
+               return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
 
+              TableCalendar(
+                onDaySelected: (date,consultas){
+                  setState(() {
+                    _selectedEvents =consultas;
+                    print(_selectedEvents);
+                  });
+                },
+                events: _consultas,
+                locale: 'es_MX',
+                calendarController: _calendarController,
+                
+
+
+
+                calendarStyle: CalendarStyle(
+                  todayColor: Colors.green,
+                  selectedColor: Colors.orange
+                ),
+                ),
+                ..._selectedEvents.map((event) => Container(
+                  child: event,
+                ))
+            ],
+
+            
+          );
+              
+            } else {
+              return _filter(context,position);
+
+            }
+          }
+          
         ),
+        /*
+        floatingActionButton: FloatingActionButton(
+          child: Icon(Icons.add),
+          onPressed:  _showAddDialog,
+        ),*/
      );
-
-      
+   
   }
-
-  
+/*
+   _showAddDialog(){
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          content: TextField(
+            controller: _consultaController,
+          ),
+          actions: <Widget>[
+            FlatButton(
+              onPressed: (){
+                if(_consultaController.text.isEmpty) return;
+                setState(() {
+                  if(_consultas[_calendarController.selectedDay]!=null){
+                  _consultas[_calendarController.selectedDay].add(_consultaController.text);
+                }
+                else{
+                  _consultas[_calendarController.selectedDay] = [_consultaController.text];
+                }
+                _consultaController.clear();
+                Navigator.pop(context);
+                });
+                
+              }, 
+              child: Text('Save')
+              )
+          ],
+        )
+        );
+    }*/
+      
 
   
  
@@ -117,6 +292,7 @@ class _ConsultasActualesState extends State<ConsultasActuales> {
     });
   }
 
+     
   void _navigateToConsultas(BuildContext context, Consultas consultas) async {
     await Navigator.push(
         context,
@@ -127,6 +303,8 @@ class _ConsultasActualesState extends State<ConsultasActuales> {
           ),
         ));
   }
+
+  
 }
 
 

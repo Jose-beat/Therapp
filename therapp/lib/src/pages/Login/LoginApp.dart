@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:therapp/src/models/Terapeuta.dart';
 import 'package:therapp/src/pages/Register/RegistroPerfil.dart';
@@ -14,8 +16,13 @@ class LoginSignupPage extends StatefulWidget {
 }
 
 class _LoginSignupPageState extends State<LoginSignupPage> {
+  
+  Color colorRegistro = Colors.orange;
+  String iniciar = 'Iniciar Sesion';
+  String indicacion = 'Inicia sesion';
   TextEditingController correo;
-
+  bool _oscurecido = true;
+  Widget ojos = Icon(Icons.visibility);
   final _formKey = new GlobalKey<FormState>();
   String _key;
   String _email;
@@ -24,7 +31,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
 
   bool _isLoginForm;
   bool _isLoading;
-
+  double logo = 30.0;
   // Check if form is valid before perform login or signup
   bool validateAndSave() {
     final form = _formKey.currentState;
@@ -44,6 +51,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                   terapeuta: Terapeuta(userId, '', '', '','', email, '', '', '',''),
                   id: userId,
                   email: email,
+                  imagenPerfil: true,
                 )));
   }
 
@@ -88,6 +96,9 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
 
   @override
   void initState() {
+    colorRegistro = Colors.orange;
+    iniciar = 'Iniciar Sesion';
+    indicacion = 'Registrate';
     _errorMessage = "";
     _isLoading = false;
     _isLoginForm = true;
@@ -103,15 +114,26 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
     resetForm();
     setState(() {
       _isLoginForm = !_isLoginForm;
+      colorRegistro = _isLoginForm ? Colors.orange:Colors.teal[300];
+      indicacion = _isLoginForm ?  'Inicia Sesion' :'Registrate'  ;
+
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    
     return new Scaffold(
-        appBar: new AppBar(
-          title: new Text('Flutter login demo'),
+      appBar: AppBar(
+        title: Text(indicacion,
+        style: TextStyle(
+          fontSize: 15.0
         ),
+        ),
+       
+        backgroundColor: colorRegistro,
+        elevation: 0.0,
+      ),
         body: Stack(
           children: <Widget>[
             _showForm(),
@@ -154,7 +176,9 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
 //  }
 
   Widget _showForm() {
+    
     return new Container(
+  
         padding: EdgeInsets.all(16.0),
         child: new Form(
           key: _formKey,
@@ -165,22 +189,29 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
               showEmailInput(),
               showPasswordInput(),
               showPrimaryButton(),
+              Container(
+                width: 30.0,
+                height: 30.0,
+              ),
               showSecondaryButton(),
-              showErrorMessage(),
+              showErrorMessage(context),
+              
+              
             ],
           ),
         ));
   }
 
-  Widget showErrorMessage() {
+  Widget showErrorMessage(BuildContext context){
     if (_errorMessage.length > 0 && _errorMessage != null) {
+      
       return new Text(
         _errorMessage,
         style: TextStyle(
             fontSize: 13.0,
             color: Colors.red,
             height: 1.0,
-            fontWeight: FontWeight.w300),
+            fontWeight: FontWeight.w500),
       );
     } else {
       return new Container(
@@ -190,14 +221,14 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
   }
 
   Widget showLogo() {
-    return new Hero(
+    return Hero(
       tag: 'hero',
       child: Padding(
-        padding: EdgeInsets.fromLTRB(0.0, 70.0, 0.0, 0.0),
+        padding: EdgeInsets.fromLTRB(0.0, 30.0, 0.0, 0.0),
         child: CircleAvatar(
           backgroundColor: Colors.transparent,
-          radius: 48.0,
-          child: Image.asset('assets/flutter-icon.png'),
+          radius: 88.0,
+          child: Image.asset('assets/images/icon-app.jpeg'),
         ),
       ),
     );
@@ -207,17 +238,25 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
     return Padding(
       padding: const EdgeInsets.fromLTRB(0.0, 100.0, 0.0, 0.0),
       child: new TextFormField(
+        
         controller: correo,
         maxLines: 1,
         keyboardType: TextInputType.emailAddress,
         autofocus: false,
         decoration: new InputDecoration(
-            hintText: 'Email',
-            icon: new Icon(
+            filled: true,
+            fillColor: Colors.grey[200],
+            hintText: 'Correo Electronico',
+            border: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: Colors.green
+              ),
+              borderRadius: BorderRadius.circular(0.0)),
+            prefixIcon: new Icon(
               Icons.mail,
               color: Colors.grey,
             )),
-        validator: (value) => value.isEmpty ? 'Email can\'t be empty' : null,
+        validator: (value) => value.isEmpty ? 'Correo invalido' : null,
         onSaved: (value) => _email = value.trim(),
       ),
     );
@@ -227,16 +266,32 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
     return Padding(
       padding: const EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
       child: new TextFormField(
+      
         maxLines: 1,
-        obscureText: true,
+        obscureText: _oscurecido,
         autofocus: false,
         decoration: new InputDecoration(
-            hintText: 'Password',
-            icon: new Icon(
+          
+          filled: true,
+          fillColor: Colors.grey[200],
+          suffixIcon: GestureDetector(
+            child: _oscurecido == true ? ojos: Icon(Icons.visibility_off),
+            onTap: (){
+              setState(() {
+                _oscurecido = !_oscurecido;
+              
+              });
+            },
+          ),
+           border: OutlineInputBorder(borderRadius: BorderRadius.circular(0.0)),
+            hintText: 'Contraseña',
+            prefixIcon:new Icon(
               Icons.lock,
               color: Colors.grey,
-            )),
-        validator: (value) => value.isEmpty ? 'Password can\'t be empty' : null,
+            ) ,
+            
+            ),
+        validator: (value) => value.isEmpty ? 'Contraseña invalida' : null,
         onSaved: (value) => _password = value.trim(),
       ),
     );
@@ -245,8 +300,8 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
   Widget showSecondaryButton() {
     return new FlatButton(
         child: new Text(
-            _isLoginForm ? 'Create an account' : 'Have an account? Sign in',
-            style: new TextStyle(fontSize: 18.0, fontWeight: FontWeight.w300)),
+            _isLoginForm ? '¿Primer vez? Crea una Cuenta' : '¿Tienes cuenta?\nEntonces Inicia Sesion',
+            style: new TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500)),
         onPressed: toggleFormMode);
   }
 
@@ -258,11 +313,20 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
           child: new RaisedButton(
               elevation: 5.0,
               shape: new RoundedRectangleBorder(
-                  borderRadius: new BorderRadius.circular(30.0)),
-              color: Colors.blue,
-              child: new Text(_isLoginForm ? 'Login' : 'Create account',
+                  borderRadius: new BorderRadius.circular(10.0)),
+              color: _isLoginForm ? Colors.orange:Colors.teal[300],
+              child: new Text(_isLoginForm ? 'Iniciar Sesion' : 'Crear Cuenta',
                   style: new TextStyle(fontSize: 20.0, color: Colors.white)),
               onPressed: validateAndSubmit),
         ));
   }
+
+
+
+
+
+
+
+  
+  
 }
