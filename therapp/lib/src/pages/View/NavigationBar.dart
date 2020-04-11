@@ -1,6 +1,11 @@
+import 'dart:async';
+
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:therapp/src/models/Paciente.dart';
+import 'package:therapp/src/models/Terapeuta.dart';
 import 'package:therapp/src/pages/Register/RegistrarPaciente.dart';
+import 'package:therapp/src/pages/Register/RegistroPerfil.dart';
 import 'package:therapp/src/pages/View/Calendar.dart';
 import 'package:therapp/src/pages/View/Configure.dart';
 import 'package:therapp/src/pages/View/HomePage.dart';
@@ -27,10 +32,38 @@ class NavigationAppBar extends StatefulWidget {
   _NavigationAppBarState createState() => _NavigationAppBarState();
 }
 
-
+final terapeutaReference =
+    FirebaseDatabase.instance.reference().child('terapeuta');
+    
 enum WhyFarther { harder, smarter, selfStarter, tradingCharter }
 
 class _NavigationAppBarState extends State<NavigationAppBar> {
+  
+  StreamSubscription<Event> _onTerapeutaAddedSubscription;
+  StreamSubscription<Event> _onTerapeutaChangedSubscription;
+  List<Terapeuta> items;
+  String imagenTerapeuta;
+  @override
+  void initState() {
+    super.initState();
+    items = new List();
+    _onTerapeutaAddedSubscription =
+        terapeutaReference.onChildAdded.listen(_onTerapeutaAdded);
+    _onTerapeutaChangedSubscription =
+        terapeutaReference.onChildChanged.listen(_onTerapeutaUpdated);
+        
+    
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _onTerapeutaAddedSubscription.cancel();
+    _onTerapeutaChangedSubscription.cancel();
+  }
+  
+
   String titulo = 'Lista de pacientes';
    WhyFarther _onSelected;
 
@@ -74,6 +107,12 @@ class _NavigationAppBarState extends State<NavigationAppBar> {
         userId: widget.userId,
       ),
 
+      VerTerapeuta(
+        activado: false,
+        userId: widget.userId,
+        auth: widget.auth,
+        logoutCallback: widget.logoutCallback,
+      )
 
     ];
 
@@ -84,21 +123,31 @@ class _NavigationAppBarState extends State<NavigationAppBar> {
     return MaterialApp(
       themeMode: ThemeMode.dark,
           home: Scaffold(
+
+          drawer: Drawer(
+            child: ListView.builder(
+              itemCount: items.length,
+              itemBuilder: (context,position){
+                 return _filter(context, position);
+              },
+            ),
+          ),
           appBar: AppBar(
             elevation: 0.0,
             title: Text(titulo),
             backgroundColor: Colors.orange,
-            leading: Builder(
-              builder: (BuildContext context) {
-                return perfil();
-              },
-            ), 
+         
+            
             actionsIconTheme: IconThemeData(
               color: Colors.black
             ),
             actions: <Widget>[
             
-              FlatButton(onPressed: signOut, child: Text('Cerrar Sesion')),
+             // FlatButton(onPressed: signOut, child: Text('Cerrar Sesion')),
+            Image.asset('assets/images/icon-app.jpeg',
+              height: 35.0,
+              width: 35.0,
+            )
            
             ],
           ),
@@ -138,7 +187,12 @@ class _NavigationAppBarState extends State<NavigationAppBar> {
                     'Añadir Paciente',
                     style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
                   )),
-             
+               BottomNavigationBarItem(
+                  icon: Icon(Icons.local_gas_station, color: Colors.grey,  size: 20.5,),
+                  title: Text(
+                    'Añadir Paciente',
+                    style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
+                  )),
             ],
             /*Ejecucion del metodo que incrementa la variable index que controla la posicion de las paginas en la pantalla principal */
             onTap: (index) {
@@ -168,24 +222,8 @@ class _NavigationAppBarState extends State<NavigationAppBar> {
 
 
 /*---------------BOTON DE PERFIL--------------------------------*/
-Widget perfil(){
-  return    IconButton(
-             
-             icon: Icon(Icons.supervised_user_circle),
-                
-              padding: EdgeInsets.all(0.0),
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => VerTerapeuta(
-                              userId: widget.userId,
-                              auth: widget.auth,
-                              logoutCallback: widget.logoutCallback,
-                            )));
-              },
-            );
-}
+    
+
 
 void titulos(int posicion){
   switch (posicion) {
@@ -209,8 +247,143 @@ void titulos(int posicion){
   }
 }
 
+Widget _header(){
+  return DrawerHeader(
+      margin: EdgeInsets.zero,
+      padding: EdgeInsets.zero,
+      decoration: BoxDecoration(
+          image: DecorationImage(
+              fit: BoxFit.cover,
+              image:  AssetImage('assets/images/icon-app.jpeg'))),
+      child: Stack(children: <Widget>[
+        Positioned(
+            bottom: 12.0,
+            left: 16.0,
+            child: Text("TherApp",
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 20.0,
+                    fontWeight: FontWeight.w500))),
+      ]));
+}
+
+
+
 /*-------------------------------------OPCIONES DESPLEGABLES----------------------------*/
 
 
+/*-------------------------------------------------------BACKEND--------------------------------------- */
+
+  void _onTerapeutaAdded(Event event) {
+    setState(() {
+      items.add(new Terapeuta.fromSnapshot(event.snapshot));
+    });
+  }
+
+  void _onTerapeutaUpdated(Event event) {
+    var oldTerapeutaValue =
+        items.singleWhere((terapeuta) => terapeuta.id == event.snapshot.key);
+    setState(() {
+      items[items.indexOf(oldTerapeutaValue)] =
+          new Terapeuta.fromSnapshot(event.snapshot);
+    });
+  }
+
+  void _deleteTerapeuta(
+      BuildContext context, Terapeuta terapeuta, int position) async {
+    await terapeutaReference.child(terapeuta.id).remove().then((_) {
+      setState(() {
+        items.removeAt(position);
+        widget.auth.deleteUser();
+        return signOut;
+      });
+    });
+  }
+
+  void _navigateToTerapeuta(BuildContext context, Terapeuta terapeuta) async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => RegistroPerfil(
+                terapeuta: terapeuta,
+                email: terapeuta.email,
+                imagenPerfil: false,
+              )),
+    );
+  }
+
+/*-------------------------------------FRONTEND-----------------------------*/
+
+  Widget _filter(BuildContext context, int position) {
+    print("Usuario Actual :${items[position].id}");
+    print("USER ID: ${widget.userId}");
+
+    if (items[position].id == widget.userId) {
+      print('${items[position].id}');
+
+      return Column(
+        children: <Widget>[
+        
+          UserAccountsDrawerHeader(
+          accountName: Text("${items[position].nombre} ${items[position].apellidos}"),
+          accountEmail: Text("${items[position].email}"),
+          currentAccountPicture: ClipOval(
+           
+            child: FadeInImage(
+                fit:BoxFit.cover,
+                width: 150.0,
+                height: 150.0,
+                fadeInCurve: Curves.bounceIn,
+                placeholder:  AssetImage('assets/images/icon-app.jpeg'), 
+                image: items[position].imagen != null ?
+                NetworkImage(items[position].imagen + '?alt=media'):
+                AssetImage('assets/images/photo-null.jpeg'),
+                ),
+          ),
+),
+
+        ListTile(
+             
+             title: Text('Perfil de usuario'),
+                
+             
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => VerTerapeuta(
+                          activado: true,
+                              userId: widget.userId,
+                              auth: widget.auth,
+                              logoutCallback: widget.logoutCallback,
+                            )));
+              },
+            ),
+
+            Divider(
+            height: 7.0,
+          ),
+        ListTile(
+             
+             title: Text('Cerrar Sesion'),
+                
+             
+              onTap:signOut
+            ),
+
+
+          Divider(
+            height: 7.0,
+          ),
+          
+        ],
+      );
+    } else {
+      return Container(
+        width: 0.0,
+        height: 0.0,
+      );
+    }
+  }
 
 }

@@ -9,8 +9,9 @@ import 'package:therapp/src/providers/authentApp.dart';
 class VerTerapeuta extends StatefulWidget {
   final BaseAuth auth;
   final String userId;
+  bool activado = true;
   final VoidCallback logoutCallback;
-  VerTerapeuta({Key key, this.userId, this.auth, this.logoutCallback})
+  VerTerapeuta({Key key, this.userId, this.auth, this.logoutCallback,this.activado})
       : super(key: key);
 
   @override
@@ -59,9 +60,9 @@ class _VerTerapeutaState extends State<VerTerapeuta> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: Text('Perfil'),
-        ),
+        appBar: widget.activado ?  AppBar(
+          title: Text('Perfil') 
+        ) : null,
         body: ListView.builder(
           itemCount: items.length,
           itemBuilder: (context, position) {
