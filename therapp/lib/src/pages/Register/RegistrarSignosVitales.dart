@@ -56,11 +56,39 @@ class _RegistroSignosVitalesState extends State<RegistroSignosVitales> {
                   key: _formKey,
                                   child: Column(
                     children: <Widget>[
-                      cardiacOption(),
-                      respiratoryOption(),
-                      pesoOption(),
-                      tallaOption(),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Column(
+                            children: <Widget>[
+                              _crearCardiaco(context),
+                              Divider(),
+                              _crearRespiracion(context),
+                              Divider(),
+                              _crearPeso(context),
+                              Divider(),
+                              _crearTalla(context),
+                              Divider(),
+
+                            ],
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: <Widget>[
+                              cardiacOption(),
+                     
+                              respiratoryOption(),
+                             
+                              pesoOption(),
+                          
+                              tallaOption(),
+                            ],
+                          )
+                        ],
+                      ),
+                      
                       _crearFecha(context),
+                      Divider(),
                       _crearHora(context),
 
 
@@ -110,87 +138,179 @@ class _RegistroSignosVitalesState extends State<RegistroSignosVitales> {
     );
   }
 
+Widget _crearCardiaco(BuildContext context){
+    _fcController.text = frecuenciaCardiActual;
+    return  Container(
+      width: 150.0,
+      child: TextFormField(
+          validator: (value){
+            value=_fcController.text;
+            if(value.isEmpty){
+              return 'Favor de añadir la fecha';
+            }
+          },
+          //Pasamos la fecha por aqui
+          controller: _fcController,
+          //Desactivamos la accion interactiva
+          enableInteractiveSelection: false,
+         //Añadir estilo a la caja de texto
+          decoration: decoracion('Fc', Icons.calendar_today),
+            
+            //Sera un texto original en la caja
+         
+   
+             
+          
+           
+        ),
+    );
+    
+
+}
+
   Widget cardiacOption() {
-    return DropdownButton<String>(
-      value: frecuenciaCardiActual,
-      icon: Icon(Icons.arrow_downward),
-      iconSize: 24,
-      elevation: 16,
-      style: TextStyle(color: Colors.deepPurple),
-      underline: Container(
-        height: 2,
-        color: Colors.deepPurpleAccent,
+    return Container(
+      margin: EdgeInsets.fromLTRB(0, 0, 0, 30),
+      child: DropdownButton<String>(
+        value: frecuenciaCardiActual,
+        //icon: Icon(Icons.arrow_downward),
+        iconSize: 24,
+        elevation: 16,
+        style: TextStyle(color: Colors.deepPurple),
+        underline: Container(
+          
+          height: 2,
+          color: Colors.deepPurpleAccent,
+        ),
+        onChanged: (String newValue) {
+          setState(() {
+            frecuenciaCardiActual = newValue;
+          });
+        },
+        items: <String>[
+          '70 - 190',
+          '80 - 160',
+          '80 - 130',
+          '80 - 120',
+          '75 - 115',
+          '70 - 110',
+          '60 - 100'
+        ].map<DropdownMenuItem<String>>((dynamic value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value),
+          );
+        }).toList(),
       ),
-      onChanged: (String newValue) {
-        setState(() {
-          frecuenciaCardiActual = newValue;
-        });
-      },
-      items: <String>[
-        '70 - 190',
-        '80 - 160',
-        '80 - 130',
-        '80 - 120',
-        '75 - 115',
-        '70 - 110',
-        '60 - 100'
-      ].map<DropdownMenuItem<String>>((dynamic value) {
-        return DropdownMenuItem<String>(
-          value: value,
-          child: Text(value),
-        );
-      }).toList(),
     );
   }
 
+
+Widget _crearRespiracion(BuildContext context){
+  _frController.text =  frecuenciaRespiratoryActual;
+    return  Container(
+     width: 150.0,
+      child: TextFormField(
+          validator: (value){
+            value=_frController.text;
+            if(value.isEmpty){
+              return 'Favor de añadir la fecha';
+            }
+          },
+          //Pasamos la fecha por aqui
+          controller: _frController,
+          //Desactivamos la accion interactiva
+          enableInteractiveSelection: false,
+         //Añadir estilo a la caja de texto
+          decoration: decoracion('FC', Icons.calendar_today),
+
+        ),
+    );
+    
+
+}
   Widget respiratoryOption() {
-    return DropdownButton<String>(
-      value: frecuenciaRespiratoryActual,
-      icon: Icon(Icons.arrow_downward),
-      iconSize: 24,
-      elevation: 16,
-      style: TextStyle(color: Colors.deepPurple),
-      underline: Container(
-        height: 2,
-        color: Colors.deepPurpleAccent,
+    return Container(
+            margin: EdgeInsets.fromLTRB(0, 0, 0, 30),
+      child: DropdownButton<String>(
+        value: frecuenciaRespiratoryActual,
+        icon: Icon(Icons.arrow_downward),
+        iconSize: 24,
+        elevation: 16,
+        style: TextStyle(color: Colors.deepPurple),
+        underline: Container(
+          height: 2,
+          color: Colors.deepPurpleAccent,
+        ),
+        onChanged: (String newValue) {
+          setState(() {
+            frecuenciaRespiratoryActual = newValue;
+          });
+        },
+        items: <String>['30 - 80', '20 - 40', '20 - 30', '20 - 25', '15 - 20']
+            .map<DropdownMenuItem<String>>((dynamic value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value),
+          );
+        }).toList(),
       ),
-      onChanged: (String newValue) {
-        setState(() {
-          frecuenciaRespiratoryActual = newValue;
-        });
-      },
-      items: <String>['30 - 80', '20 - 40', '20 - 30', '20 - 25', '15 - 20']
-          .map<DropdownMenuItem<String>>((dynamic value) {
-        return DropdownMenuItem<String>(
-          value: value,
-          child: Text(value),
-        );
-      }).toList(),
     );
   }
 
+
+Widget _crearPeso(BuildContext context){
+  _pesoController.text = peso.toString();
+    return  Container(
+      width: 150.0,
+      child: TextFormField(
+          validator: (value){
+            value=_pesoController.text;
+            if(value.isEmpty){
+              return 'Favor de añadir la fecha';
+            }
+          },
+          //Pasamos la fecha por aqui
+          controller: _pesoController,
+          //Desactivamos la accion interactiva
+          enableInteractiveSelection: false,
+         //Añadir estilo a la caja de texto
+          decoration: decoracion('Peso', Icons.calendar_today),
+            
+            //Sera un texto original en la caja
+         
+   
+            
+        ),
+    );
+    
+
+}
   Widget pesoOption() {
-    return DropdownButton<int>(
-      value: peso,
-      icon: Icon(Icons.arrow_downward),
-      iconSize: 24,
-      elevation: 16,
-      style: TextStyle(color: Colors.deepPurple),
-      underline: Container(
-        height: 2,
-        color: Colors.deepPurpleAccent,
+    return Container(
+            margin: EdgeInsets.fromLTRB(0, 0, 0, 50),
+      child: DropdownButton<int>(
+        value: peso,
+        icon: Icon(Icons.arrow_downward),
+        iconSize: 24,
+        elevation: 16,
+        style: TextStyle(color: Colors.deepPurple),
+        underline: Container(
+          height: 2,
+          color: Colors.deepPurpleAccent,
+        ),
+        onChanged: (int newValue) {
+          setState(() {
+            peso = newValue;
+          });
+        },
+        items: pesos().map<DropdownMenuItem<int>>((dynamic value) {
+          return DropdownMenuItem<int>(
+            value: value,
+            child: Text('$value'),
+          );
+        }).toList(),
       ),
-      onChanged: (int newValue) {
-        setState(() {
-          peso = newValue;
-        });
-      },
-      items: pesos().map<DropdownMenuItem<int>>((dynamic value) {
-        return DropdownMenuItem<int>(
-          value: value,
-          child: Text('$value'),
-        );
-      }).toList(),
     );
   }
 
@@ -204,29 +324,63 @@ class _RegistroSignosVitalesState extends State<RegistroSignosVitales> {
     return peso;
   }
 
+  
+Widget _crearTalla(BuildContext context){
+    _tallaController.text = talla;
+    return  Container(
+      width: 150.0,
+      child: TextFormField(
+          validator: (value){
+            value=_tallaController.text;
+            if(value.isEmpty){
+              return 'Favor de añadir la fecha';
+            }
+          },
+          //Pasamos la fecha por aqui
+          controller: _tallaController,
+          //Desactivamos la accion interactiva
+          enableInteractiveSelection: false,
+         //Añadir estilo a la caja de texto
+          decoration: decoracion('Fecha de captura', Icons.calendar_today),
+            
+            //Sera un texto original en la caja
+         
+   
+             
+          
+      
+        ),
+    );
+    
+
+}
+
   Widget tallaOption() {
-    return DropdownButton<String>(
-      value: talla,
-      icon: Icon(Icons.arrow_downward),
-      iconSize: 24,
-      elevation: 16,
-      style: TextStyle(color: Colors.deepPurple),
-      underline: Container(
-        height: 2,
-        color: Colors.deepPurpleAccent,
+    return Container(
+            margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
+      child: DropdownButton<String>(
+        value: talla,
+        icon: Icon(Icons.arrow_downward),
+        iconSize: 24,
+        elevation: 16,
+        style: TextStyle(color: Colors.deepPurple),
+        underline: Container(
+          height: 2,
+          color: Colors.deepPurpleAccent,
+        ),
+        onChanged: (String newValue) {
+          setState(() {
+            talla = newValue;
+          });
+        },
+        items: <String>['XS', 'S', 'M', 'L', 'XL', 'XXL']
+            .map<DropdownMenuItem<String>>((dynamic value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value),
+          );
+        }).toList(),
       ),
-      onChanged: (String newValue) {
-        setState(() {
-          talla = newValue;
-        });
-      },
-      items: <String>['XS', 'S', 'M', 'L', 'XL', 'XXL']
-          .map<DropdownMenuItem<String>>((dynamic value) {
-        return DropdownMenuItem<String>(
-          value: value,
-          child: Text(value),
-        );
-      }).toList(),
     );
   }
 
@@ -245,18 +399,10 @@ Widget _crearFecha(BuildContext context){
         //Desactivamos la accion interactiva
         enableInteractiveSelection: false,
        //Añadir estilo a la caja de texto
-        decoration: InputDecoration(
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(20.0),
-          ),
+        decoration: decoracion('Fecha de captura', Icons.calendar_today),
           
           //Sera un texto original en la caja
-          hintText: 'Fecha de nacimiento',
-          //Sera el titulo de nuestra caja
-          labelText: 'Fecha de nacimiento',
-          suffixIcon: Icon(Icons.calendar_today),
-          icon: Icon(Icons.calendar_view_day),  
-          ),
+       
    
            
         
@@ -319,18 +465,10 @@ Widget _crearFecha(BuildContext context){
       //Desactivamos la accion interactiva
       enableInteractiveSelection: false,
      //Añadir estilo a la caja de texto
-      decoration: InputDecoration(
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20.0),
-        ),
-        
+      decoration: decoracion('Hora de captura',Icons.hourglass_empty),
+
         //Sera un texto original en la caja
-        hintText: 'Fecha de nacimiento',
-        //Sera el titulo de nuestra caja
-        labelText: 'Fecha de nacimiento',
-        suffixIcon: Icon(Icons.calendar_today),
-        icon: Icon(Icons.calendar_view_day),  
-        ),
+      
    
          
       
@@ -365,14 +503,19 @@ Widget _crearFecha(BuildContext context){
 
 InputDecoration decoracion(String nombre, IconData icono){
   return InputDecoration(
+    
+    border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(0.0),
+        ),
             filled: true,
             fillColor: Colors.grey[200],
-            hintText: 'Nombre',
+            hintText: nombre,
             prefixIcon: new Icon(
-              Icons.person,
+              icono,
               color: Colors.grey,
             ));
 }
+
 
 
 

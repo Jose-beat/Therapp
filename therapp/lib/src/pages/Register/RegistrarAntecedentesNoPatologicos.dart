@@ -49,8 +49,7 @@ class _ResAntecedentesNoPatologicosState
                         TextFormField(
                           controller: _enfermedadController,
                           style: TextStyle(fontSize: 17.0, color: Colors.pink),
-                          decoration: InputDecoration(
-                              icon: Icon(Icons.archive), labelText: 'Enfermedad'),
+                          decoration: decoracion('Enfermedad',Icons.accessibility_new),
                              validator: (value){
                               value=_enfermedadController.text;
                             if(value.isEmpty){
@@ -92,4 +91,19 @@ class _ResAntecedentesNoPatologicosState
           ],
         ));
   }
+
+  InputDecoration decoracion(String nombre, IconData icono){
+  return InputDecoration(
+    
+    border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(0.0),
+        ),
+            filled: true,
+            fillColor: Colors.grey[200],
+            hintText: nombre,
+            prefixIcon: new Icon(
+              icono,
+              color: Colors.grey,
+            ));
+}
 }

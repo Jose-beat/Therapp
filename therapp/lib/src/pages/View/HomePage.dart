@@ -86,9 +86,7 @@ class _HomePageState extends State<HomePage>
           
             children:<Widget>[
             
-             Center(
-               child: _progresoCircular(),
-             ),
+           
            
             ListView.builder(
               itemCount: items.length,
@@ -100,7 +98,9 @@ class _HomePageState extends State<HomePage>
                  },
                 ), 
             
-
+                Center(
+               child: _progresoCircular(),
+             ),
               
                
             ]
@@ -238,7 +238,7 @@ Widget _paciente(BuildContext context, int position){
                      ),
                       FlatButton(
                          color: Colors.blue,
-                     onPressed: ()=> _navigateToPaciente(context, items[position],widget.userId), 
+                     onPressed: ()=> _changePacienteInformation(context,items[position]),
                      child: Text('Editar Expediente')
                      )
 

@@ -53,9 +53,7 @@ class _ResConsultasState extends State<ResConsultas> {
                         TextFormField(
                           controller: _motivoController,
                           style: TextStyle(fontSize: 17.0, color: Colors.orange),
-                          decoration: InputDecoration(
-                              icon: Icon(Icons.event_note),
-                              labelText: 'Motivo de consukta'),
+                          decoration: decoracion('Motivo de consulta',Icons.calendar_today),
                                validator: (value){
                               value=_motivoController.text;
                             if(value.isEmpty){
@@ -126,26 +124,15 @@ Widget _crearFecha(BuildContext context){
       //Desactivamos la accion interactiva
       enableInteractiveSelection: false,
      //Añadir estilo a la caja de texto
-      decoration: InputDecoration(
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20.0),
-        ),
-        
-        //Sera un texto original en la caja
-        hintText: 'Fecha de nacimiento',
-        //Sera el titulo de nuestra caja
-        labelText: 'Fecha de nacimiento',
-        suffixIcon: Icon(Icons.calendar_today),
-        icon: Icon(Icons.calendar_view_day),  
-        ),
+      decoration: decoracion('Fecha de consulta', Icons.calendar_today),
    
-         
-      
-        onTap: (){
+         onTap: (){
           //Quitar el foco que significa que el teclado no se activara
           FocusScope.of(context).requestFocus(new FocusNode());
           _selectDay(context);
-        },
+        }
+      
+        
     );
 
 
@@ -198,18 +185,9 @@ Widget _crearFecha(BuildContext context){
       //Desactivamos la accion interactiva
       enableInteractiveSelection: false,
      //Añadir estilo a la caja de texto
-      decoration: InputDecoration(
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(20.0),
-        ),
+      decoration: decoracion('Hora de la consulta', Icons.airline_seat_legroom_extra),
         
-        //Sera un texto original en la caja
-        hintText: 'Fecha de nacimiento',
-        //Sera el titulo de nuestra caja
-        labelText: 'Fecha de nacimiento',
-        suffixIcon: Icon(Icons.calendar_today),
-        icon: Icon(Icons.calendar_view_day),  
-        ),
+  
    
          
       
@@ -242,6 +220,20 @@ Widget _crearFecha(BuildContext context){
 
 
 
+InputDecoration decoracion(String nombre, IconData icono){
+  return InputDecoration(
+    
+    border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(0.0),
+        ),
+            filled: true,
+            fillColor: Colors.grey[200],
+            hintText: nombre,
+            prefixIcon: new Icon(
+              icono,
+              color: Colors.grey,
+            ));
+}
 
 
 

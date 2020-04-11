@@ -26,7 +26,7 @@ final pacienteReference =
 
 class _RegistrarPacienteState extends State<RegistrarPaciente> {
   
-   TextEditingController _inputFieldDateController = new TextEditingController();
+   TextEditingController _inputFieldDateController;
   final _formKey = GlobalKey<FormState>();
   List<Paciente> items;
 
@@ -38,6 +38,7 @@ class _RegistrarPacienteState extends State<RegistrarPaciente> {
   String genero = 'Masculino';
   int edad = 0;
   String pacienteImage;
+  String fecha;
 
 
   pickerCam() async {
@@ -71,6 +72,7 @@ class _RegistrarPacienteState extends State<RegistrarPaciente> {
         new TextEditingController(text: widget.paciente.ocupacion);
     _sexoController = new TextEditingController(text: widget.paciente.sexo);
 
+    _inputFieldDateController = new TextEditingController(text: widget.paciente.nacimiento);
     pacienteImage = widget.paciente.imagenPaciente;
     print(pacienteImage);
   }
@@ -137,11 +139,30 @@ class _RegistrarPacienteState extends State<RegistrarPaciente> {
                               Divider(),
                      
                       Divider(),
-                      generoOption(),
-                      _crearGenero(context),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          _crearGenero(context),
+                          VerticalDivider(
+                            width: 60.0,
+                          ),
+                           generoOption()
+                        ],
+                      ),
                       Divider(),
-                      edadOption(),
-                      _crearEdad(context),
+                     Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                       children: <Widget>[
+                         _crearEdad(context),
+                       VerticalDivider(
+                            width: 90.0,
+                          ),
+                          edadOption(),
+                       ],
+                     ),
+                     
+                   
+                      
                       Divider(),
                       
                      // generoOption(),
@@ -168,9 +189,9 @@ class _RegistrarPacienteState extends State<RegistrarPaciente> {
                                 'nombre': _nombreController.text,
                                 'apellidos': _apellidosController.text,
                                 'nacimiento': _inputFieldDateController.text,
-                                'edad': edad,
+                                'edad': _edadController.text,
                                 'ocupacion': _ocupacionController.text,
-                                'sexo': genero,
+                                'sexo': _sexoController.text,
                                 'terapeuta': widget.userId,
                                 'imagen': '$fullPathImage'
                               }).then((_) {
@@ -249,21 +270,26 @@ class _RegistrarPacienteState extends State<RegistrarPaciente> {
   }
 
 Widget _crearGenero(BuildContext context){
-    _sexoController.text = genero;
-    return TextFormField(
-      
-       validator: (value){
-                       value=_sexoController.text;
-                     if(value.isEmpty){
-                       return 'Favor de añadir un genero';
-                     }
-                      },
-      //Pasamos la fecha por aqui
-      controller: _sexoController,
-      //Desactivamos la accion interactiva
-      enableInteractiveSelection: false,
-     //Añadir estilo a la caja de texto
-      decoration: decoracion('Genero',Icons.account_balance),
+  if(widget.paciente.id == null){
+     _sexoController.text = genero;
+  }
+    return Container(
+      width: 150.0,
+      child: TextFormField(
+        
+         validator: (value){
+                         value=_sexoController.text;
+                       if(value.isEmpty){
+                         return 'Favor de añadir un genero';
+                       }
+                        },
+        //Pasamos la fecha por aqui
+        controller: _sexoController,
+        //Desactivamos la accion interactiva
+        enableInteractiveSelection: false,
+       //Añadir estilo a la caja de texto
+        decoration: decoracion('Genero',Icons.account_balance),
+      ),
     );
 
 
@@ -307,28 +333,35 @@ Widget _crearGenero(BuildContext context){
 
 
 Widget _crearEdad(BuildContext context){
+  if(widget.paciente.id == null){
      _edadController.text = edad.toString();
-    return TextFormField(
-       validator: (value){
-                       value=_inputFieldDateController.text;
-                     if(value.isEmpty){
-                       return 'Favor de añadir la edad';
-                     }
-                      },
-      //Pasamos la fecha por aqui
-      controller: _edadController,
-      //Desactivamos la accion interactiva
-      enableInteractiveSelection: false,
-     //Añadir estilo a la caja de texto
-      decoration: decoracion('Edad',Icons.person_outline),
+  }
+    
+    return Container(
+      margin: EdgeInsets.fromLTRB(0.0, 0, 20.0,0),
+      width: 150.0,
+      child: TextFormField(
+         validator: (value){
+                         value=_edadController.text;
+                       if(value.isEmpty){
+                         return 'Favor de añadir la edad';
+                       }
+                        },
+        //Pasamos la fecha por aqui
+        controller: _edadController,
+        //Desactivamos la accion interactiva
+        enableInteractiveSelection: false,
+       //Añadir estilo a la caja de texto
+        decoration: decoracion('Edad',Icons.person_outline),
 
-         
-      
-        onTap: (){
-          //Quitar el foco que significa que el teclado no se activara
-          FocusScope.of(context).requestFocus(new FocusNode());
-          edadOption();
-        },
+           
+        
+          onTap: (){
+            //Quitar el foco que significa que el teclado no se activara
+            FocusScope.of(context).requestFocus(new FocusNode());
+            edadOption();
+          },
+      ),
     );
 
 
@@ -418,6 +451,7 @@ Widget _crearFecha(BuildContext context){
   _selectDay(BuildContext context) async {
     
     DateTime picked = await showDatePicker(
+    
       context: context,
       initialDate: new DateTime.now(),
       firstDate: new DateTime(2018),

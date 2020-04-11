@@ -45,9 +45,7 @@ class _ResHabitosState extends State<ResHabitos> {
                       TextFormField(
                         controller: _habitoAlimenticioController,
                         style: TextStyle(fontSize: 17.0, color: Colors.green),
-                        decoration: InputDecoration(
-                            icon: Icon(Icons.fastfood),
-                            labelText: 'Habitos Alimenticios'),
+                        decoration: decoracion('Habitos alimenticios',Icons.favorite_border),
                         validator: (value){
                               value=_habitoAlimenticioController.text;
                             if(value.isEmpty){
@@ -58,9 +56,7 @@ class _ResHabitosState extends State<ResHabitos> {
                       TextFormField(
                         controller: _habitoHigieneController,
                         style: TextStyle(fontSize: 17.0, color: Colors.green),
-                        decoration: InputDecoration(
-                            icon: Icon(Icons.fastfood),
-                            labelText: 'Habitos Alimenticios'),
+                        decoration: decoracion('Habitos de higene',Icons.drag_handle),
                         validator: (value){
                               value=_habitoHigieneController.text;
                             if(value.isEmpty){
@@ -103,4 +99,22 @@ class _ResHabitosState extends State<ResHabitos> {
       ),
     );
   }
+
+
+  
+InputDecoration decoracion(String nombre, IconData icono){
+  return InputDecoration(
+    
+    border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(0.0),
+        ),
+            filled: true,
+            fillColor: Colors.grey[200],
+            hintText: nombre,
+            prefixIcon: new Icon(
+              icono,
+              color: Colors.grey,
+            ));
+}
+
 }
