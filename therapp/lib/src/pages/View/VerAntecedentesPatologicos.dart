@@ -128,7 +128,12 @@ class _VerAntecPatologicosState extends State<VerAntecPatologicos> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text('$variable',style: Theme.of(context).textTheme.headline ),
-
+           VerticalDivider(
+            width: 110.0,
+          ),
+           VerticalDivider(
+            width: 110.0,
+          ),
           IconButton(
               icon: Icon(Icons.edit),
               onPressed: () => _navigateToAntPat(context, items[position]))

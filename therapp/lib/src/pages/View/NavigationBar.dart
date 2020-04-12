@@ -38,7 +38,8 @@ final terapeutaReference =
 enum WhyFarther { harder, smarter, selfStarter, tradingCharter }
 
 class _NavigationAppBarState extends State<NavigationAppBar> {
-  
+  Color colorTema = Colors.orange;
+  Color colorSubTema = Colors.teal[300];
   StreamSubscription<Event> _onTerapeutaAddedSubscription;
   StreamSubscription<Event> _onTerapeutaChangedSubscription;
   List<Terapeuta> items;
@@ -121,10 +122,11 @@ class _NavigationAppBarState extends State<NavigationAppBar> {
 
 
     return MaterialApp(
-      themeMode: ThemeMode.dark,
+     
           home: Scaffold(
 
           drawer: Drawer(
+            
             child: ListView.builder(
               itemCount: items.length,
               itemBuilder: (context,position){
@@ -133,9 +135,10 @@ class _NavigationAppBarState extends State<NavigationAppBar> {
             ),
           ),
           appBar: AppBar(
+          
             elevation: 0.0,
-            title: Text(titulo),
-            backgroundColor: Colors.orange,
+            title: Text(titulo, style: TextStyle(color: Colors.black)),
+            backgroundColor: colorTema,
          
             
             actionsIconTheme: IconThemeData(
@@ -155,8 +158,8 @@ class _NavigationAppBarState extends State<NavigationAppBar> {
           /*Aqui se muestra la pantalla indicada por el metodo elementAt seugn la lista*/
           body: Center(child: _opciones.elementAt(_cIndex)),
           bottomNavigationBar: BottomNavigationBar(
-          
-            selectedItemColor: Colors.blue,
+            
+            selectedItemColor: colorSubTema,
             
             currentIndex: _cIndex,
             type: BottomNavigationBarType.fixed,
@@ -164,8 +167,14 @@ class _NavigationAppBarState extends State<NavigationAppBar> {
     
             items: [
               BottomNavigationBarItem(
+               
+               activeIcon:Icon(
+                  Icons.assignment_ind,
+              
+                  size: 20.5,
+                ), 
                 icon: Icon(
-                  Icons.book,
+                  Icons.assignment_ind,
                   color: Colors.grey,
                   size: 20.5,
                 ),
@@ -175,6 +184,7 @@ class _NavigationAppBarState extends State<NavigationAppBar> {
                 ),
               ),
               BottomNavigationBarItem(
+                activeIcon: Icon(Icons.calendar_today,  size: 20.5,),
                 icon: Icon(Icons.calendar_today, color: Colors.grey,  size: 20.5,),
                 title: Text(
                   'Calendario',
@@ -182,15 +192,17 @@ class _NavigationAppBarState extends State<NavigationAppBar> {
                 ),
               ),
               BottomNavigationBarItem(
+                  activeIcon: Icon(Icons.person_add,  size: 20.5,),
                   icon: Icon(Icons.person_add, color: Colors.grey,  size: 20.5,),
                   title: Text(
                     'Añadir Paciente',
                     style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
                   )),
                BottomNavigationBarItem(
-                  icon: Icon(Icons.local_gas_station, color: Colors.grey,  size: 20.5,),
+                  activeIcon:  Icon(Icons.person,  size: 20.5),
+                  icon: Icon(Icons.person, color: Colors.grey,  size: 20.5,),
                   title: Text(
-                    'Añadir Paciente',
+                    'Perfil',
                     style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
                   )),
             ],
@@ -323,13 +335,20 @@ Widget _header(){
 
       return Column(
         children: <Widget>[
-        
+       
           UserAccountsDrawerHeader(
+          decoration: BoxDecoration(
+            color: colorSubTema,
+          ),
+          onDetailsPressed: (){
+            Navigator.pop(context);
+          },
           accountName: Text("${items[position].nombre} ${items[position].apellidos}"),
           accountEmail: Text("${items[position].email}"),
           currentAccountPicture: ClipOval(
            
             child: FadeInImage(
+            
                 fit:BoxFit.cover,
                 width: 150.0,
                 height: 150.0,
@@ -343,10 +362,9 @@ Widget _header(){
 ),
 
         ListTile(
-             
+             leading: Icon(Icons.person),
              title: Text('Perfil de usuario'),
-                
-             
+              
               onTap: () {
                 Navigator.push(
                     context,
@@ -361,11 +379,17 @@ Widget _header(){
             ),
 
             Divider(
-            height: 7.0,
+            height: 240.0,
           ),
         ListTile(
-             
-             title: Text('Cerrar Sesion'),
+             leading: Icon(Icons.keyboard_capslock, color: Colors.red,),
+             title: Text('Cerrar Sesion',
+             style: TextStyle(
+               
+               color: Colors.red,
+
+             ),
+             ),
                 
              
               onTap:signOut

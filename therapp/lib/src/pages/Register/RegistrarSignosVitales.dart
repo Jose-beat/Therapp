@@ -21,8 +21,8 @@ class _RegistroSignosVitalesState extends State<RegistroSignosVitales> {
   int peso = 40;
   String talla = 'XS';
   String _fecha;
-  TextEditingController _inputFieldDateController = new TextEditingController();
-  TextEditingController _inputFieldHoraController = new TextEditingController();
+  TextEditingController _inputFieldDateController;
+  TextEditingController _inputFieldHoraController;
 
   TextEditingController _fcController;
   TextEditingController _frController;
@@ -33,6 +33,9 @@ class _RegistroSignosVitalesState extends State<RegistroSignosVitales> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    _inputFieldHoraController = new TextEditingController(text:widget.signosVitales.hora);
+
+    _inputFieldDateController = new TextEditingController(text: widget.signosVitales.fechaSignos);
     _fcController = new TextEditingController(text: widget.signosVitales.fc);
     _frController = new TextEditingController(text: widget.signosVitales.fr);
     _pesoController =
@@ -99,11 +102,11 @@ class _RegistroSignosVitalesState extends State<RegistroSignosVitales> {
                               signosVitalesReference
                                   .child(widget.signosVitales.id)
                                   .set({
-                                'frecuencia cardiaca': frecuenciaCardiActual,
+                                'frecuencia cardiaca': _fcController.text,
                                 'frecuencia respiratoria':
-                                    frecuenciaRespiratoryActual,
-                                'peso': peso,
-                                'talla': talla,
+                                    _frController.text,
+                                'peso': _pesoController.text,
+                                'talla': _tallaController.text,
                                 'fecha':_inputFieldDateController.text,
                                 'hora':_inputFieldHoraController.text,
                                 'paciente': widget.signosVitales.paciente
@@ -139,10 +142,14 @@ class _RegistroSignosVitalesState extends State<RegistroSignosVitales> {
   }
 
 Widget _crearCardiaco(BuildContext context){
+  if(widget.signosVitales.id == null){
     _fcController.text = frecuenciaCardiActual;
+  }
+    
     return  Container(
       width: 150.0,
       child: TextFormField(
+        readOnly: true,
           validator: (value){
             value=_fcController.text;
             if(value.isEmpty){
@@ -154,7 +161,7 @@ Widget _crearCardiaco(BuildContext context){
           //Desactivamos la accion interactiva
           enableInteractiveSelection: false,
          //Añadir estilo a la caja de texto
-          decoration: decoracion('Fc', Icons.calendar_today),
+          decoration: decoracion('FC', Icons.timeline, Colors.green[200]),
             
             //Sera un texto original en la caja
          
@@ -170,17 +177,19 @@ Widget _crearCardiaco(BuildContext context){
 
   Widget cardiacOption() {
     return Container(
+     
       margin: EdgeInsets.fromLTRB(0, 0, 0, 30),
       child: DropdownButton<String>(
+        isDense: true,
         value: frecuenciaCardiActual,
         //icon: Icon(Icons.arrow_downward),
         iconSize: 24,
         elevation: 16,
-        style: TextStyle(color: Colors.deepPurple),
+        style: TextStyle(color:  Colors.green[500]),
         underline: Container(
           
           height: 2,
-          color: Colors.deepPurpleAccent,
+          color: Colors.green[300],
         ),
         onChanged: (String newValue) {
           setState(() {
@@ -207,14 +216,18 @@ Widget _crearCardiaco(BuildContext context){
 
 
 Widget _crearRespiracion(BuildContext context){
-  _frController.text =  frecuenciaRespiratoryActual;
+  if(widget.signosVitales.id == null){
+     _frController.text =  frecuenciaRespiratoryActual;
+  }
+ 
     return  Container(
      width: 150.0,
       child: TextFormField(
+           readOnly: true,
           validator: (value){
             value=_frController.text;
             if(value.isEmpty){
-              return 'Favor de añadir la fecha';
+              return 'Debe añadir la frecuencia Respiratoria';
             }
           },
           //Pasamos la fecha por aqui
@@ -222,7 +235,7 @@ Widget _crearRespiracion(BuildContext context){
           //Desactivamos la accion interactiva
           enableInteractiveSelection: false,
          //Añadir estilo a la caja de texto
-          decoration: decoracion('FC', Icons.calendar_today),
+          decoration: decoracion('FR', Icons.insert_chart, Colors.blue[200]),
 
         ),
     );
@@ -234,13 +247,13 @@ Widget _crearRespiracion(BuildContext context){
             margin: EdgeInsets.fromLTRB(0, 0, 0, 30),
       child: DropdownButton<String>(
         value: frecuenciaRespiratoryActual,
-        icon: Icon(Icons.arrow_downward),
+       
         iconSize: 24,
         elevation: 16,
-        style: TextStyle(color: Colors.deepPurple),
+        style: TextStyle(color: Colors.blue[500]),
         underline: Container(
           height: 2,
-          color: Colors.deepPurpleAccent,
+          color:Colors.blue[500],
         ),
         onChanged: (String newValue) {
           setState(() {
@@ -260,14 +273,17 @@ Widget _crearRespiracion(BuildContext context){
 
 
 Widget _crearPeso(BuildContext context){
-  _pesoController.text = peso.toString();
+   if(widget.signosVitales.id == null){
+      _pesoController.text = peso.toString();
+  }
     return  Container(
       width: 150.0,
       child: TextFormField(
+           readOnly: true,
           validator: (value){
             value=_pesoController.text;
             if(value.isEmpty){
-              return 'Favor de añadir la fecha';
+              return 'Debe especificar el peso';
             }
           },
           //Pasamos la fecha por aqui
@@ -275,7 +291,7 @@ Widget _crearPeso(BuildContext context){
           //Desactivamos la accion interactiva
           enableInteractiveSelection: false,
          //Añadir estilo a la caja de texto
-          decoration: decoracion('Peso', Icons.calendar_today),
+          decoration: decoracion('Peso', Icons.straighten, Colors.purple[200]),
             
             //Sera un texto original en la caja
          
@@ -291,13 +307,13 @@ Widget _crearPeso(BuildContext context){
             margin: EdgeInsets.fromLTRB(0, 0, 0, 50),
       child: DropdownButton<int>(
         value: peso,
-        icon: Icon(Icons.arrow_downward),
+        
         iconSize: 24,
         elevation: 16,
-        style: TextStyle(color: Colors.deepPurple),
+        style: TextStyle(color: Colors.purple[200]),
         underline: Container(
           height: 2,
-          color: Colors.deepPurpleAccent,
+          color: Colors.purple[200],
         ),
         onChanged: (int newValue) {
           setState(() {
@@ -326,14 +342,18 @@ Widget _crearPeso(BuildContext context){
 
   
 Widget _crearTalla(BuildContext context){
-    _tallaController.text = talla;
+   if(widget.signosVitales.id == null){
+     _tallaController.text = talla;
+  }
+  
     return  Container(
       width: 150.0,
       child: TextFormField(
+           readOnly: true,
           validator: (value){
             value=_tallaController.text;
             if(value.isEmpty){
-              return 'Favor de añadir la fecha';
+              return 'Debe especificar una talla';
             }
           },
           //Pasamos la fecha por aqui
@@ -341,7 +361,7 @@ Widget _crearTalla(BuildContext context){
           //Desactivamos la accion interactiva
           enableInteractiveSelection: false,
          //Añadir estilo a la caja de texto
-          decoration: decoracion('Fecha de captura', Icons.calendar_today),
+          decoration: decoracion('Talla', Icons.view_stream, Colors.brown),
             
             //Sera un texto original en la caja
          
@@ -360,13 +380,13 @@ Widget _crearTalla(BuildContext context){
             margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
       child: DropdownButton<String>(
         value: talla,
-        icon: Icon(Icons.arrow_downward),
+        
         iconSize: 24,
         elevation: 16,
-        style: TextStyle(color: Colors.deepPurple),
+        style: TextStyle(color: Colors.brown),
         underline: Container(
           height: 2,
-          color: Colors.deepPurpleAccent,
+          color: Colors.brown,
         ),
         onChanged: (String newValue) {
           setState(() {
@@ -399,7 +419,7 @@ Widget _crearFecha(BuildContext context){
         //Desactivamos la accion interactiva
         enableInteractiveSelection: false,
        //Añadir estilo a la caja de texto
-        decoration: decoracion('Fecha de captura', Icons.calendar_today),
+        decoration: decoracion('Fecha de captura', Icons.calendar_today, Colors.blueGrey),
           
           //Sera un texto original en la caja
        
@@ -465,7 +485,7 @@ Widget _crearFecha(BuildContext context){
       //Desactivamos la accion interactiva
       enableInteractiveSelection: false,
      //Añadir estilo a la caja de texto
-      decoration: decoracion('Hora de captura',Icons.hourglass_empty),
+      decoration: decoracion('Hora de captura',Icons.hourglass_empty,Colors.blueGrey),
 
         //Sera un texto original en la caja
       
@@ -501,7 +521,9 @@ Widget _crearFecha(BuildContext context){
 
   }
 
-InputDecoration decoracion(String nombre, IconData icono){
+
+
+InputDecoration decoracion(String nombre, IconData icono, Color color){
   return InputDecoration(
     
     border: OutlineInputBorder(
@@ -510,9 +532,11 @@ InputDecoration decoracion(String nombre, IconData icono){
             filled: true,
             fillColor: Colors.grey[200],
             hintText: nombre,
+            suffixText: nombre,
+            hintStyle: TextStyle(),
             prefixIcon: new Icon(
               icono,
-              color: Colors.grey,
+              color: color,
             ));
 }
 

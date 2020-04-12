@@ -53,7 +53,7 @@ class _VerSignosVitalesState extends State<VerSignosVitales> {
               return _filter(context, position);
             }),
             
-            floatingActionButton: FloatingActionButton(onPressed: ()=>_createNewSignosVitales(context)),
+            
             );
   }
 
@@ -95,7 +95,7 @@ class _VerSignosVitalesState extends State<VerSignosVitales> {
   }
 
   Widget _filter(BuildContext context, int position) {
-    if (items[position].fechaSignos == widget.fechasignoVital&&items[position].paciente==widget.pacienteId) {
+    if (items[position].fechaSignos == widget.fechasignoVital&&items[position].paciente==widget.pacienteId && widget.signosVitales.hora==items[position].hora) {
       print('SIGNOS VITALES${items[position].id}');
 
       return Column(

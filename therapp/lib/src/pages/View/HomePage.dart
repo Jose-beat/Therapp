@@ -213,12 +213,19 @@ Widget _paciente(BuildContext context, int position){
         child: Center(
                   child: Column(
             children: <Widget>[
-                  CircleAvatar(
-                    radius: 40.0,
-                    backgroundImage: items[position].imagenPaciente != null ?
-                    NetworkImage('${items[position].imagenPaciente}' + '?alt=media'):
-                    AssetImage('assets/photo-null.jpeg')
+                  ClipOval(
+                    child: FadeInImage(
+                     fit: BoxFit.cover,
+                     width: 100.0,
+                     height: 100.0,
+                     fadeInCurve: Curves.bounceIn,
+                     placeholder:  AssetImage('assets/images/icon-app.jpeg'), 
+                     image: items[position].imagenPaciente != null ?
+                     NetworkImage(items[position].imagenPaciente + '?alt=media'):
+                     AssetImage('assets/images/photo-null.jpeg'),
+                ),
                   ),
+                 
                  
                  Text('${items[position].nombre} ${items[position].apellidos}'),
                 Divider(),

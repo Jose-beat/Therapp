@@ -124,6 +124,9 @@ class _VerAntecNoPatologicoState extends State<VerAntecNoPatologico> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text('$variable', style: Theme.of(context).textTheme.headline),
+          VerticalDivider(
+            width: 110.0,
+          ),
           IconButton(
               icon: Icon(Icons.edit),
               onPressed: () => _navigateToAntNoPat(context, items[position]))

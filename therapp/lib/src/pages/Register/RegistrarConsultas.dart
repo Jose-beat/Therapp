@@ -27,12 +27,14 @@ class _ResConsultasState extends State<ResConsultas> {
   String _fecha;
 
   TextEditingController _motivoController;
-  TextEditingController _inputFieldDateController = new TextEditingController();
-  TextEditingController _inputFieldHoraController = new TextEditingController();
+  TextEditingController _inputFieldDateController;
+  TextEditingController _inputFieldHoraController;
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    _inputFieldDateController = new TextEditingController(text: widget.consultas.fechaConsulta);
+    _inputFieldHoraController = new TextEditingController(text: widget.consultas.horaConsulta);
     _motivoController =
         new TextEditingController(text: widget.consultas.motivos);
   }

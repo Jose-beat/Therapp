@@ -34,7 +34,7 @@ final terapeutaReference =
     FirebaseDatabase.instance.reference().child('terapeuta');
 
 class _RegistroPerfilState extends State<RegistroPerfil> {
-  
+  bool cambioFoto= false;
    File imagen;
    TextEditingController _inputFieldDateController;
 
@@ -351,7 +351,7 @@ class _RegistroPerfilState extends State<RegistroPerfil> {
 
                    var fullPathImage = part1 + fullImageName2;
                    print(fullPathImage);
-                    
+                  print('$cambioFoto');
 
 
 
@@ -365,7 +365,7 @@ class _RegistroPerfilState extends State<RegistroPerfil> {
                     'especialidad': _especialidadController.text,
                     'telefono': _telefonoController.text,
                     'email': _emailController.text,
-                    'imagen':'$fullPathImage'
+                    'imagen':cambioFoto== true ? '$fullPathImage' : widget.terapeuta.imagen,
                     
                   }).then((_) {
                     Navigator.pop(context);
@@ -481,7 +481,7 @@ class _RegistroPerfilState extends State<RegistroPerfil> {
                       color: Colors.white,
                     ),
                     IconButton(
-                      icon: Icon(Icons.calendar_today),
+                      icon: Icon(Icons.collections),
                       onPressed: pickerGallery,
                       color: Colors.white,
                     ),
@@ -580,7 +580,7 @@ Widget _crearFecha(BuildContext context){
   if(img != null){
     imagen = img;
     setState(() {
-      
+      cambioFoto = true;
     });
   }
   } 
@@ -591,7 +591,7 @@ Widget _crearFecha(BuildContext context){
   if(img != null){
     imagen = img;
     setState(() {
-      
+      cambioFoto = true;
     });
   }
   }

@@ -145,16 +145,18 @@ class _VerTerapeutaState extends State<VerTerapeuta> {
                         width: 5.5
                       )),
             
-            child: FadeInImage(
-             
-              width: 150.0,
-              height: 150.0,
-              fadeInCurve: Curves.bounceIn,
-              placeholder:  AssetImage('assets/images/icon-app.jpeg'), 
-              image: items[position].imagen != null ?
-              NetworkImage(items[position].imagen + '?alt=media'):
-              AssetImage('assets/images/photo-null.jpeg'),
-              ),
+            child: ClipOval(
+                          child: FadeInImage(
+                fit: BoxFit.cover,
+                width: 150.0,
+                height: 150.0,
+                fadeInCurve: Curves.bounceIn,
+                placeholder:  AssetImage('assets/images/icon-app.jpeg'), 
+                image: items[position].imagen != null ?
+                NetworkImage(items[position].imagen + '?alt=media'):
+                AssetImage('assets/images/photo-null.jpeg'),
+                ),
+            ),
 
           ),
           

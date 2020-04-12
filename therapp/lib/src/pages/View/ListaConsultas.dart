@@ -150,7 +150,9 @@ class _ListaConsultasState extends State<ListaConsultas> {
        
         children: <Widget>[
           Text('$variable',style: Theme.of(context).textTheme.headline,),
-     
+           VerticalDivider(
+            width: 110.0,
+          ),
           IconButton(
               icon: Icon(Icons.edit),
               onPressed: () => _navigateToConsultas(context, items[position]))

@@ -527,7 +527,7 @@ Widget _crearFecha(BuildContext context){
                 ),
             
                 IconButton(
-                  icon: Icon(Icons.calendar_today, color: Colors.white),
+                  icon: Icon(Icons.collections, color: Colors.white),
                   onPressed: pickerGallery,
                 ),
                   ],

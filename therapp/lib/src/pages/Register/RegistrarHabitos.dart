@@ -53,6 +53,7 @@ class _ResHabitosState extends State<ResHabitos> {
                             }
                              },
                       ),
+                      Divider(),
                       TextFormField(
                         controller: _habitoHigieneController,
                         style: TextStyle(fontSize: 17.0, color: Colors.green),

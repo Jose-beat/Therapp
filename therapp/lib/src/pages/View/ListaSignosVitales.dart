@@ -124,14 +124,25 @@ class _ListaSignosVitalesState extends State<ListaSignosVitales> {
       child: Column(
         children: <Widget>[
           Divider(),
-          _lista(items[position].fechaSignos, context, position,'Frecuencia Cardiaca'),
+          _lista(items[position].fechaSignos, context, position,'${position}'),
         ],
       ),
     );
   }
   Widget _lista(String variable, BuildContext context, int position,String subtitulo) {
     return ListTile(
-      title: Text('$variable',style: Theme.of(context).textTheme.headline,),
+      title: Row(
+        children: <Widget>[
+          Text('$variable',style: Theme.of(context).textTheme.headline,),
+          VerticalDivider(
+            width: 110.0,
+          ),
+          IconButton(
+              icon: Icon(Icons.edit),
+              onPressed: () => _navigateToSignos(context, items[position]))
+        ],
+      ),
+    
       subtitle: Text('$subtitulo'),
       onTap: () =>_navigateToSignosVitales(context,items[position],items[position].paciente,items[position].fechaSignos));
       
@@ -141,9 +152,7 @@ class _ListaSignosVitalesState extends State<ListaSignosVitales> {
         children: <Widget>[
           
           
-          IconButton(
-              icon: Icon(Icons.edit),
-              onPressed: () => _navigateToSignos(context, items[position]))
+          
         ],
       ),*/
     
@@ -153,11 +162,15 @@ class _ListaSignosVitalesState extends State<ListaSignosVitales> {
 
 
      Widget estiloLista(String titulo, String subtitulo,BuildContext context){
-    return ListTile(
-      title: Text('$titulo',
-      style: Theme.of(context).textTheme.headline,
-      ),
-      subtitle: Text('$subtitulo'),
+    return Row(
+      children: <Widget>[
+        ListTile(
+          title: Text('$titulo',
+          style: Theme.of(context).textTheme.headline,
+          ),
+          subtitle: Text('$subtitulo'),
+        ),
+      ],
     );  
   }
 

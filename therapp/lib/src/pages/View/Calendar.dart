@@ -29,7 +29,7 @@ class _ConsultasActualesState extends State<ConsultasActuales> {
   Map<DateTime,List<dynamic>> _consultas;
   TextEditingController _consultaController;
   List<dynamic> _selectedEvents;
-  
+
 
 
 
@@ -58,6 +58,8 @@ class _ConsultasActualesState extends State<ConsultasActuales> {
     _consultas = {};
     _consultaController = TextEditingController();
     _selectedEvents = [];
+
+
   }
 
 
@@ -123,10 +125,7 @@ class _ConsultasActualesState extends State<ConsultasActuales> {
             
           
                
-               
-     
-            
-    
+              
       
       print('WE NO MAMES ESTA ES LA ID DE LA CONSULTA ${items[position].id}');
      
@@ -134,28 +133,29 @@ class _ConsultasActualesState extends State<ConsultasActuales> {
       print('PACIENTE: ${items[position].idPaciente} ${widget.idPaciente}');
       print('VFRNVJNVL ${items[position].nombre}');
       print('TERAPEUTA: ${items[position].idTerapeuta}');
-      return Container(
-         
-              child: Column(
-                children: <Widget>[
-                  Divider(
+      return Card(
+              child: ListTile(
+                title: Column(
+                  children: <Widget>[
+                     Text('${items[position].fechaConsulta}',
+                     style: Theme.of(context).textTheme.headline,
+                     ),
+                
+                  ],
 
-                  ),
-                   Text('${items[position].fechaConsulta}'),
-                    Text('${items[position].horaConsulta}'),
-                    Text('${items[position].nombre} ${items[position].nombre}'),
-                  
-        
-
-        
-                ],
-              ),
+                
+                ),
+                subtitle: Row(children: <Widget>[
+                      Text('${items[position].horaConsulta}'),
+                      Text('${items[position].nombre} ${items[position].apellidos}'),
+                ],),
+        ),
       );
        
     } else {
       return Container(
-        width: 100.0,
-        height: 100.0,
+        width: 0.0,
+        height: 0.0,
       );
     }
 
@@ -189,47 +189,47 @@ class _ConsultasActualesState extends State<ConsultasActuales> {
   Widget build(BuildContext context) {
     
      return Scaffold(
-        body: ListView.builder(
-          itemCount: items.length,
-          itemBuilder:(context, position){
-            if (position == 0) {
-               return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
+        body: Column(
+          children: <Widget>[
+               TableCalendar(
+                    onDaySelected: (date,consultas){
+                   
+                        _selectedEvents =consultas;
+                        print(_selectedEvents);
+                  
+                    },
+                    events: _consultas,
+                    locale: 'es_MX',
+                    calendarController: _calendarController,
+                    
 
-              TableCalendar(
-                onDaySelected: (date,consultas){
-                  setState(() {
-                    _selectedEvents =consultas;
-                    print(_selectedEvents);
-                  });
-                },
-                events: _consultas,
-                locale: 'es_MX',
-                calendarController: _calendarController,
+
+
+                    calendarStyle: CalendarStyle(
+                      todayColor: Colors.green,
+                      selectedColor: Colors.orange
+                    ),
+                    ),
+                    ..._selectedEvents.map((event) => Container(
+                      child: event,
+                    )),
+
+                 Expanded(
+                                    child: ListView.builder(
+                     scrollDirection: Axis.vertical,
+                     shrinkWrap: true,
+              itemCount: items.length,
+              itemBuilder:(context, position){
                 
-
-
-
-                calendarStyle: CalendarStyle(
-                  todayColor: Colors.green,
-                  selectedColor: Colors.orange
-                ),
-                ),
-                ..._selectedEvents.map((event) => Container(
-                  child: event,
-                ))
-            ],
-
-            
-          );
+                    return _filter(context,position);
+                
+              }
               
-            } else {
-              return _filter(context,position);
+            ),
+                 ),
 
-            }
-          }
-          
+           
+          ],
         ),
         /*
         floatingActionButton: FloatingActionButton(
