@@ -11,7 +11,8 @@ class VerTerapeuta extends StatefulWidget {
   final String userId;
   bool activado = true;
   final VoidCallback logoutCallback;
-  VerTerapeuta({Key key, this.userId, this.auth, this.logoutCallback,this.activado})
+  VerTerapeuta(
+      {Key key, this.userId, this.auth, this.logoutCallback, this.activado})
       : super(key: key);
 
   @override
@@ -22,7 +23,6 @@ final terapeutaReference =
     FirebaseDatabase.instance.reference().child('terapeuta');
 
 class _VerTerapeutaState extends State<VerTerapeuta> {
-
   String nombres;
   signOut() async {
     try {
@@ -45,8 +45,6 @@ class _VerTerapeutaState extends State<VerTerapeuta> {
         terapeutaReference.onChildAdded.listen(_onTerapeutaAdded);
     _onTerapeutaChangedSubscription =
         terapeutaReference.onChildChanged.listen(_onTerapeutaUpdated);
-        
-    
   }
 
   @override
@@ -60,9 +58,7 @@ class _VerTerapeutaState extends State<VerTerapeuta> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: widget.activado ?  AppBar(
-          title: Text('Perfil') 
-        ) : null,
+        appBar: widget.activado ? AppBar(title: Text('Perfil')) : null,
         body: ListView.builder(
           itemCount: items.length,
           itemBuilder: (context, position) {
@@ -113,9 +109,6 @@ class _VerTerapeutaState extends State<VerTerapeuta> {
 
 /*-------------------------------------FRONTEND-----------------------------*/
 
-
-
-
   Widget _filter(BuildContext context, int position) {
     print("Usuario Actual :${items[position].id}");
     print("USER ID: ${widget.userId}");
@@ -125,7 +118,7 @@ class _VerTerapeutaState extends State<VerTerapeuta> {
 
       return Column(
         children: <Widget>[
-         /* FadeInImage(
+          /* FadeInImage(
             fadeInCurve: Curves.bounceIn,
             placeholder: AssetImage('assets/images/icon-app.jpeg'), 
             image: items[position].imagen != null ?
@@ -133,49 +126,35 @@ class _VerTerapeutaState extends State<VerTerapeuta> {
             AssetImage('assets/images/photo-null.jpeg'),
             ),*/
 
-
-
           Container(
             height: 200.0,
             width: 200.0,
-             decoration: BoxDecoration(
-                
-                      border: Border.all(
-                        color: Colors.black,
-                        width: 5.5
-                      )),
-            
+            decoration: BoxDecoration(
+                border: Border.all(color: Colors.black, width: 5.5)),
             child: ClipOval(
-                          child: FadeInImage(
+              child: FadeInImage(
                 fit: BoxFit.cover,
                 width: 150.0,
                 height: 150.0,
                 fadeInCurve: Curves.bounceIn,
-                placeholder:  AssetImage('assets/images/icon-app.jpeg'), 
-                image: items[position].imagen != null ?
-                NetworkImage(items[position].imagen + '?alt=media'):
-                AssetImage('assets/images/photo-null.jpeg'),
-                ),
-            ),
-
-          ),
-          
-           Container(
-                //height: 200.0,
-                width: 200.0,
-                decoration: BoxDecoration(
-                      color: Colors.black,
-                      border: Border.all(
-                        color: Colors.black
-                      )),
-
-                
+                placeholder: AssetImage('assets/images/icon-app.jpeg'),
+                image: items[position].imagen != null
+                    ? NetworkImage(items[position].imagen + '?alt=media')
+                    : AssetImage('assets/images/photo-null.jpeg'),
               ),
-           
-           /* child: items[position].imagen == '' ? 
+            ),
+          ),
+          Container(
+            //height: 200.0,
+            width: 200.0,
+            decoration: BoxDecoration(
+                color: Colors.black, border: Border.all(color: Colors.black)),
+          ),
+
+          /* child: items[position].imagen == '' ? 
             Text('No hay imagen aun') :
             Image.network(items[position].imagen + '?alt=media')*/
-          
+
           Divider(
             height: 7.0,
           ),
@@ -200,24 +179,25 @@ class _VerTerapeutaState extends State<VerTerapeuta> {
             title: Row(
               children: <Widget>[
                 Text('${items[position].nombre} ${items[position].apellidos}'),
-            
               ],
             ),
           ),
-         
           Divider(),
-          _lista('Fecha de Nacimiento', items[position].nacimiento, context, position),
+          _lista('Fecha de Nacimiento', items[position].nacimiento, context,
+              position),
           Divider(),
-          _lista('Correo Electronico', items[position].email, context, position),
+          _lista(
+              'Correo Electronico', items[position].email, context, position),
           Divider(),
-          _lista('Clinica',items[position].clinica, context, position),
+          _lista('Clinica', items[position].clinica, context, position),
           Divider(),
-           _lista('Cedula Profesional',items[position].cedula, context, position),
+          _lista(
+              'Cedula Profesional', items[position].cedula, context, position),
           Divider(),
-          _lista('Especialidad',items[position].especialidad, context, position),
-          
+          _lista(
+              'Especialidad', items[position].especialidad, context, position),
           Divider(),
-          _lista('N.Telefonico',items[position].telefono, context, position),
+          _lista('N.Telefonico', items[position].telefono, context, position),
           _update(context, items[position], position),
           _delete(context, items[position], position)
         ],
@@ -225,72 +205,58 @@ class _VerTerapeutaState extends State<VerTerapeuta> {
     );
   }
 
-  Widget _lista(String tipo, String variable, BuildContext context, int position) {
+  Widget _lista(
+      String tipo, String variable, BuildContext context, int position) {
     return ListTile(
       subtitle: Text('$tipo'),
-          title: Text('$variable'),
-         /* IconButton(
+      title: Text('$variable'),
+      /* IconButton(
               icon: Icon(Icons.edit),
               onPressed: () => _navigateToTerapeuta(context, items[position]))*/
-      
-    
     );
   }
 
-
   Widget _delete(BuildContext context, Terapeuta terapeuta, int position) {
     return ListTile(
-      
       contentPadding: EdgeInsets.fromLTRB(0, 0, 0, 0),
       title: Container(
-
         child: Row(
           children: <Widget>[
             Text('Eliminar Perfil', textAlign: TextAlign.right),
           ],
         ),
       ),
-      onTap: () => _confirmacion(context,items[position],position),
+      onTap: () => _confirmacion(context, items[position], position),
     );
   }
 
-
-  void _confirmacion(BuildContext context, Terapeuta terapeuta, int position){
+  void _confirmacion(BuildContext context, Terapeuta terapeuta, int position) {
     showDialog(
-      context: context,
-      builder: (BuildContext context){
-        return AlertDialog(
-          title: Text('¿Esta seguro de eliminar su perfil?'),
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(
-                Icons.delete
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('¿Esta seguro de eliminar su perfil?'),
+            actions: <Widget>[
+              IconButton(
+                icon: Icon(Icons.delete),
+                onPressed: () =>
+                    _deleteTerapeuta(context, items[position], position),
               ),
-              onPressed: ()=> _deleteTerapeuta(context, items[position], position),
-             
-            ),
-            FlatButton(
-              child: Text('Cancelar'),
-              onPressed: (){
-                Navigator.pop(context);
-              },
-            )
-          ],
-        );
-
-      }
-
-      );
+              FlatButton(
+                child: Text('Cancelar'),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              )
+            ],
+          );
+        });
   }
 
-
-
-    Widget _update(BuildContext context, Terapeuta terapeuta, int position) {
+  Widget _update(BuildContext context, Terapeuta terapeuta, int position) {
     return ListTile(
-      
       contentPadding: EdgeInsets.fromLTRB(0, 0, 0, 0),
       title: Container(
-
         child: Row(
           children: <Widget>[
             Text('Editar Perfil', textAlign: TextAlign.right),
@@ -299,9 +265,7 @@ class _VerTerapeutaState extends State<VerTerapeuta> {
       ),
       onTap: () {
         _navigateToTerapeuta(context, items[position]);
-        
       },
     );
   }
 }
-

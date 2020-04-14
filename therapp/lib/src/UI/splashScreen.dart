@@ -11,45 +11,37 @@ class SplashScreen extends StatefulWidget {
   _SplashScreenState createState() => _SplashScreenState();
 }
 
-
-class BatmanPageRoute extends PageRouteBuilder{
-
+class BatmanPageRoute extends PageRouteBuilder {
   final Widget child;
 
   BatmanPageRoute(this.child)
-  :super (
-    pageBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation){
-      return child;
-    },
-    transitionsBuilder:(BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child){
-      return Transform.scale(
-        scale: animation.value,
-              child: FadeTransition(
-          child: child,
-          opacity: animation,
-          ),
-      );
-    }
-  );
-
-
-
+      : super(pageBuilder: (BuildContext context, Animation<double> animation,
+            Animation<double> secondaryAnimation) {
+          return child;
+        }, transitionsBuilder: (BuildContext context,
+            Animation<double> animation,
+            Animation<double> secondaryAnimation,
+            Widget child) {
+          return Transform.scale(
+            scale: animation.value,
+            child: FadeTransition(
+              child: child,
+              opacity: animation,
+            ),
+          );
+        });
 }
 
-
-
-
 class _SplashScreenState extends State<SplashScreen> {
-
-  
-  Future<Timer>startTime()async{
+  Future<Timer> startTime() async {
     var _duration = Duration(seconds: 2);
     return Timer(_duration, navigationPage);
   }
 
-   void navigationPage()async{
-    Navigator.of(context).pushReplacement(
-      BatmanPageRoute( RootPage(auth: Autho(),) ));
+  void navigationPage() async {
+    Navigator.of(context).pushReplacement(BatmanPageRoute(RootPage(
+      auth: Autho(),
+    )));
   }
 
   @override
@@ -58,13 +50,22 @@ class _SplashScreenState extends State<SplashScreen> {
     super.initState();
     startTime();
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-     
-     body: Container(
-       
-     ),
+      body: Center(
+        child: Column(
+          children: <Widget>[
+             Image.asset(
+               'assets/images/icon-app.jpeg',
+               width: 300,
+               height: 300,
+               ),
+
+          ],
+        ),
+      ),
     );
   }
 }

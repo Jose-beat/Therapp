@@ -45,13 +45,14 @@ class _VerAntecNoPatologicoState extends State<VerAntecNoPatologico> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: ListView.builder(
-            itemCount: items.length,
-            itemBuilder: (context, position) {
-              return _filter(context, position);
-            }),
-             floatingActionButton: FloatingActionButton(onPressed: ()=>_createNewAntecNoPatologico(context)),
-            );
+      body: ListView.builder(
+          itemCount: items.length,
+          itemBuilder: (context, position) {
+            return _filter(context, position);
+          }),
+      floatingActionButton: FloatingActionButton(
+          onPressed: () => _createNewAntecNoPatologico(context)),
+    );
   }
 
   /*------------------------------------BACKEND----------------------------------------*/
@@ -111,13 +112,15 @@ class _VerAntecNoPatologicoState extends State<VerAntecNoPatologico> {
       child: Column(
         children: <Widget>[
           Divider(),
-          _lista(items[position].enfermedad, context, position,'Antecedente no Patologico'),
+          _lista(items[position].enfermedad, context, position,
+              'Antecedente no Patologico'),
         ],
       ),
     );
   }
 
-  Widget _lista(String variable, BuildContext context, int position, String subtitulo) {
+  Widget _lista(
+      String variable, BuildContext context, int position, String subtitulo) {
     return ListTile(
       contentPadding: EdgeInsets.fromLTRB(0, 0, 0, 0),
       title: Row(

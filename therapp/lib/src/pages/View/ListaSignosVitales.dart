@@ -7,21 +7,23 @@ import 'package:therapp/src/pages/Register/RegistrarSignosVitales.dart';
 import 'package:therapp/src/pages/View/verSignosVitales.dart';
 
 class ListaSignosVitales extends StatefulWidget {
-   final SignosVitales signosVitales;
+  final SignosVitales signosVitales;
   final String pacienteId;
-  ListaSignosVitales({Key key, this.signosVitales, this.pacienteId}) : super(key: key);
+  ListaSignosVitales({Key key, this.signosVitales, this.pacienteId})
+      : super(key: key);
 
   @override
   _ListaSignosVitalesState createState() => _ListaSignosVitalesState();
 }
+
 final signosReference =
     FirebaseDatabase.instance.reference().child('signos_vitales');
+
 class _ListaSignosVitalesState extends State<ListaSignosVitales> {
-    StreamSubscription<Event> _onSignosAddedSubscription;
+  StreamSubscription<Event> _onSignosAddedSubscription;
   StreamSubscription<Event> _onSignosChangedSubscription;
 
-
-    @override
+  @override
   void initState() {
     super.initState();
     items = new List();
@@ -42,22 +44,17 @@ class _ListaSignosVitalesState extends State<ListaSignosVitales> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: ListView.builder(
-            itemCount: items.length,
-            itemBuilder: (context, position) {
-              return _filter(context, position);
-            }),
-            
-            floatingActionButton: FloatingActionButton(onPressed: ()=>_createNewSignosVitales(context)),
-            );
-       
-    
+      body: ListView.builder(
+          itemCount: items.length,
+          itemBuilder: (context, position) {
+            return _filter(context, position);
+          }),
+      floatingActionButton: FloatingActionButton(
+          onPressed: () => _createNewSignosVitales(context)),
+    );
   }
 
-
-
-
-   void _onSignosAdded(Event event) {
+  void _onSignosAdded(Event event) {
     setState(() {
       items.add(new SignosVitales.fromSnapshot(event.snapshot));
     });
@@ -88,21 +85,25 @@ class _ListaSignosVitalesState extends State<ListaSignosVitales> {
         context,
         MaterialPageRoute(
             builder: (context) => RegistroSignosVitales(
-                  signosVitales:
-                      SignosVitales(null, '', '', 0, '', widget.pacienteId,'',''),
+                  signosVitales: SignosVitales(
+                      null, '', '', 0, '', widget.pacienteId, '', ''),
                 )));
   }
-  void _navigateToSignosVitales(BuildContext context,SignosVitales signosVitales, String idPaciente,String fechaSignos) async {
+
+  void _navigateToSignosVitales(
+      BuildContext context,
+      SignosVitales signosVitales,
+      String idPaciente,
+      String fechaSignos) async {
     await Navigator.push(
         context,
         MaterialPageRoute(
             builder: (context) => VerSignosVitales(
-              signosVitales: signosVitales,
-              pacienteId: idPaciente,
-              fechasignoVital: fechaSignos,
-            )));
+                  signosVitales: signosVitales,
+                  pacienteId: idPaciente,
+                  fechasignoVital: fechaSignos,
+                )));
   }
-
 
   Widget _filter(BuildContext context, int position) {
     if (items[position].paciente == widget.pacienteId) {
@@ -124,30 +125,34 @@ class _ListaSignosVitalesState extends State<ListaSignosVitales> {
       child: Column(
         children: <Widget>[
           Divider(),
-          _lista(items[position].fechaSignos, context, position,'${position}'),
+          _lista(items[position].fechaSignos, context, position, '${position}'),
         ],
       ),
     );
   }
-  Widget _lista(String variable, BuildContext context, int position,String subtitulo) {
+
+  Widget _lista(
+      String variable, BuildContext context, int position, String subtitulo) {
     return ListTile(
-      title: Row(
-        children: <Widget>[
-          Text('$variable',style: Theme.of(context).textTheme.headline,),
-          VerticalDivider(
-            width: 110.0,
-          ),
-          IconButton(
-              icon: Icon(Icons.edit),
-              onPressed: () => _navigateToSignos(context, items[position]))
-        ],
-      ),
-    
-      subtitle: Text('$subtitulo'),
-      onTap: () =>_navigateToSignosVitales(context,items[position],items[position].paciente,items[position].fechaSignos));
-      
-      
-     /* Row(
+        title: Row(
+          children: <Widget>[
+            Text(
+              '$variable',
+              style: Theme.of(context).textTheme.headline,
+            ),
+            VerticalDivider(
+              width: 110.0,
+            ),
+            IconButton(
+                icon: Icon(Icons.edit),
+                onPressed: () => _navigateToSignos(context, items[position]))
+          ],
+        ),
+        subtitle: Text('$subtitulo'),
+        onTap: () => _navigateToSignosVitales(context, items[position],
+            items[position].paciente, items[position].fechaSignos));
+
+    /* Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           
@@ -155,26 +160,19 @@ class _ListaSignosVitalesState extends State<ListaSignosVitales> {
           
         ],
       ),*/
-    
   }
 
-
-
-
-     Widget estiloLista(String titulo, String subtitulo,BuildContext context){
+  Widget estiloLista(String titulo, String subtitulo, BuildContext context) {
     return Row(
       children: <Widget>[
         ListTile(
-          title: Text('$titulo',
-          style: Theme.of(context).textTheme.headline,
+          title: Text(
+            '$titulo',
+            style: Theme.of(context).textTheme.headline,
           ),
           subtitle: Text('$subtitulo'),
         ),
       ],
-    );  
+    );
   }
-
-
-
-
 }

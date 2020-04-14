@@ -66,12 +66,8 @@ class _VerPacienteState extends State<VerPaciente> {
                       imagen: widget.paciente.imagenPaciente == ''
                           ? 'No hay imagen'
                           : widget.paciente.imagenPaciente,
-                          sexo: widget.paciente.sexo,
-                          edad: widget.paciente.edad.toString()
-
-                          ),
-                    
-
+                      sexo: widget.paciente.sexo,
+                      edad: widget.paciente.edad.toString()),
                   centerTitle: true,
                 ),
                 expandedHeight: 200,

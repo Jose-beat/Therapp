@@ -13,8 +13,17 @@ class Terapeuta {
   String _email;
   String _imagen;
 
-  Terapeuta(this._id, this._nombre, this._apellidos, this._nacimiento, this._clinica, this._email,
-      this._especialidad, this._telefono, this._cedula,this._imagen);
+  Terapeuta(
+      this._id,
+      this._nombre,
+      this._apellidos,
+      this._nacimiento,
+      this._clinica,
+      this._email,
+      this._especialidad,
+      this._telefono,
+      this._cedula,
+      this._imagen);
 
   Terapeuta.map(dynamic obj) {
     this._nombre = obj['nombre'];

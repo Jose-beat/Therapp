@@ -11,17 +11,16 @@ class SignosVitales {
   String _fechaSignosVitales;
   String _hora;
 
-  SignosVitales(
-      this._id, this._fc, this._fr, this._peso, this._talla, this._idpaciente,this._fechaSignosVitales,this._hora);
-
+  SignosVitales(this._id, this._fc, this._fr, this._peso, this._talla,
+      this._idpaciente, this._fechaSignosVitales, this._hora);
 
   SignosVitales.map(dynamic obj) {
     this._fc = obj['frecuencia cardiaca'];
     this._fr = obj['frecuencia respiratoria'];
-    this._peso=obj['peso'];
+    this._peso = obj['peso'];
     this._talla = obj['talla'];
-    this._fechaSignosVitales=obj['fecha'];
-    this._hora=obj['hora'];
+    this._fechaSignosVitales = obj['fecha'];
+    this._hora = obj['hora'];
     this._idpaciente = obj['paciente'];
   }
 

@@ -13,8 +13,6 @@ import 'package:therapp/src/pages/View/VerConsultas.dart';
 import 'package:therapp/src/pages/View/VerTerapeuta.dart';
 import 'package:therapp/src/providers/authentApp.dart';
 
-
-
 class NavigationAppBar extends StatefulWidget {
   final BaseAuth auth;
   final VoidCallback loginCallback;
@@ -34,7 +32,7 @@ class NavigationAppBar extends StatefulWidget {
 
 final terapeutaReference =
     FirebaseDatabase.instance.reference().child('terapeuta');
-    
+
 enum WhyFarther { harder, smarter, selfStarter, tradingCharter }
 
 class _NavigationAppBarState extends State<NavigationAppBar> {
@@ -52,8 +50,6 @@ class _NavigationAppBarState extends State<NavigationAppBar> {
         terapeutaReference.onChildAdded.listen(_onTerapeutaAdded);
     _onTerapeutaChangedSubscription =
         terapeutaReference.onChildChanged.listen(_onTerapeutaUpdated);
-        
-    
   }
 
   @override
@@ -63,10 +59,9 @@ class _NavigationAppBarState extends State<NavigationAppBar> {
     _onTerapeutaAddedSubscription.cancel();
     _onTerapeutaChangedSubscription.cancel();
   }
-  
 
   String titulo = 'Lista de pacientes';
-   WhyFarther _onSelected;
+  WhyFarther _onSelected;
 
   int _cIndex = 0;
 
@@ -87,7 +82,6 @@ class _NavigationAppBarState extends State<NavigationAppBar> {
 
   @override
   Widget build(BuildContext context) {
-
 /*El arrelgo que contiene  acada una de las pantallasa mostrar al usuario segun indique en los botones de navegacion*/
     List<Widget> _opciones = [
       /*Pagia principal*/
@@ -98,81 +92,62 @@ class _NavigationAppBarState extends State<NavigationAppBar> {
         userId: widget.userId,
       ),
       /*Pagina de calendario*/
-     ConsultasActuales(
-       idTerapeuta: widget.userId,
-     ),
-
-/*Pagina para crear el expediente de paciente */
-     RegistrarPaciente(
-        paciente: Paciente(null, '', '','' ,0, '', '', widget.userId,''),
-        userId: widget.userId,
+      ConsultasActuales(
+        idTerapeuta: widget.userId,
       ),
 
+/*Pagina para crear el expediente de paciente */
+      RegistrarPaciente(
+        paciente: Paciente(null, '', '', '', 0, '', '', widget.userId, ''),
+        userId: widget.userId,
+      ),
       VerTerapeuta(
         activado: false,
         userId: widget.userId,
         auth: widget.auth,
         logoutCallback: widget.logoutCallback,
       )
-
     ];
 
-
-
-
-
     return MaterialApp(
-     
-          home: Scaffold(
-
+      home: Scaffold(
           drawer: Drawer(
-            
             child: ListView.builder(
               itemCount: items.length,
-              itemBuilder: (context,position){
-                 return _filter(context, position);
+              itemBuilder: (context, position) {
+                return _filter(context, position);
               },
             ),
           ),
           appBar: AppBar(
-          
             elevation: 0.0,
             title: Text(titulo, style: TextStyle(color: Colors.black)),
             backgroundColor: colorTema,
-         
-            
-            actionsIconTheme: IconThemeData(
-              color: Colors.black
-            ),
+            actionsIconTheme: IconThemeData(color: Colors.black),
             actions: <Widget>[
-            
-             // FlatButton(onPressed: signOut, child: Text('Cerrar Sesion')),
-            Image.asset('assets/images/icon-app.jpeg',
-              height: 35.0,
-              width: 35.0,
-            )
-           
+              // FlatButton(onPressed: signOut, child: Text('Cerrar Sesion')),
+              Image.asset(
+                'assets/images/icon-app.jpeg',
+                height: 35.0,
+                width: 35.0,
+              )
             ],
           ),
 
           /*Aqui se muestra la pantalla indicada por el metodo elementAt seugn la lista*/
           body: Center(child: _opciones.elementAt(_cIndex)),
           bottomNavigationBar: BottomNavigationBar(
-            
             selectedItemColor: colorSubTema,
-            
             currentIndex: _cIndex,
             type: BottomNavigationBarType.fixed,
             /*-----------------------------------CONJUNTO DE ICONOS DE NAVEGACION ENTRE INTERFACES DE LA APP-----------------------*/
-    
+
             items: [
               BottomNavigationBarItem(
-               
-               activeIcon:Icon(
+                activeIcon: Icon(
                   Icons.assignment_ind,
-              
                   size: 20.5,
-                ), 
+                ),
                 icon: Icon(
                   Icons.assignment_ind,
                   color: Colors.grey,
@@ -184,23 +159,41 @@ class _NavigationAppBarState extends State<NavigationAppBar> {
                 ),
               ),
               BottomNavigationBarItem(
-                activeIcon: Icon(Icons.calendar_today,  size: 20.5,),
-                icon: Icon(Icons.calendar_today, color: Colors.grey,  size: 20.5,),
+                activeIcon: Icon(
+                  Icons.calendar_today,
+                  size: 20.5,
+                ),
+                icon: Icon(
+                  Icons.calendar_today,
+                  color: Colors.grey,
+                  size: 20.5,
+                ),
                 title: Text(
                   'Calendario',
                   style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
                 ),
               ),
               BottomNavigationBarItem(
-                  activeIcon: Icon(Icons.person_add,  size: 20.5,),
-                  icon: Icon(Icons.person_add, color: Colors.grey,  size: 20.5,),
+                  activeIcon: Icon(
+                    Icons.person_add,
+                    size: 20.5,
+                  ),
+                  icon: Icon(
+                    Icons.person_add,
+                    color: Colors.grey,
+                    size: 20.5,
+                  ),
                   title: Text(
                     'Añadir Paciente',
                     style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
                   )),
-               BottomNavigationBarItem(
-                  activeIcon:  Icon(Icons.person,  size: 20.5),
-                  icon: Icon(Icons.person, color: Colors.grey,  size: 20.5,),
+              BottomNavigationBarItem(
+                  activeIcon: Icon(Icons.person, size: 20.5),
+                  icon: Icon(
+                    Icons.person,
+                    color: Colors.grey,
+                    size: 20.5,
+                  ),
                   title: Text(
                     'Perfil',
                     style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
@@ -215,10 +208,6 @@ class _NavigationAppBarState extends State<NavigationAppBar> {
     );
   }
 
-
-
-
-
   /*-------------------------METODO QUE INICIALIZA EL REGISTRO DE UN PACIENTE---------------------------*/
 
   void _createNewPaciente(BuildContext context) async {
@@ -226,63 +215,57 @@ class _NavigationAppBarState extends State<NavigationAppBar> {
         context,
         MaterialPageRoute(
             builder: (context) => RegistrarPaciente(
-                  paciente: Paciente(null, '', '','', 0, '', '', widget.userId,''),
+                  paciente:
+                      Paciente(null, '', '', '', 0, '', '', widget.userId, ''),
                   userId: widget.userId,
                 )));
   }
 
-
-
 /*---------------BOTON DE PERFIL--------------------------------*/
-    
 
+  void titulos(int posicion) {
+    switch (posicion) {
+      case 0:
+        titulo = 'Lista de pacientes';
+        break;
+      case 1:
+        titulo = 'Calendario de consultas';
+        break;
+      case 2:
+        titulo = 'Registro de pacientes';
+        break;
+      case 3:
+        titulo = 'perfil';
+        break;
+      case 4:
+        titulo = 'Otra funcion';
+        break;
 
-void titulos(int posicion){
-  switch (posicion) {
-    case 0:
-      titulo = 'Lista de pacientes';
-      break;
-    case 1:
-      titulo = 'Calendario de consultas';
-      break;
-    case 2:
-      titulo = 'Registro de pacientes';
-      break;
-    case 3:
-      titulo = 'perfil';
-      break;
-    case 4:
-      titulo = 'Otra funcion';
-      break;
-
-    default:
+      default:
+    }
   }
-}
 
-Widget _header(){
-  return DrawerHeader(
-      margin: EdgeInsets.zero,
-      padding: EdgeInsets.zero,
-      decoration: BoxDecoration(
-          image: DecorationImage(
-              fit: BoxFit.cover,
-              image:  AssetImage('assets/images/icon-app.jpeg'))),
-      child: Stack(children: <Widget>[
-        Positioned(
-            bottom: 12.0,
-            left: 16.0,
-            child: Text("TherApp",
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 20.0,
-                    fontWeight: FontWeight.w500))),
-      ]));
-}
-
-
+  Widget _header() {
+    return DrawerHeader(
+        margin: EdgeInsets.zero,
+        padding: EdgeInsets.zero,
+        decoration: BoxDecoration(
+            image: DecorationImage(
+                fit: BoxFit.cover,
+                image: AssetImage('assets/images/icon-app.jpeg'))),
+        child: Stack(children: <Widget>[
+          Positioned(
+              bottom: 12.0,
+              left: 16.0,
+              child: Text("TherApp",
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.w500))),
+        ]));
+  }
 
 /*-------------------------------------OPCIONES DESPLEGABLES----------------------------*/
-
 
 /*-------------------------------------------------------BACKEND--------------------------------------- */
 
@@ -335,71 +318,62 @@ Widget _header(){
 
       return Column(
         children: <Widget>[
-       
           UserAccountsDrawerHeader(
-          decoration: BoxDecoration(
-            color: colorSubTema,
-          ),
-          onDetailsPressed: (){
-            Navigator.pop(context);
-          },
-          accountName: Text("${items[position].nombre} ${items[position].apellidos}"),
-          accountEmail: Text("${items[position].email}"),
-          currentAccountPicture: ClipOval(
-           
-            child: FadeInImage(
-            
-                fit:BoxFit.cover,
+            decoration: BoxDecoration(
+              color: colorSubTema,
+            ),
+            onDetailsPressed: () {
+              Navigator.pop(context);
+            },
+            accountName:
+                Text("${items[position].nombre} ${items[position].apellidos}"),
+            accountEmail: Text("${items[position].email}"),
+            currentAccountPicture: ClipOval(
+              child: FadeInImage(
+                fit: BoxFit.cover,
                 width: 150.0,
                 height: 150.0,
                 fadeInCurve: Curves.bounceIn,
-                placeholder:  AssetImage('assets/images/icon-app.jpeg'), 
-                image: items[position].imagen != null ?
-                NetworkImage(items[position].imagen + '?alt=media'):
-                AssetImage('assets/images/photo-null.jpeg'),
-                ),
-          ),
-),
-
-        ListTile(
-             leading: Icon(Icons.person),
-             title: Text('Perfil de usuario'),
-              
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => VerTerapeuta(
-                          activado: true,
-                              userId: widget.userId,
-                              auth: widget.auth,
-                              logoutCallback: widget.logoutCallback,
-                            )));
-              },
+                placeholder: AssetImage('assets/images/icon-app.jpeg'),
+                image: items[position].imagen != null
+                    ? NetworkImage(items[position].imagen + '?alt=media')
+                    : AssetImage('assets/images/photo-null.jpeg'),
+              ),
             ),
-
-            Divider(
+          ),
+          ListTile(
+            leading: Icon(Icons.person),
+            title: Text('Perfil de usuario'),
+            onTap: () {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => VerTerapeuta(
+                            activado: true,
+                            userId: widget.userId,
+                            auth: widget.auth,
+                            logoutCallback: widget.logoutCallback,
+                          )));
+            },
+          ),
+          Divider(
             height: 240.0,
           ),
-        ListTile(
-             leading: Icon(Icons.keyboard_capslock, color: Colors.red,),
-             title: Text('Cerrar Sesion',
-             style: TextStyle(
-               
-               color: Colors.red,
-
-             ),
-             ),
-                
-             
-              onTap:signOut
-            ),
-
-
+          ListTile(
+              leading: Icon(
+                Icons.keyboard_capslock,
+                color: Colors.red,
+              ),
+              title: Text(
+                'Cerrar Sesion',
+                style: TextStyle(
+                  color: Colors.red,
+                ),
+              ),
+              onTap: signOut),
           Divider(
             height: 7.0,
           ),
-          
         ],
       );
     } else {
@@ -409,5 +383,4 @@ Widget _header(){
       );
     }
   }
-
 }

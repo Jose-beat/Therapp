@@ -44,14 +44,14 @@ class _VerAntecPatologicosState extends State<VerAntecPatologicos> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: ListView.builder(
-            itemCount: items.length,
-            itemBuilder: (context, position) {
-              return _filter(context, position);
-            }),
-            floatingActionButton: FloatingActionButton(onPressed: ()=>_createNewAntecPatologico(context)),
-            
-            );
+      body: ListView.builder(
+          itemCount: items.length,
+          itemBuilder: (context, position) {
+            return _filter(context, position);
+          }),
+      floatingActionButton: FloatingActionButton(
+          onPressed: () => _createNewAntecPatologico(context)),
+    );
   }
 
   /*------------------------------------BACKEND----------------------------------------*/
@@ -115,30 +115,31 @@ class _VerAntecPatologicosState extends State<VerAntecPatologicos> {
       child: Column(
         children: <Widget>[
           Divider(),
-          _lista(items[position].enfermedad, context, position,'Antecedente Patologico'),
+          _lista(items[position].enfermedad, context, position,
+              'Antecedente Patologico'),
         ],
       ),
     );
   }
 
-  Widget _lista(String variable, BuildContext context, int position, String subtitulo) {
+  Widget _lista(
+      String variable, BuildContext context, int position, String subtitulo) {
     return ListTile(
       contentPadding: EdgeInsets.fromLTRB(0, 0, 0, 0),
       title: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text('$variable',style: Theme.of(context).textTheme.headline ),
-           VerticalDivider(
+          Text('$variable', style: Theme.of(context).textTheme.headline),
+          VerticalDivider(
             width: 110.0,
           ),
-           VerticalDivider(
+          VerticalDivider(
             width: 110.0,
           ),
           IconButton(
               icon: Icon(Icons.edit),
               onPressed: () => _navigateToAntPat(context, items[position]))
         ],
-        
       ),
       subtitle: Text('$subtitulo'),
     );

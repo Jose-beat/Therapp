@@ -9,7 +9,8 @@ class VerSignosVitales extends StatefulWidget {
   final SignosVitales signosVitales;
   final String pacienteId;
 
-  VerSignosVitales({Key key, this.signosVitales, this.pacienteId,this.fechasignoVital})
+  VerSignosVitales(
+      {Key key, this.signosVitales, this.pacienteId, this.fechasignoVital})
       : super(key: key);
 
   @override
@@ -44,17 +45,13 @@ class _VerSignosVitalesState extends State<VerSignosVitales> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-
-      ),
-        body: ListView.builder(
-            itemCount: items.length,
-            itemBuilder: (context, position) {
-              return _filter(context, position);
-            }),
-            
-            
-            );
+      appBar: AppBar(),
+      body: ListView.builder(
+          itemCount: items.length,
+          itemBuilder: (context, position) {
+            return _filter(context, position);
+          }),
+    );
   }
 
   /*------------------------------------BACKEND----------------------------------------*/
@@ -89,13 +86,15 @@ class _VerSignosVitalesState extends State<VerSignosVitales> {
         context,
         MaterialPageRoute(
             builder: (context) => RegistroSignosVitales(
-                  signosVitales:
-                      SignosVitales(null, '', '', 0, '', widget.pacienteId,'',''),
+                  signosVitales: SignosVitales(
+                      null, '', '', 0, '', widget.pacienteId, '', ''),
                 )));
   }
 
   Widget _filter(BuildContext context, int position) {
-    if (items[position].fechaSignos == widget.fechasignoVital&&items[position].paciente==widget.pacienteId && widget.signosVitales.hora==items[position].hora) {
+    if (items[position].fechaSignos == widget.fechasignoVital &&
+        items[position].paciente == widget.pacienteId &&
+        widget.signosVitales.hora == items[position].hora) {
       print('SIGNOS VITALES${items[position].id}');
 
       return Column(
@@ -114,30 +113,33 @@ class _VerSignosVitalesState extends State<VerSignosVitales> {
       child: Column(
         children: <Widget>[
           Divider(),
-          _lista(items[position].fc, context, position,'Frecuencia Cardiaca'),
+          _lista(items[position].fc, context, position, 'Frecuencia Cardiaca'),
           Divider(),
-          _lista(items[position].fr, context, position,'Frecuencia Respiratoria'),
+          _lista(
+              items[position].fr, context, position, 'Frecuencia Respiratoria'),
           Divider(),
-          _lista(items[position].peso.toString(), context, position,'Peso'),
+          _lista(items[position].peso.toString(), context, position, 'Peso'),
           Divider(),
-          _lista(items[position].talla, context, position,'Talla'),
-           Divider(),
-          _lista(items[position].fechaSignos, context, position,'Fecha'),
+          _lista(items[position].talla, context, position, 'Talla'),
           Divider(),
-          _lista(items[position].hora, context, position,'Hora'),
-          
+          _lista(items[position].fechaSignos, context, position, 'Fecha'),
+          Divider(),
+          _lista(items[position].hora, context, position, 'Hora'),
         ],
       ),
     );
   }
 
-  Widget _lista(String variable, BuildContext context, int position,String subtitulo) {
+  Widget _lista(
+      String variable, BuildContext context, int position, String subtitulo) {
     return ListTile(
-      title: Text('$variable',style: Theme.of(context).textTheme.headline,),
+      title: Text(
+        '$variable',
+        style: Theme.of(context).textTheme.headline,
+      ),
       subtitle: Text('$subtitulo'),
-      
-      
-     /* Row(
+
+      /* Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           
@@ -150,19 +152,13 @@ class _VerSignosVitalesState extends State<VerSignosVitales> {
     );
   }
 
-
-
-
-     Widget estiloLista(String titulo, String subtitulo,BuildContext context){
+  Widget estiloLista(String titulo, String subtitulo, BuildContext context) {
     return ListTile(
-      title: Text('$titulo',
-      style: Theme.of(context).textTheme.headline,
+      title: Text(
+        '$titulo',
+        style: Theme.of(context).textTheme.headline,
       ),
       subtitle: Text('$subtitulo'),
-    );  
+    );
   }
-
-
-
-
 }

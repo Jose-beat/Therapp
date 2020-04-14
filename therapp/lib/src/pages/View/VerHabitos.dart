@@ -41,13 +41,14 @@ class _VerHabitosState extends State<VerHabitos> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: ListView.builder(
-            itemCount: items.length,
-            itemBuilder: (context, position) {
-              return _filter(context, position);
-            }),
-            floatingActionButton: FloatingActionButton(onPressed: ()=>_createNewHabitos(context)),
-            );
+      body: ListView.builder(
+          itemCount: items.length,
+          itemBuilder: (context, position) {
+            return _filter(context, position);
+          }),
+      floatingActionButton:
+          FloatingActionButton(onPressed: () => _createNewHabitos(context)),
+    );
   }
 
 /*------------------------------------BACKEND----------------------------------------*/
@@ -67,13 +68,8 @@ class _VerHabitosState extends State<VerHabitos> {
   }
 
   void _navigateToHabitos(BuildContext context, Habitos habitos) async {
-    await Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => ResHabitos(
-            habitos: habitos
-          )
-        ));
+    await Navigator.push(context,
+        MaterialPageRoute(builder: (context) => ResHabitos(habitos: habitos)));
   }
 
   void _createNewHabitos(BuildContext context) async {
@@ -107,22 +103,26 @@ class _VerHabitosState extends State<VerHabitos> {
       child: Column(
         children: <Widget>[
           Divider(),
-          _lista(items[position].habitosAlimenticios, context, position,'Habito Alimenticio'),
+          _lista(items[position].habitosAlimenticios, context, position,
+              'Habito Alimenticio'),
           Divider(),
-          _lista(items[position].habitosHigiene, context, position,'Habito de Higiene'),
+          _lista(items[position].habitosHigiene, context, position,
+              'Habito de Higiene'),
         ],
       ),
     );
   }
 
-  Widget _lista(String variable, BuildContext context, int position,String subtitulo) {
+  Widget _lista(
+      String variable, BuildContext context, int position, String subtitulo) {
     return ListTile(
-
-      title: Text('$variable',style: Theme.of(context).textTheme.headline,),
+      title: Text(
+        '$variable',
+        style: Theme.of(context).textTheme.headline,
+      ),
       subtitle: Text('$subtitulo'),
-
       onTap: () => _navigateToHabitos(context, items[position]),
-     /* 
+      /* 
       Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[

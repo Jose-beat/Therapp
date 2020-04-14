@@ -5,14 +5,19 @@ import 'package:flutter/material.dart';
 import 'package:therapp/src/models/consultas.dart';
 import 'package:therapp/src/pages/Register/RegistrarConsultas.dart';
 
-
 class VerConsultas extends StatefulWidget {
   final String fechaConsulta;
   final String idTerapeuta;
   final String idPaciente;
   final Consultas consultas;
 
-  VerConsultas({Key key, this.idPaciente, this.consultas, this.idTerapeuta, this.fechaConsulta}) : super(key: key);
+  VerConsultas(
+      {Key key,
+      this.idPaciente,
+      this.consultas,
+      this.idTerapeuta,
+      this.fechaConsulta})
+      : super(key: key);
 
   @override
   _VerConsultasState createState() => _VerConsultasState();
@@ -46,13 +51,14 @@ class _VerConsultasState extends State<VerConsultas> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: ListView.builder(
-            itemCount: items.length,
-            itemBuilder: (context, position) {
-              return _filter(context, position);
-            }),
-            floatingActionButton: FloatingActionButton(onPressed: ()=>_createNewConsultas(context)),
-            );
+      body: ListView.builder(
+          itemCount: items.length,
+          itemBuilder: (context, position) {
+            return _filter(context, position);
+          }),
+      floatingActionButton:
+          FloatingActionButton(onPressed: () => _createNewConsultas(context)),
+    );
   }
 
   /*------------------------------------BACKEND----------------------------------------*/
@@ -68,8 +74,8 @@ class _VerConsultasState extends State<VerConsultas> {
     setState(() {
       items[items.indexOf(oldConsultasValue)] =
           new Consultas.fromSnapshot(event.snapshot);
-    }); 
-  } 
+    });
+  }
 
   void _navigateToConsultas(BuildContext context, Consultas consultas) async {
     await Navigator.push(
@@ -77,7 +83,6 @@ class _VerConsultasState extends State<VerConsultas> {
         MaterialPageRoute(
           builder: (context) => ResConsultas(
             consultas: consultas,
-            
           ),
         ));
   }
@@ -87,14 +92,16 @@ class _VerConsultasState extends State<VerConsultas> {
         context,
         MaterialPageRoute(
             builder: (context) => ResConsultas(
-                  consultas: Consultas(null, '', widget.idPaciente,widget.idTerapeuta,'','','',''),
+                  consultas: Consultas(null, '', widget.idPaciente,
+                      widget.idTerapeuta, '', '', '', ''),
                 )));
   }
 
   Widget _filter(BuildContext context, int position) {
     print('VE ESTE MENSAJE');
 
-    if (items[position].idPaciente == widget.idPaciente&&items[position].fechaConsulta==widget.fechaConsulta) {
+    if (items[position].idPaciente == widget.idPaciente &&
+        items[position].fechaConsulta == widget.fechaConsulta) {
       print('WE NO MAMES ESTA ES LA ID DE LA CONSULTA ${items[position].id}');
       print('MOTIVOS ${items[position].motivos}');
       print('NUKLITO ${items[position].nombre}');
@@ -116,28 +123,29 @@ class _VerConsultasState extends State<VerConsultas> {
       child: Column(
         children: <Widget>[
           Divider(),
-          _lista(items[position].motivos, context, position,'Motivo de la Consulta'),
-          _lista(items[position].fechaConsulta, context, position,'Fecha'),
-          _lista(items[position].horaConsulta, context, position,'Hora'),
+          _lista(items[position].motivos, context, position,
+              'Motivo de la Consulta'),
+          _lista(items[position].fechaConsulta, context, position, 'Fecha'),
+          _lista(items[position].horaConsulta, context, position, 'Hora'),
         ],
       ),
     );
   }
 
-  Widget _lista(String variable, BuildContext context, int position,String subtitulo) {
+  Widget _lista(
+      String variable, BuildContext context, int position, String subtitulo) {
     return ListTile(
-     
-      title: Row(
-       
-        children: <Widget>[
-          Text('$variable',style: Theme.of(context).textTheme.headline,),
-     
-          IconButton(
-              icon: Icon(Icons.edit),
-              onPressed: () => _navigateToConsultas(context, items[position]))
-        ],
-      ),
-       subtitle: Text('$subtitulo')
-    );
+        title: Row(
+          children: <Widget>[
+            Text(
+              '$variable',
+              style: Theme.of(context).textTheme.headline,
+            ),
+            IconButton(
+                icon: Icon(Icons.edit),
+                onPressed: () => _navigateToConsultas(context, items[position]))
+          ],
+        ),
+        subtitle: Text('$subtitulo'));
   }
 }

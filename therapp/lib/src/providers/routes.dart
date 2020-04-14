@@ -90,7 +90,6 @@ class _RootPageState extends State<RootPage> {
             auth: widget.auth,
             logoutCallback: logoutCallback,
           );
-
         } else
           return buildWaitingScreen();
         break;
