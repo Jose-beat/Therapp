@@ -9,6 +9,8 @@ import 'package:therapp/src/models/Paciente.dart';
 import 'package:therapp/src/models/SignosVitales.dart';
 import 'package:therapp/src/models/consultas.dart';
 import 'package:therapp/src/pages/Register/RegistrarHabitos.dart';
+import 'package:therapp/src/pages/Register/RegistrarPaciente.dart';
+import 'package:therapp/src/pages/Register/RegistrarSignosVitales.dart';
 import 'package:therapp/src/pages/View/ListaConsultas.dart';
 import 'package:therapp/src/pages/View/ListaSignosVitales.dart';
 
@@ -54,6 +56,8 @@ class _VerPacienteState extends State<VerPaciente> {
               (BuildContext context, bool innerBoxIsScrolling) {
             return <Widget>[
               SliverAppBar(
+
+                backgroundColor: Colors.teal[500],
                 elevation: 0.0,
                 title: Titulo(
                   nombre: nombre,
@@ -64,7 +68,7 @@ class _VerPacienteState extends State<VerPaciente> {
                 flexibleSpace: FlexibleSpaceBar(
                   background: EspacioFlexible(
                       imagen: widget.paciente.imagenPaciente == ''
-                          ? 'No hay imagen'
+                          ? null
                           : widget.paciente.imagenPaciente,
                       sexo: widget.paciente.sexo,
                       edad: widget.paciente.edad.toString()),
@@ -113,26 +117,23 @@ class _VerPacienteState extends State<VerPaciente> {
                         child: Column(
                           children: <Widget>[
                             estiloLista('${widget.paciente.nombre}',
-                                'Nombre del Paciente', context),
+                                'Nombre del Paciente', context, widget.paciente),
                             Divider(),
                             estiloLista("${widget.paciente.apellidos}",
-                                'Apellidos', context),
+                                'Apellidos', context,  widget.paciente),
                             Divider(),
                             estiloLista("${widget.paciente.nacimiento}",
-                                'Fecha de Nacimiento', context),
+                                'Fecha de Nacimiento', context,  widget.paciente),
                             Divider(),
                             estiloLista(
-                                "${widget.paciente.edad}", 'Edad', context),
+                                "${widget.paciente.edad}", 'Edad', context,  widget.paciente),
                             Divider(),
                             estiloLista("${widget.paciente.ocupacion}",
-                                'Ocupacion', context),
+                                'Ocupacion', context,  widget.paciente),
                             Divider(),
                             estiloLista(
-                                "${widget.paciente.sexo}", 'Sexo', context),
-                            Divider(),
-                            estiloLista("${widget.paciente.id}",
-                                'Identificacion', context),
-                            Divider(),
+                                "${widget.paciente.sexo}", 'Sexo', context,  widget.paciente),
+                            
                           ],
                         ),
                       ),
@@ -160,8 +161,13 @@ class _VerPacienteState extends State<VerPaciente> {
               ),
             ],
           )),
-    ));
+    ),
+    
+    
+    );
   }
+
+
 
   void _navigateToHabitos(BuildContext context, Habitos habitos) async {
     await Navigator.push(
@@ -184,15 +190,39 @@ class _VerPacienteState extends State<VerPaciente> {
     );
   }
 
-  Widget estiloLista(String titulo, String subtitulo, BuildContext context) {
+  Widget estiloLista(String titulo, String subtitulo, BuildContext context, Paciente paciente) {
     return ListTile(
-      title: Text(
-        '$titulo',
-        style: Theme.of(context).textTheme.headline,
+      title: Row(
+        children: <Widget>[
+          Text(
+            '$titulo',
+            style: Theme.of(context).textTheme.headline,
+          ),
+          VerticalDivider(
+            width:  10.0
+          ),
+          IconButton(icon:Icon(Icons.edit), 
+          onPressed: ()=> _changePacienteInformation(context, paciente))
+          
+        ],
+
       ),
       subtitle: Text('$subtitulo'),
     );
   }
+
+ void _changePacienteInformation(
+      BuildContext context, Paciente paciente) async {
+    await Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => RegistrarPaciente(
+                  paciente: paciente,
+                  userId: widget.idTerapeuta,
+                  app: true,
+                )));
+  }
+
 }
 
 class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
@@ -209,7 +239,7 @@ class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   Widget build(
       BuildContext context, double shrinkOffset, bool overlapsContent) {
     return new Container(
-      color: Colors.blue,
+      color: Colors.teal[500],
       child: _tabBar,
     );
   }

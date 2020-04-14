@@ -34,7 +34,10 @@ class _ResAntecedentesPatologicosState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(),
+        appBar: AppBar(
+          backgroundColor: Colors.teal[500],
+          title: Text('Antecedentes Patologicos')
+        ),
         body: ListView(
           children: <Widget>[
             Container(
@@ -44,6 +47,7 @@ class _ResAntecedentesPatologicosState
                              key: _formKey,
                                       child: Column(
                       children: <Widget>[
+                        Divider(),
                         TextFormField(
                           controller: _enfermedadController,
                           style: TextStyle(fontSize: 17.0, color: Colors.pink),
@@ -60,6 +64,7 @@ class _ResAntecedentesPatologicosState
 
                         
                         FlatButton(
+                          color: Colors.orange,
                             onPressed: () {
 
                               if(_formKey.currentState.validate()){
@@ -83,7 +88,13 @@ class _ResAntecedentesPatologicosState
                                 });
                               }}
                             },
-                            child: Text('Añadir Antecedente patologico'))
+                            child: Text('Añadir Antecedente patologico',
+                             style: TextStyle(
+                            color: Colors.white
+                          ),
+                            ),
+                            
+                            )
                       ],
                     ),
                   ),

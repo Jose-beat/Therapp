@@ -45,7 +45,10 @@ class _VerSignosVitalesState extends State<VerSignosVitales> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        backgroundColor: Colors.orange,
+        title: Text('Signos Vitales')
+      ),
       body: ListView.builder(
           itemCount: items.length,
           itemBuilder: (context, position) {

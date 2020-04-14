@@ -19,6 +19,7 @@ class ResAntecedentesNoPatologicos extends StatefulWidget {
 final antecedentesNoPatologicosReference =
     FirebaseDatabase.instance.reference().child('antecedentes_no_patologicos');
 
+
 class _ResAntecedentesNoPatologicosState
     extends State<ResAntecedentesNoPatologicos> {
       final _formKey = GlobalKey<FormState>();
@@ -36,7 +37,10 @@ class _ResAntecedentesNoPatologicosState
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(),
+        appBar: AppBar(
+         backgroundColor:  Colors.teal[500],
+         title: Text('Antecedentes No Patologicos'),
+        ),
         body: ListView(
           children: <Widget>[
             Container(
@@ -46,6 +50,7 @@ class _ResAntecedentesNoPatologicosState
                     key: _formKey,
                                       child: Column(
                       children: <Widget>[
+                        Divider(),
                         TextFormField(
                           controller: _enfermedadController,
                           style: TextStyle(fontSize: 17.0, color: Colors.pink),
@@ -57,7 +62,11 @@ class _ResAntecedentesNoPatologicosState
                             }
                              },
                         ),
+
+                        Divider(),
+
                         FlatButton(
+                          color: Colors.orange,
                             onPressed: () {
                               if(_formKey.currentState.validate()){
                               if (widget.antecedentesNoPatologicos.id != null) {
@@ -81,7 +90,11 @@ class _ResAntecedentesNoPatologicosState
                               }
                               }
                             },
-                            child: Text('Añadir Antecedente patologico'))
+                            child: Text('Añadir Antecedente No patologico',
+                            style: TextStyle(
+                              color: Colors.white
+                            ),
+                            ))
                       ],
                     ),
                   ),

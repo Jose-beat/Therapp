@@ -15,7 +15,8 @@ String filename;
 class RegistrarPaciente extends StatefulWidget {
   final Paciente paciente;
   final String userId;
-  RegistrarPaciente({Key key, this.paciente, this.userId}) : super(key: key);
+  final bool app;
+  RegistrarPaciente({Key key, this.paciente, this.userId, this.app}) : super(key: key);
 
   @override
   _RegistrarPacienteState createState() => _RegistrarPacienteState();
@@ -80,6 +81,11 @@ class _RegistrarPacienteState extends State<RegistrarPaciente> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: widget.app == false ? null : 
+      AppBar(
+        backgroundColor: Colors.teal[500],
+        title: Text('Editar Registro'),
+      ),
       body: ListView(
         children: <Widget>[
           imagenes(),
@@ -98,7 +104,7 @@ class _RegistrarPacienteState extends State<RegistrarPaciente> {
                            validator: (value){
                               value=_nombreController.text;
                                     if(value.isEmpty){
-                                      return 'Please enter some text';
+                                      return 'Favor de introducir un nombre';
                                     }else{
                  
                                         }},
@@ -113,7 +119,7 @@ class _RegistrarPacienteState extends State<RegistrarPaciente> {
                            validator: (value){
                               value=_apellidosController.text;
                                     if(value.isEmpty){
-                                      return 'Please enter some text';
+                                      return 'Favor de introducir apellidos';
                                     }else{
                  
                                         }},
@@ -130,7 +136,7 @@ class _RegistrarPacienteState extends State<RegistrarPaciente> {
                            validator: (value){
                               value=_ocupacionController.text;
                                     if(value.isEmpty){
-                                      return 'Please enter some text';
+                                      return 'Favor de introducir su ocupacion';
                                     }else{
                  
                                         }},
@@ -299,13 +305,13 @@ Widget _crearGenero(BuildContext context){
   Widget generoOption() {
     return DropdownButton<String>(
       value: genero,
-      icon: Icon(Icons.arrow_downward),
+    
       iconSize: 24,
       elevation: 16,
-      style: TextStyle(color: Colors.deepPurple),
+      style: TextStyle(color: Colors.teal[500]),
       underline: Container(
         height: 2,
-        color: Colors.deepPurpleAccent,
+        color: Colors.teal[500],
       ),
       onChanged: (String newValue) {
         setState(() {
@@ -372,13 +378,13 @@ Widget _crearEdad(BuildContext context){
   Widget edadOption() {
     return DropdownButton<int>(
       value: edad,
-      icon: Icon(Icons.arrow_downward),
+
       iconSize: 24,
       elevation: 16,
-      style: TextStyle(color: Colors.deepPurple),
+      style: TextStyle(color: Colors.teal[500]),
       underline: Container(
         height: 2,
-        color: Colors.deepPurpleAccent,
+        color: Colors.teal[500],
       ),
       onChanged: (int newValue) {
         setState(() {

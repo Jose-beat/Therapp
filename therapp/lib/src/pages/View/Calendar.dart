@@ -171,7 +171,7 @@ class _ConsultasActualesState extends State<ConsultasActuales> {
             locale: 'es_MX',
             calendarController: _calendarController,
             calendarStyle: CalendarStyle(
-                todayColor: Colors.green, selectedColor: Colors.orange),
+                todayColor: Colors.orange, selectedColor: Colors.teal[500]),
           ),
           Card(
             child: Text(
@@ -274,7 +274,7 @@ class _ConsultasActualesState extends State<ConsultasActuales> {
       if (valorDia.day > ahora.day ||
           valorDia.month > ahora.month ||
           valorDia.year > ahora.year) {
-        return estado(position, 'Consulta Futura', Colors.blue);
+        return estado(position, 'Consulta Pendiente', Colors.blue);
       } else {
         print('No SE CUMPLE');
         return estado(position, 'Consulta Pasada', Colors.red);
@@ -286,6 +286,9 @@ class _ConsultasActualesState extends State<ConsultasActuales> {
     return Row(
       children: <Widget>[
         CircleAvatar(backgroundColor: color),
+        VerticalDivider(
+          width: 100.0,
+        ),
         Column(
           children: <Widget>[
             Text(
@@ -296,6 +299,7 @@ class _ConsultasActualesState extends State<ConsultasActuales> {
             ),
             Text(
               '${items[position].fechaConsulta}',
+              textAlign: TextAlign.right,
               style: TextStyle(
                 color: color,
               ),

@@ -42,7 +42,10 @@ class _ResConsultasState extends State<ResConsultas> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(),
+        appBar: AppBar(
+          backgroundColor: Colors.teal[500],
+          title: Text('Consulta')
+        ),
         body: ListView(
           children: <Widget>[
             Container(
@@ -52,6 +55,7 @@ class _ResConsultasState extends State<ResConsultas> {
                     key: _formKey,
                                       child: Column(
                       children: <Widget>[
+                        Divider(),
                         TextFormField(
                           controller: _motivoController,
                           style: TextStyle(fontSize: 17.0, color: Colors.orange),
@@ -64,9 +68,12 @@ class _ResConsultasState extends State<ResConsultas> {
                              },
                               
                         ),
+                        Divider(),
                         _crearFecha(context),
+                        Divider(),
                         _crearHora(context),
                         FlatButton(
+                            color: Colors.orange,
                             onPressed: () {
 
                                if(_formKey.currentState.validate()){
@@ -99,7 +106,11 @@ class _ResConsultasState extends State<ResConsultas> {
                               }
                               }
                             },
-                            child: Text('Añadir Consulta'))
+                            child: Text('Añadir Consulta',
+                              style: TextStyle(
+                            color: Colors.white
+                          ),
+                            ))
                       ],
                     ),
                   ),

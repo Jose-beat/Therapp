@@ -56,6 +56,8 @@ class EspacioFlexible extends StatelessWidget {
                         ),
                         Container(
                           child: Text(
+                            edad == '1' ?
+                            'Edad: $edad año' :
                             'Edad: $edad años',
                             style: const TextStyle(
                                 color: Colors.white70,
@@ -73,7 +75,7 @@ class EspacioFlexible extends StatelessWidget {
         ],
       )),
       decoration: new BoxDecoration(
-        color: Color(0xff013db7),
+        color: Colors.teal[300],
       ),
     );
   }

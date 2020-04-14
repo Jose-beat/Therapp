@@ -22,7 +22,7 @@ class Titulo extends StatelessWidget {
               style: TextStyle(
                 color: Colors.white,
                   fontFamily: 'Poppins',
-                  fontSize: 20.0
+                  fontSize: 15.0
               ),
             ),
 

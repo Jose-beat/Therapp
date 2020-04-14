@@ -45,13 +45,17 @@ class _VerAntecNoPatologicoState extends State<VerAntecNoPatologico> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+    
       body: ListView.builder(
           itemCount: items.length,
           itemBuilder: (context, position) {
             return _filter(context, position);
           }),
       floatingActionButton: FloatingActionButton(
-          onPressed: () => _createNewAntecNoPatologico(context)),
+          onPressed: () => _createNewAntecNoPatologico(context),
+            backgroundColor: Colors.orange,
+          child: Icon(Icons.person_add)
+          ),
     );
   }
 

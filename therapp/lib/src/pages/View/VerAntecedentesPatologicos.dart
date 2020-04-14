@@ -50,7 +50,10 @@ class _VerAntecPatologicosState extends State<VerAntecPatologicos> {
             return _filter(context, position);
           }),
       floatingActionButton: FloatingActionButton(
-          onPressed: () => _createNewAntecPatologico(context)),
+          onPressed: () => _createNewAntecPatologico(context),
+          backgroundColor: Colors.orange,
+          child: Icon(Icons.group_add),
+          ),
     );
   }
 

@@ -32,7 +32,10 @@ class _ResHabitosState extends State<ResHabitos> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text('Registro de Habitos'),
+        backgroundColor: Colors.teal[500],
+      ),
       body: ListView(
         children: <Widget>[
           Container(
@@ -42,6 +45,7 @@ class _ResHabitosState extends State<ResHabitos> {
                   key: _formKey,
                                   child: Column(
                     children: <Widget>[
+                      Divider(),
                       TextFormField(
                         controller: _habitoAlimenticioController,
                         style: TextStyle(fontSize: 17.0, color: Colors.green),
@@ -66,6 +70,7 @@ class _ResHabitosState extends State<ResHabitos> {
                              },
                       ),
                       FlatButton(
+                         color: Colors.orange,
                           onPressed: () {
                             if(_formKey.currentState.validate()){
                             if (widget.habitos.id != null) {
@@ -89,7 +94,14 @@ class _ResHabitosState extends State<ResHabitos> {
                             }
                             }
                           },
-                          child: Text('Subir'))
+                          child: Text('Subir',
+                          style: TextStyle(
+                            color: Colors.white
+                          ),
+                          ),
+                          
+                          ),
+                          
                     ],
                   ),
                 ),

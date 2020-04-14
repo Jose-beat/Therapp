@@ -100,6 +100,7 @@ class _NavigationAppBarState extends State<NavigationAppBar> {
       RegistrarPaciente(
         paciente: Paciente(null, '', '', '', 0, '', '', widget.userId, ''),
         userId: widget.userId,
+        app: false,
       ),
       VerTerapeuta(
         activado: false,
@@ -110,6 +111,7 @@ class _NavigationAppBarState extends State<NavigationAppBar> {
     ];
 
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: Scaffold(
           drawer: Drawer(
             child: ListView.builder(
@@ -121,17 +123,10 @@ class _NavigationAppBarState extends State<NavigationAppBar> {
           ),
           appBar: AppBar(
             elevation: 0.0,
-            title: Text(titulo, style: TextStyle(color: Colors.black)),
+            title: Text(titulo, style: TextStyle(color: Colors.white)),
             backgroundColor: colorTema,
             actionsIconTheme: IconThemeData(color: Colors.black),
-            actions: <Widget>[
-              // FlatButton(onPressed: signOut, child: Text('Cerrar Sesion')),
-              Image.asset(
-                'assets/images/icon-app.jpeg',
-                height: 35.0,
-                width: 35.0,
-              )
-            ],
+            
           ),
 
           /*Aqui se muestra la pantalla indicada por el metodo elementAt seugn la lista*/

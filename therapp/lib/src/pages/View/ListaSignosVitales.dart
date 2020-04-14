@@ -50,7 +50,10 @@ class _ListaSignosVitalesState extends State<ListaSignosVitales> {
             return _filter(context, position);
           }),
       floatingActionButton: FloatingActionButton(
-          onPressed: () => _createNewSignosVitales(context)),
+          onPressed: () => _createNewSignosVitales(context),
+          backgroundColor: Colors.orange,
+          child: Icon(Icons.add_alert),
+          ),
     );
   }
 
@@ -125,7 +128,7 @@ class _ListaSignosVitalesState extends State<ListaSignosVitales> {
       child: Column(
         children: <Widget>[
           Divider(),
-          _lista(items[position].fechaSignos, context, position, '${position}'),
+          _lista(items[position].fechaSignos, context, position, items[position].hora),
         ],
       ),
     );
@@ -137,18 +140,20 @@ class _ListaSignosVitalesState extends State<ListaSignosVitales> {
         title: Row(
           children: <Widget>[
             Text(
-              '$variable',
+              'Fecha: $variable',
               style: Theme.of(context).textTheme.headline,
             ),
             VerticalDivider(
-              width: 110.0,
+              width: 30.0,
             ),
             IconButton(
                 icon: Icon(Icons.edit),
-                onPressed: () => _navigateToSignos(context, items[position]))
+                onPressed: () => _navigateToSignos(context, items[position]),
+                
+                )
           ],
         ),
-        subtitle: Text('$subtitulo'),
+        subtitle: Text('Hora: $subtitulo'),
         onTap: () => _navigateToSignosVitales(context, items[position],
             items[position].paciente, items[position].fechaSignos));
 

@@ -47,7 +47,11 @@ class _VerHabitosState extends State<VerHabitos> {
             return _filter(context, position);
           }),
       floatingActionButton:
-          FloatingActionButton(onPressed: () => _createNewHabitos(context)),
+          FloatingActionButton(onPressed: () => _createNewHabitos(context),
+          backgroundColor: Colors.orange,
+          child: Icon(Icons.add_alarm),
+          ),
+          
     );
   }
 
@@ -108,6 +112,17 @@ class _VerHabitosState extends State<VerHabitos> {
           Divider(),
           _lista(items[position].habitosHigiene, context, position,
               'Habito de Higiene'),
+          Divider(),
+          
+          Column(
+            children: <Widget>[
+              IconButton(
+                icon: Icon(Icons.edit),
+                onPressed: () => _navigateToHabitos(context, items[position]),
+                
+                )
+            ],
+          )
         ],
       ),
     );
@@ -121,7 +136,7 @@ class _VerHabitosState extends State<VerHabitos> {
         style: Theme.of(context).textTheme.headline,
       ),
       subtitle: Text('$subtitulo'),
-      onTap: () => _navigateToHabitos(context, items[position]),
+     
       /* 
       Row(
         crossAxisAlignment: CrossAxisAlignment.start,

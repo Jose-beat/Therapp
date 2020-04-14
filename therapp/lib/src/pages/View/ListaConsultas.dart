@@ -60,7 +60,10 @@ class _ListaConsultasState extends State<ListaConsultas> {
               return _filter(context, position);
             }),
         floatingActionButton: FloatingActionButton(
-            onPressed: () => _createNewConsultas(context)));
+            onPressed: () => _createNewConsultas(context),
+            backgroundColor: Colors.orange,
+            child: Icon(Icons.add_comment),
+            ));
   }
 
 /*--------------------------------///////////////////////////////////////---------------------------------------*/
@@ -147,7 +150,7 @@ class _ListaConsultasState extends State<ListaConsultas> {
         children: <Widget>[
           Divider(),
           _lista(items[position].fechaConsulta, context, position,
-              'Motivo de la Consulta'),
+              items[position].motivos),
         ],
       ),
     );

@@ -127,15 +127,12 @@ class _VerTerapeutaState extends State<VerTerapeuta> {
             ),*/
 
           Container(
-            height: 200.0,
-            width: 200.0,
-            decoration: BoxDecoration(
-                border: Border.all(color: Colors.black, width: 5.5)),
+          
             child: ClipOval(
               child: FadeInImage(
                 fit: BoxFit.cover,
-                width: 150.0,
-                height: 150.0,
+                width: 200.0,
+                height: 200.0,
                 fadeInCurve: Curves.bounceIn,
                 placeholder: AssetImage('assets/images/icon-app.jpeg'),
                 image: items[position].imagen != null
@@ -144,12 +141,7 @@ class _VerTerapeutaState extends State<VerTerapeuta> {
               ),
             ),
           ),
-          Container(
-            //height: 200.0,
-            width: 200.0,
-            decoration: BoxDecoration(
-                color: Colors.black, border: Border.all(color: Colors.black)),
-          ),
+         
 
           /* child: items[position].imagen == '' ? 
             Text('No hay imagen aun') :
@@ -217,16 +209,16 @@ class _VerTerapeutaState extends State<VerTerapeuta> {
   }
 
   Widget _delete(BuildContext context, Terapeuta terapeuta, int position) {
-    return ListTile(
-      contentPadding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-      title: Container(
+    return FlatButton(
+      color: Colors.teal[500],
+      child: Container(
         child: Row(
           children: <Widget>[
-            Text('Eliminar Perfil', textAlign: TextAlign.right),
+            Text('Eliminar Perfil', textAlign: TextAlign.right, style: TextStyle(color: Colors.white),),
           ],
         ),
       ),
-      onTap: () => _confirmacion(context, items[position], position),
+      onPressed: () => _confirmacion(context, items[position], position),
     );
   }
 
@@ -237,13 +229,24 @@ class _VerTerapeutaState extends State<VerTerapeuta> {
           return AlertDialog(
             title: Text('¿Esta seguro de eliminar su perfil?'),
             actions: <Widget>[
-              IconButton(
-                icon: Icon(Icons.delete),
+              FlatButton(
+                
+                child: Text('Eliminar Perfil',
+                style: TextStyle(
+                  color: Colors.red,
+                )
+                ),
                 onPressed: () =>
                     _deleteTerapeuta(context, items[position], position),
               ),
+
               FlatButton(
-                child: Text('Cancelar'),
+              
+                child: Text('Cancelar',
+                 style: TextStyle(
+                  color: Colors.teal[500],
+                )
+                ),
                 onPressed: () {
                   Navigator.pop(context);
                 },
@@ -254,16 +257,16 @@ class _VerTerapeutaState extends State<VerTerapeuta> {
   }
 
   Widget _update(BuildContext context, Terapeuta terapeuta, int position) {
-    return ListTile(
-      contentPadding: EdgeInsets.fromLTRB(0, 0, 0, 0),
-      title: Container(
+    return FlatButton(
+      color: Colors.orange,
+      child: Container(
         child: Row(
           children: <Widget>[
-            Text('Editar Perfil', textAlign: TextAlign.right),
+            Text('Editar Perfil', textAlign: TextAlign.right, style: TextStyle(color: Colors.white),),
           ],
         ),
       ),
-      onTap: () {
+     onPressed: () {
         _navigateToTerapeuta(context, items[position]);
       },
     );

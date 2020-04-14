@@ -125,6 +125,7 @@ class _HomePageState extends State<HomePage>
             builder: (context) => RegistrarPaciente(
                   paciente: paciente,
                   userId: widget.userId,
+                  app: true,
                 )));
   }
 /*-------------------------------------METODOS TERAPEUTA--------------------------*/
@@ -203,23 +204,36 @@ class _HomePageState extends State<HomePage>
                     : AssetImage('assets/images/photo-null.jpeg'),
               ),
             ),
-            Text('${items[position].nombre} ${items[position].apellidos}'),
+            Divider(),
+            Text('${items[position].nombre} ${items[position].apellidos}',
+               style: Theme.of(context).textTheme.subhead
+
+               
+            ),
             Divider(),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 FlatButton(
-                    color: Colors.green,
+                    color: Colors.teal[500],
                     hoverColor: Colors.teal[300],
                     onPressed: () => _navigateToPaciente(
                         context, items[position], widget.userId),
-                    child: Text('Ver Expediente')),
+                    child: Text('Ver Expediente',
+                    style: TextStyle(
+                      color: Colors.white
+                    ),
+                    )),
                 VerticalDivider(width: 10.0, color: Colors.black),
                 FlatButton(
-                    color: Colors.blue,
+                    color: Colors.orange,
                     onPressed: () =>
                         _changePacienteInformation(context, items[position]),
-                    child: Text('Editar Expediente'))
+                    child: Text('Editar Expediente',
+                    style: TextStyle(
+                      color: Colors.white
+                    ),
+                    ))
               ],
             ),
           ],

@@ -49,6 +49,7 @@ class _RegistroSignosVitalesState extends State<RegistroSignosVitales> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Añadir Signos Vitales'),
+        backgroundColor: Colors.teal[500],
       ),
       body: ListView(
         children: <Widget>[

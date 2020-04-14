@@ -51,13 +51,16 @@ class _VerConsultasState extends State<VerConsultas> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.orange,
+        title: Text('Consultas')
+      ),
       body: ListView.builder(
           itemCount: items.length,
           itemBuilder: (context, position) {
             return _filter(context, position);
           }),
-      floatingActionButton:
-          FloatingActionButton(onPressed: () => _createNewConsultas(context)),
+      
     );
   }
 
@@ -101,7 +104,9 @@ class _VerConsultasState extends State<VerConsultas> {
     print('VE ESTE MENSAJE');
 
     if (items[position].idPaciente == widget.idPaciente &&
-        items[position].fechaConsulta == widget.fechaConsulta) {
+        items[position].fechaConsulta == widget.fechaConsulta &&
+        items[position].horaConsulta == widget.consultas.horaConsulta
+        ) {
       print('WE NO MAMES ESTA ES LA ID DE LA CONSULTA ${items[position].id}');
       print('MOTIVOS ${items[position].motivos}');
       print('NUKLITO ${items[position].nombre}');
