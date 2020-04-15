@@ -363,7 +363,7 @@ class _RegistroPerfilState extends State<RegistroPerfil> {
 
                 print('jajaja no mames ${_emailController.text}');
               },
-              child: widget.terapeuta.nombre != null
+              child: widget.terapeuta.nombre != ''
                   ? Text('Actualizar Perfil')
                   : Text('Crear Perfil'))
         ],

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:therapp/src/models/Paciente.dart';
@@ -32,6 +33,13 @@ final pacienteReference =
 
 class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
+       SnackBar snackBar = SnackBar(
+                    content: Text(
+                      'Debe insertar una foto de perfil',
+                      style: TextStyle(decorationColor: Colors.white),
+                    ),
+                    backgroundColor: Colors.red,
+                  );
   bool datos = true;
   int numeroPacientes = 0;
   double valor = 0.0;
@@ -50,10 +58,10 @@ class _HomePageState extends State<HomePage>
 
   @override
   void initState() {
-    startTime();
+  
     super.initState();
   
-
+    
     items = new List();
     _onPacienteAddedSubscription =
         pacienteReference.onChildAdded.listen(_onPacienteAdded);
@@ -81,10 +89,23 @@ class _HomePageState extends State<HomePage>
   Widget build(BuildContext context) {
     return Scaffold(
       body: Stack(children: <Widget>[
-        _lista(),
         Center(
-          child: _progresoCircular(),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+                Text('No hay pacientes registrados', style: TextStyle(color: Colors.grey, fontSize: 12.0)),
+                Text('Para crear un nuevo paciente pulse la pestaña', style: TextStyle(color: Colors.grey,  fontSize: 12.0)),
+                Divider(
+                  color:Colors.white
+                ),
+                Icon(Icons.person_add, color: Colors.grey,),
+                Text('Añadir paciente', style: TextStyle(color: Colors.grey)),
+            ],
+          ),
         ),
+      
+        buildStream(),
+       
       ]),
     );
   }
@@ -136,9 +157,11 @@ class _HomePageState extends State<HomePage>
     if (_cargando == true) {
       print(_cargando.toString());
 
-      return CircularProgressIndicator(
-        value: null,
-        valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
+      return Center(
+        child: CircularProgressIndicator(
+          value: null,
+          valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
+        ),
       );
     } else {
       return Container();
@@ -156,9 +179,11 @@ class _HomePageState extends State<HomePage>
 
 
   Widget _lista(){
+
     return   ListView.builder(
             itemCount: items.length,
             itemBuilder: (context, position) {
+             
               return _filter(context, position);
             },
           );
@@ -167,6 +192,7 @@ class _HomePageState extends State<HomePage>
 
   Widget _filter(BuildContext context, int position) {
     try{
+      
       print("item :${items[position].id}");
       if (items[position].terapeuta == widget.userId) {
       print(_cargando.toString());
@@ -176,7 +202,8 @@ class _HomePageState extends State<HomePage>
       print('NUMERO DE PACIENTES $numeroPacientes');
       return _paciente(context, position);
     } else {
-      return Container();
+      return Container(
+      );
     }
     }catch(e){
       return Text(e);
@@ -240,5 +267,58 @@ class _HomePageState extends State<HomePage>
         ),
       ),
     );
+  }
+
+  Widget buildStream(){
+    return StreamBuilder(
+      stream: pacienteReference.onValue ,
+      builder:(BuildContext context, AsyncSnapshot<dynamic> snap ){
+       
+        if(snap.hasData && !snap.hasError && snap.data.snapshot.value != null){
+          
+          return  _lista();
+        }else{
+        
+          return  Center(
+          
+            child:Stack(
+                          children:<Widget> [Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                            children:<Widget>[
+
+                        Text( 'No se ha conectado a una red',
+                        style: TextStyle(
+                          color: Colors.red
+                        ),),
+
+
+                        Text( 'Favor de conectarse y reiniciar la aplicacion',
+                        style: TextStyle(
+                          color: Colors.grey
+                        ), ),
+                      Icon(
+                        Icons.signal_wifi_off,
+                        color: Colors.grey,
+                          size: 100.0,
+                       ),
+
+                             
+                  
+                   
+
+                    
+                
+                ]
+              ),
+            
+              
+              ]
+            )
+          );
+
+          
+        }
+      }
+      );
   }
 }

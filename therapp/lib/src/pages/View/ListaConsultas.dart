@@ -53,17 +53,7 @@ class _ListaConsultasState extends State<ListaConsultas> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: ListView.builder(
-            itemCount: items.length,
-            itemBuilder: (context, position) {
-              return _filter(context, position);
-            }),
-        floatingActionButton: FloatingActionButton(
-            onPressed: () => _createNewConsultas(context),
-            backgroundColor: Colors.orange,
-            child: Icon(Icons.add_comment),
-            ));
+    return buildStream();
   }
 
 /*--------------------------------///////////////////////////////////////---------------------------------------*/
@@ -182,4 +172,68 @@ class _ListaConsultasState extends State<ListaConsultas> {
           items[position].idTerapeuta),
     );
   }
+
+
+
+  
+  Widget buildStream(){
+    return StreamBuilder(
+      stream: consultasReference.onValue ,
+      builder:(BuildContext context, AsyncSnapshot<dynamic> snap ){
+        if(snap.hasData && !snap.hasError && snap.data.snapshot.value != null){
+          
+          return   Scaffold(
+        body: ListView.builder(
+            itemCount: items.length,
+            itemBuilder: (context, position) {
+              return _filter(context, position);
+            }),
+        floatingActionButton: FloatingActionButton(
+            onPressed: () => _createNewConsultas(context),
+            backgroundColor: Colors.orange,
+            child: Icon(Icons.add_comment),
+            ));
+        }else{
+        
+          return Center(
+          
+            child:ListView(
+                          children:<Widget> [Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                            children:<Widget>[
+
+                        Text( 'No se ha conectado a una red',
+                        style: TextStyle(
+                          color: Colors.red
+                        ),),
+
+
+                        Text( 'Favor de conectarse y reiniciar la aplicacion',
+                        style: TextStyle(
+                          color: Colors.grey
+                        ), ),
+                        Divider(
+                          height: 30.0,
+                          color: Colors.white
+                        ),
+                      Icon(
+                        Icons.signal_wifi_off,
+                        color: Colors.grey,
+                        size: 100.0,
+                       )          
+                  
+                   
+
+                    
+                
+                ]
+              ),]
+            )
+          );
+
+          
+        }
+      }
+      );}
+
 }

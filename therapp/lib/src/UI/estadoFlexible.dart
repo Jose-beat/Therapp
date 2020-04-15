@@ -22,12 +22,21 @@ class EspacioFlexible extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                CircleAvatar(
-                  radius: 50.0,
-                  backgroundImage: imagen != null
-                      ? NetworkImage(imagen + '?alt=media')
-                      : AssetImage('assets/photo-null.jpeg'),
-                ),
+
+
+                ClipOval(
+              child: FadeInImage(
+                fit: BoxFit.cover,
+                width: 100.0,
+                height: 100.0,
+                fadeInCurve: Curves.bounceIn,
+                placeholder: AssetImage('assets/images/icon-app.jpeg'),
+                image: imagen != null
+                    ? NetworkImage(imagen + '?alt=media')
+                    : AssetImage('assets/images/photo-null.jpeg'),
+              ),
+            ),
+              
               ],
             ),
           ),

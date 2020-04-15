@@ -34,7 +34,7 @@ class BatmanPageRoute extends PageRouteBuilder {
 
 class _SplashScreenState extends State<SplashScreen> {
   Future<Timer> startTime() async {
-    var _duration = Duration(seconds: 2);
+    var _duration = Duration(seconds: 60);
     return Timer(_duration, navigationPage);
   }
 
@@ -54,16 +54,41 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Column(
-          children: <Widget>[
-             Image.asset(
-               'assets/images/icon-app.jpeg',
-               width: 300,
-               height: 300,
-               ),
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: <Widget>[
+          Center(
+            child: showLogo(),
+            
+          ),
+          Divider(
+            height: 20.0,
+          ),
+          Center(
+            child: Text(
+              'TherApp',
+            style: TextStyle(
+              fontSize: 50.0,
+              fontWeight:FontWeight.w200
+            ),
+            ),
+            
+          ),
+        ],
+      ),
+    );
+  }
 
-          ],
+
+  Widget showLogo() {
+    return Hero(
+      tag: 'hero',
+      child: Padding(
+        padding: EdgeInsets.fromLTRB(0.0, 30.0, 0.0, 0.0),
+        child: CircleAvatar(
+          backgroundColor: Colors.transparent,
+          radius: 88.0,
+          child: Image.asset('assets/images/icon-app.jpeg'),
         ),
       ),
     );

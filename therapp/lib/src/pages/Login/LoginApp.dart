@@ -98,7 +98,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
   void initState() {
     colorRegistro = Colors.orange;
     iniciar = 'Iniciar Sesion';
-    indicacion = 'Registrate';
+    indicacion = 'Iniciar Sesion';
     _errorMessage = "";
     _isLoading = false;
     _isLoginForm = true;
@@ -314,7 +314,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
               elevation: 5.0,
               shape: new RoundedRectangleBorder(
                   borderRadius: new BorderRadius.circular(10.0)),
-              color: _isLoginForm ? Colors.orange:Colors.teal[300],
+              color: _isLoginForm ? Colors.orange[800]:Colors.teal[500],
               child: new Text(_isLoginForm ? 'Iniciar Sesion' : 'Crear Cuenta',
                   style: new TextStyle(fontSize: 20.0, color: Colors.white)),
               onPressed: validateAndSubmit),

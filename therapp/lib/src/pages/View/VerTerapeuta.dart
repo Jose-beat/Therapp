@@ -59,12 +59,8 @@ class _VerTerapeutaState extends State<VerTerapeuta> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: widget.activado ? AppBar(title: Text('Perfil')) : null,
-        body: ListView.builder(
-          itemCount: items.length,
-          itemBuilder: (context, position) {
-            return _filter(context, position);
-          },
-        ));
+        body: buildStream()
+        );
   }
 
 /*-------------------------------------------------------BACKEND--------------------------------------- */
@@ -271,4 +267,64 @@ class _VerTerapeutaState extends State<VerTerapeuta> {
       },
     );
   }
+
+  Widget buildStream(){
+    return StreamBuilder(
+      stream: terapeutaReference.onValue ,
+      builder:(BuildContext context, AsyncSnapshot<dynamic> snap ){
+        if(snap.hasData && !snap.hasError && snap.data.snapshot.value != null){
+          
+          return  ListView.builder(
+          itemCount: items.length,
+          itemBuilder: (context, position) {
+            return _filter(context, position);
+          },
+        );
+        
+        }else{
+        
+          return  Center(
+          
+            child:Stack(
+                          children:<Widget> [Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                            children:<Widget>[
+
+                        Text( 'No se ha conectado a una red',
+                        style: TextStyle(
+                          color: Colors.red
+                        ),),
+
+
+                        Text( 'Favor de conectarse y reiniciar la aplicacion',
+                        style: TextStyle(
+                          color: Colors.grey
+                        ), ),
+                      Icon(
+                        Icons.signal_wifi_off,
+                        color: Colors.grey,
+                          size: 100.0,
+                       ),
+
+                             
+                  
+                   
+
+                    
+                
+                ]
+              ),
+        
+              
+              ]
+            )
+          );
+
+          
+        }
+      }
+      );
+  }
+
+
 }

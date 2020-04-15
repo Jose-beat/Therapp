@@ -109,38 +109,7 @@ class _VerPacienteState extends State<VerPaciente> {
           },
           body: TabBarView(
             children: <Widget>[
-              ListView(
-                children: <Widget>[
-                  Container(
-                    child: Card(
-                      child: Center(
-                        child: Column(
-                          children: <Widget>[
-                            estiloLista('${widget.paciente.nombre}',
-                                'Nombre del Paciente', context, widget.paciente),
-                            Divider(),
-                            estiloLista("${widget.paciente.apellidos}",
-                                'Apellidos', context,  widget.paciente),
-                            Divider(),
-                            estiloLista("${widget.paciente.nacimiento}",
-                                'Fecha de Nacimiento', context,  widget.paciente),
-                            Divider(),
-                            estiloLista(
-                                "${widget.paciente.edad}", 'Edad', context,  widget.paciente),
-                            Divider(),
-                            estiloLista("${widget.paciente.ocupacion}",
-                                'Ocupacion', context,  widget.paciente),
-                            Divider(),
-                            estiloLista(
-                                "${widget.paciente.sexo}", 'Sexo', context,  widget.paciente),
-                            
-                          ],
-                        ),
-                      ),
-                    ),
-                  )
-                ],
-              ),
+            buildStream(),
               ListaSignosVitales(
                 pacienteId: widget.paciente.id,
               ),
@@ -198,11 +167,7 @@ class _VerPacienteState extends State<VerPaciente> {
             '$titulo',
             style: Theme.of(context).textTheme.headline,
           ),
-          VerticalDivider(
-            width:  10.0
-          ),
-          IconButton(icon:Icon(Icons.edit), 
-          onPressed: ()=> _changePacienteInformation(context, paciente))
+         
           
         ],
 
@@ -222,6 +187,97 @@ class _VerPacienteState extends State<VerPaciente> {
                   app: true,
                 )));
   }
+
+  
+  Widget buildStream(){
+    return StreamBuilder(
+      stream: pacienteReference.onValue ,
+      builder:(BuildContext context, AsyncSnapshot<dynamic> snap ){
+        if(snap.hasData && !snap.hasError && snap.data.snapshot.value != null){
+          
+          return    Scaffold(
+                      body: ListView(
+                  children: <Widget>[
+                    Container(
+                      child: Card(
+                        child: Center(
+                          child: Column(
+                            children: <Widget>[
+                              estiloLista('${widget.paciente.nombre}',
+                                  'Nombre del Paciente', context, widget.paciente),
+                              Divider(),
+                              estiloLista("${widget.paciente.apellidos}",
+                                  'Apellidos', context,  widget.paciente),
+                              Divider(),
+                              estiloLista("${widget.paciente.nacimiento}",
+                                  'Fecha de Nacimiento', context,  widget.paciente),
+                              Divider(),
+                              estiloLista(
+                                  "${widget.paciente.edad}", 'Edad', context,  widget.paciente),
+                              Divider(),
+                              estiloLista("${widget.paciente.ocupacion}",
+                                  'Ocupacion', context,  widget.paciente),
+                              Divider(),
+                              estiloLista(
+                                  "${widget.paciente.sexo}", 'Sexo', context,  widget.paciente),
+                              
+                            ],
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+                floatingActionButton: FloatingActionButton(
+                  backgroundColor: Colors.orange,
+                  child: Icon(Icons.edit),
+                  onPressed: ()=> _changePacienteInformation(context, widget.paciente)
+                  ),
+          );
+        }else{
+        
+          return  Center(
+          
+            child:Stack(
+                          children:<Widget> [Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                            children:<Widget>[
+
+                        Text( 'No se ha conectado a una red',
+                        style: TextStyle(
+                          color: Colors.red
+                        ),),
+
+
+                        Text( 'Favor de conectarse y reiniciar la aplicacion',
+                        style: TextStyle(
+                          color: Colors.grey
+                        ), ),
+                      Icon(
+                        Icons.signal_wifi_off,
+                        color: Colors.grey,
+                          size: 100.0,
+                       ),
+
+                             
+                  
+                   
+
+                    
+                
+                ]
+              ),
+       
+              
+              ]
+            )
+          );
+
+          
+        }
+      }
+      );
+      }
 
 }
 

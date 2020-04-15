@@ -143,6 +143,8 @@ class _ConsultasActualesState extends State<ConsultasActuales> {
         height: 0.0,
       );
     }
+
+    
   }
 
 /*-------------------------------------------------------ATRIBUTOS DE CALENDARIO---------------------------------------------*/
@@ -182,15 +184,15 @@ class _ConsultasActualesState extends State<ConsultasActuales> {
          /* ..._selectedEvents.map((event) => Container(
                 child: event,
               )),*/
-          Expanded(
-            child: ListView.builder(
-                scrollDirection: Axis.vertical,
-                shrinkWrap: true,
-                itemCount: items.length,
-                itemBuilder: (context, position) {
-                  return _filter(context, position);
-                }),
-          ),
+          
+                  
+              Expanded(
+              child: buildStream()
+              ),
+          
+            
+            
+
         ],
       ),
       /*
@@ -200,36 +202,65 @@ class _ConsultasActualesState extends State<ConsultasActuales> {
         ),*/
     );
   }
-/*
-   _showAddDialog(){
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          content: TextField(
-            controller: _consultaController,
-          ),
-          actions: <Widget>[
-            FlatButton(
-              onPressed: (){
-                if(_consultaController.text.isEmpty) return;
-                setState(() {
-                  if(_consultas[_calendarController.selectedDay]!=null){
-                  _consultas[_calendarController.selectedDay].add(_consultaController.text);
-                }
-                else{
-                  _consultas[_calendarController.selectedDay] = [_consultaController.text];
-                }
-                _consultaController.clear();
-                Navigator.pop(context);
+
+
+  Widget buildStream(){
+    return StreamBuilder(
+      stream: consultasReference.onValue ,
+      builder:(BuildContext context, AsyncSnapshot<dynamic> snap ){
+        if(snap.hasData && !snap.hasError && snap.data.snapshot.value != null){
+          if(!snap.hasData){
+            return Text('jajaj nel prro');
+          }
+          return  ListView.builder(
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                itemCount: items.length,
+                itemBuilder: (context, position) {
+                  return _filter(context, position);
                 });
+        }else{
+        
+          return Center(
+          
+            child:ListView(
+                          children:<Widget> [Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                            children:<Widget>[
+
+                        Text( 'No se ha conectado a una red',
+                        style: TextStyle(
+                          color: Colors.red
+                        ),),
+
+
+                        Text( 'Favor de conectarse y reiniciar la aplicacion',
+                        style: TextStyle(
+                          color: Colors.grey
+                        ), ),
+                        Divider(
+                          height: 30.0,
+                          color: Colors.white
+                        ),
+                      Icon(
+                        Icons.signal_wifi_off,
+                        color: Colors.grey,
+                        size: 100.0,
+                       )          
+                  
+                   
+
+                    
                 
-              }, 
-              child: Text('Save')
-              )
-          ],
-        )
-        );
-    }*/
+                ]
+              ),]
+            )
+          );
+
+          
+        }
+      }
+      );}
 
   /*------------------                       ------------------*/
 
@@ -309,4 +340,8 @@ class _ConsultasActualesState extends State<ConsultasActuales> {
       ],
     );
   }
+
+
+
+
 }
