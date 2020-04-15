@@ -5,7 +5,7 @@ import 'package:therapp/src/providers/authentApp.dart';
 import 'package:therapp/src/providers/routes.dart';
 
 void main() {
-  
+  //Metodo para formato regional 
   initializeDateFormatting().then((_) => runApp(TherApp()));
 }
 

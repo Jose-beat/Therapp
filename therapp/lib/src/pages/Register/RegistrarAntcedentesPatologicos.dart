@@ -2,6 +2,8 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:therapp/src/models/AntecedntesPatologicos.dart';
 
+
+/*METODO PARA REGISTRAR LOS ANTECEDENTES PATOLOGICOS DEL PACIENTE */
 class ResAntecedentesPatologicos extends StatefulWidget {
   final AntecedentesPatologicos antecedentesPatologicos;
 
@@ -12,7 +14,7 @@ class ResAntecedentesPatologicos extends StatefulWidget {
   _ResAntecedentesPatologicosState createState() =>
       _ResAntecedentesPatologicosState();
 }
-
+//METODO DE BASE DE DATOS 
 final antecedentesPatologicosReference =
     FirebaseDatabase.instance.reference().child('antecedentes_patologicos');
 
@@ -30,7 +32,7 @@ class _ResAntecedentesPatologicosState
     _enfermedadController = new TextEditingController(
         text: widget.antecedentesPatologicos.enfermedad);
   }
-
+//METODO PARA DIBUJAR LA PANTALLA 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,7 +64,7 @@ class _ResAntecedentesPatologicosState
                                },
                         ),
 
-                        
+                        //METODO PARA EL REGISTRO DE CADA DATOS 
                         FlatButton(
                           color: Colors.orange,
                             onPressed: () {
@@ -104,7 +106,7 @@ class _ResAntecedentesPatologicosState
           ],
         ));
   }
-
+//METODO DE FORMATO DE FORMULARIO 
   InputDecoration decoracion(String nombre, IconData icono){
   return InputDecoration(
     

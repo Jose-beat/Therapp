@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:therapp/src/models/SignosVitales.dart';
 import 'package:therapp/src/pages/Register/RegistrarSignosVitales.dart';
 
+
+/*CLASE QUE VISUALIZA LOS SIGNOS VITALES REGISTRADOS */
 class VerSignosVitales extends StatefulWidget {
   final String fechasignoVital;
   final SignosVitales signosVitales;
@@ -16,14 +18,16 @@ class VerSignosVitales extends StatefulWidget {
   @override
   _VerSignosVitalesState createState() => _VerSignosVitalesState();
 }
-
+//METODO DE BASE DE DATOS 
 final signosReference =
     FirebaseDatabase.instance.reference().child('signos_vitales');
 
 class _VerSignosVitalesState extends State<VerSignosVitales> {
+
+  //METODOS INICIALES 
   StreamSubscription<Event> _onSignosAddedSubscription;
   StreamSubscription<Event> _onSignosChangedSubscription;
-
+//VARIABLESS INICIALES AL CREAR PANTALLA 
   @override
   void initState() {
     super.initState();
@@ -33,7 +37,7 @@ class _VerSignosVitalesState extends State<VerSignosVitales> {
     _onSignosChangedSubscription =
         signosReference.onChildChanged.listen(_onSignosUpdate);
   }
-
+//METODO PARA DESTRUIR 
   @override
   void dispose() {
     super.dispose();
@@ -42,6 +46,8 @@ class _VerSignosVitalesState extends State<VerSignosVitales> {
   }
 
   List<SignosVitales> items;
+
+  //METODO QUE ESCRIBE LA PANTALLA 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,7 +63,7 @@ class _VerSignosVitalesState extends State<VerSignosVitales> {
     );
   }
 
-  /*------------------------------------BACKEND----------------------------------------*/
+  /*------------------------------------BACKEND Y CONTROL DE FIREBASE----------------------------------------*/
   void _onSignosAdded(Event event) {
     setState(() {
       items.add(new SignosVitales.fromSnapshot(event.snapshot));
@@ -110,7 +116,7 @@ class _VerSignosVitalesState extends State<VerSignosVitales> {
       );
     }
   }
-
+//METOD PARA FILTRARA LOS DATOS 
   Widget _info(BuildContext context, int position) {
     return Card(
       child: Column(
@@ -132,7 +138,7 @@ class _VerSignosVitalesState extends State<VerSignosVitales> {
       ),
     );
   }
-
+//METODO PARA DAR FORMATO A CADA ITEM
   Widget _lista(
       String variable, BuildContext context, int position, String subtitulo) {
     return ListTile(
@@ -154,7 +160,7 @@ class _VerSignosVitalesState extends State<VerSignosVitales> {
       ),*/
     );
   }
-
+//METODO PARA DAR ESTILO A LA LETRA
   Widget estiloLista(String titulo, String subtitulo, BuildContext context) {
     return ListTile(
       title: Text(

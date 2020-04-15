@@ -10,6 +10,8 @@ import 'package:therapp/src/pages/View/VerPaciente.dart';
 
 import 'package:therapp/src/providers/authentApp.dart';
 
+/* Esta clase sera la primer pantalla de los usuarios que han tenido acceso exitosamente
+que consta en una lista global de de pacientes*/
 class HomePage extends StatefulWidget {
   final BaseAuth auth;
   final VoidCallback loginCallback;
@@ -28,18 +30,14 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
+//metodo para el manejo de la base de datos 
 final pacienteReference =
     FirebaseDatabase.instance.reference().child('paciente');
 
 class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
-       SnackBar snackBar = SnackBar(
-                    content: Text(
-                      'Debe insertar una foto de perfil',
-                      style: TextStyle(decorationColor: Colors.white),
-                    ),
-                    backgroundColor: Colors.red,
-                  );
+
+ //datos iniciales     
   bool datos = true;
   int numeroPacientes = 0;
   double valor = 0.0;
@@ -50,12 +48,14 @@ class _HomePageState extends State<HomePage>
   StreamSubscription<Event> _onPacienteAddedSubscription;
   StreamSubscription<Event> _onPacienteupdatedSubscription;
 
+
+//Cronometro para el manejo de la caga de datos 
   Future<Timer> startTime() async {
     var _duration = Duration(seconds: 5);
     return Timer(_duration, cambioDatos);
   }
 
-
+//variables iniciales al iniciar la app
   @override
   void initState() {
   
@@ -68,7 +68,7 @@ class _HomePageState extends State<HomePage>
     _onPacienteupdatedSubscription =
         pacienteReference.onChildChanged.listen(_onPacienteUpdated);
   }
-
+//Destruccion de variables al finalizar el metodo
   @override
   void dispose() {
     super.dispose();
@@ -76,6 +76,7 @@ class _HomePageState extends State<HomePage>
     _onPacienteupdatedSubscription.cancel();
   }
 
+//Metodo implementado para cerrar sesion
   signOut() async {
     try {
       await widget.auth.signOut();
@@ -84,7 +85,7 @@ class _HomePageState extends State<HomePage>
       print(e);
     }
   }
-
+//Metodo para dibular la pantalla principal 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -110,7 +111,7 @@ class _HomePageState extends State<HomePage>
     );
   }
 
-/*---------------------------METODOS PARA CREAR AL PÁCIENTE */
+/*---------------------------METODOS PARA CREAR AL PÁCIENTE Y EL MANEJO DE CRUD ---------------------------------------*/
 
   void _navigateToPaciente(
       BuildContext context, Paciente paciente, String idTerapeuta) async {
@@ -149,8 +150,8 @@ class _HomePageState extends State<HomePage>
                   app: true,
                 )));
   }
-/*-------------------------------------METODOS TERAPEUTA--------------------------*/
-
+/*-------------------------------------METODOS PARA EL DISEÑO DE LA PAGINA PRINPCIPAL--------------------------*/
+//METODO PARA EL GIF DE CARGA
   Widget _progresoCircular() {
     print(_cargando.toString());
 
@@ -169,7 +170,7 @@ class _HomePageState extends State<HomePage>
   }
 
  
-
+//METODO QUE CAMBIARA EL ESTADO DEL METODO ANTERIOR 
   void cambioDatos() {
     setState(() {
       datos = !datos;
@@ -177,7 +178,7 @@ class _HomePageState extends State<HomePage>
     });
   }
 
-
+//Metodo que dibujara la lista de pacientes
   Widget _lista(){
 
     return   ListView.builder(
@@ -189,7 +190,7 @@ class _HomePageState extends State<HomePage>
           );
   
   }
-
+//Metodo para filtrar cada dato segun el terapeuta
   Widget _filter(BuildContext context, int position) {
     try{
       
@@ -212,6 +213,8 @@ class _HomePageState extends State<HomePage>
 
 
   }
+
+  //Formato de cada tarjeta de paciente 
 
   Widget _paciente(BuildContext context, int position) {
     return Card(
@@ -269,6 +272,7 @@ class _HomePageState extends State<HomePage>
     );
   }
 
+//METODO QUE VERA EL ESTADO DE LA REDA PARA DEFINIR EJECUTAR YA SEA LA LISTA DE PACIENTES O UN MENSAJE DE ERROR 
   Widget buildStream(){
     return StreamBuilder(
       stream: pacienteReference.onValue ,
@@ -303,7 +307,7 @@ class _HomePageState extends State<HomePage>
                        ),
 
                              
-                  
+           
                    
 
                     

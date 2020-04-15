@@ -2,7 +2,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:therapp/src/models/AntecedentesNoPatologicos.dart';
 import 'package:therapp/src/models/AntecedntesPatologicos.dart';
-
+/*METODO PARA REGISTRAR ANTECEDENTE PATOLOGICO*/
 class ResAntecedentesNoPatologicos extends StatefulWidget {
 
   
@@ -15,7 +15,7 @@ class ResAntecedentesNoPatologicos extends StatefulWidget {
   _ResAntecedentesNoPatologicosState createState() =>
       _ResAntecedentesNoPatologicosState();
 }
-
+//METODO DE BD
 final antecedentesNoPatologicosReference =
     FirebaseDatabase.instance.reference().child('antecedentes_no_patologicos');
 
@@ -33,7 +33,7 @@ class _ResAntecedentesNoPatologicosState
     _enfermedadController = new TextEditingController(
         text: widget.antecedentesNoPatologicos.enfermedad);
   }
-
+//METODO PARA DIBUJAR PANTALLA 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -68,6 +68,7 @@ class _ResAntecedentesNoPatologicosState
                         FlatButton(
                           color: Colors.orange,
                             onPressed: () {
+                              //METODO PARA ENVIAR DATOS A LA PLATAFORMA 
                               if(_formKey.currentState.validate()){
                               if (widget.antecedentesNoPatologicos.id != null) {
                                 antecedentesNoPatologicosReference
@@ -104,7 +105,7 @@ class _ResAntecedentesNoPatologicosState
           ],
         ));
   }
-
+//METODO PARA FORMATO DE FORMULARIO 
   InputDecoration decoracion(String nombre, IconData icono){
   return InputDecoration(
     

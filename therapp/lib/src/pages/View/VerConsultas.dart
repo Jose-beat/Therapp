@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:therapp/src/models/consultas.dart';
 import 'package:therapp/src/pages/Register/RegistrarConsultas.dart';
 
+
+/*ESTA CLASE MOSTRARA EL REGISTRO DE LAS CONSULTAS SELECCIONADAD SEGUN EL USUARIO*/
 class VerConsultas extends StatefulWidget {
   final String fechaConsulta;
   final String idTerapeuta;
@@ -22,14 +24,17 @@ class VerConsultas extends StatefulWidget {
   @override
   _VerConsultasState createState() => _VerConsultasState();
 }
-
+//METODO DE BASE DE DATOS 
 final consultasReference =
     FirebaseDatabase.instance.reference().child('Consultas');
 
 class _VerConsultasState extends State<VerConsultas> {
+
+  //VARIABLES INICALES 
   StreamSubscription<Event> _onConsultaAddedSubscription;
   StreamSubscription<Event> _onConsultaChangedSubscription;
 
+//VARIABLES INCIALES 
   @override
   void initState() {
     super.initState();
@@ -39,7 +44,7 @@ class _VerConsultasState extends State<VerConsultas> {
     _onConsultaChangedSubscription =
         consultasReference.onChildChanged.listen(_onConsultasUpdate);
   }
-
+//DESTRUCCION DE METODOS ESCENCIALES
   @override
   void dispose() {
     super.dispose();
@@ -48,6 +53,8 @@ class _VerConsultasState extends State<VerConsultas> {
   }
 
   List<Consultas> items;
+
+  //METODO DE CREACION DE LA PANTALLA 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -64,7 +71,7 @@ class _VerConsultasState extends State<VerConsultas> {
     );
   }
 
-  /*------------------------------------BACKEND----------------------------------------*/
+  /*------------------------------------BACKEND Y MANEJO DE BASE DE DATOS ----------------------------------------*/
   void _onConsultasAdded(Event event) {
     setState(() {
       items.add(new Consultas.fromSnapshot(event.snapshot));
@@ -100,6 +107,9 @@ class _VerConsultasState extends State<VerConsultas> {
                 )));
   }
 
+
+
+  //METODOS DE FILTRO PARA LOS DATOS DE FIREBASE
   Widget _filter(BuildContext context, int position) {
     print('VE ESTE MENSAJE');
 
@@ -123,6 +133,8 @@ class _VerConsultasState extends State<VerConsultas> {
     }
   }
 
+  //METODO PARA DAR FORMATO A CADA ITEM
+
   Widget _info(BuildContext context, int position) {
     return Card(
       child: Column(
@@ -137,6 +149,7 @@ class _VerConsultasState extends State<VerConsultas> {
     );
   }
 
+//METODO PARA DAR FORMATO A EL CONJUNTO DE ITEMS
   Widget _lista(
       String variable, BuildContext context, int position, String subtitulo) {
     return ListTile(

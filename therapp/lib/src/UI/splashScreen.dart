@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:therapp/src/providers/authentApp.dart';
 import 'package:therapp/src/providers/routes.dart';
 
+
+//ESTE MODULO SE ENCARGA DE CREAR UNA PANTALLA DE PRESENTACION
 class SplashScreen extends StatefulWidget {
   SplashScreen({Key key}) : super(key: key);
 
@@ -11,46 +13,30 @@ class SplashScreen extends StatefulWidget {
   _SplashScreenState createState() => _SplashScreenState();
 }
 
-class BatmanPageRoute extends PageRouteBuilder {
-  final Widget child;
-
-  BatmanPageRoute(this.child)
-      : super(pageBuilder: (BuildContext context, Animation<double> animation,
-            Animation<double> secondaryAnimation) {
-          return child;
-        }, transitionsBuilder: (BuildContext context,
-            Animation<double> animation,
-            Animation<double> secondaryAnimation,
-            Widget child) {
-          return Transform.scale(
-            scale: animation.value,
-            child: FadeTransition(
-              child: child,
-              opacity: animation,
-            ),
-          );
-        });
-}
 
 class _SplashScreenState extends State<SplashScreen> {
+
+  //Metodo que funciona como cronometro el cual al cumplir dos segundos ejecutara el cambio de pagina de materialPage Route
   Future<Timer> startTime() async {
-    var _duration = Duration(seconds: 60);
+    var _duration = Duration(seconds: 2);
     return Timer(_duration, navigationPage);
   }
-
+//Este metodo solo nos llevara a la siguiente pagina que es la pagina de login
   void navigationPage() async {
-    Navigator.of(context).pushReplacement(BatmanPageRoute(RootPage(
-      auth: Autho(),
+    Navigator.of(context).pushReplacement(
+      MaterialPageRoute(builder: 
+      (BuildContext context) => 
+      RootPage(auth: Autho(),
     )));
   }
-
+//Aqui declaramos el metodo para ejecutarlo al arrancar la app 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     startTime();
   }
-
+//Diseño de la pagina de presentacion con el logo y nombre de la app
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,6 +48,7 @@ class _SplashScreenState extends State<SplashScreen> {
             
           ),
           Divider(
+            color:Colors.white,
             height: 20.0,
           ),
           Center(
@@ -79,7 +66,7 @@ class _SplashScreenState extends State<SplashScreen> {
     );
   }
 
-
+//Metodo que dibuja el metodo y el nombre en el centro 
   Widget showLogo() {
     return Hero(
       tag: 'hero',

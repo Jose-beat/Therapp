@@ -6,7 +6,10 @@ import 'package:therapp/src/models/consultas.dart';
 import 'package:therapp/src/pages/Register/RegistrarConsultas.dart';
 import 'package:therapp/src/pages/View/VerConsultas.dart';
 
+
+/*ESTA CLASE CREARA UNA LISTA GLOBAL DE CONSULTAS DEL TERAPEUTA*/
 class ListaConsultas extends StatefulWidget {
+  //VARIABLES INICIALES
   final String nombrePaciente;
   final String apellidosPaciente;
   final String idTerapeuta;
@@ -25,13 +28,16 @@ class ListaConsultas extends StatefulWidget {
   _ListaConsultasState createState() => _ListaConsultasState();
 }
 
+//Metodo para el uso de la base de datos 
 final consultasReference =
     FirebaseDatabase.instance.reference().child('Consultas');
 
 class _ListaConsultasState extends State<ListaConsultas> {
+
+  //Variables iniciales
   StreamSubscription<Event> _onConsultaAddedSubscription;
   StreamSubscription<Event> _onConsultaChangedSubscription;
-
+//Variables iniciales al iniciar la app
   @override
   void initState() {
     super.initState();
@@ -41,14 +47,14 @@ class _ListaConsultasState extends State<ListaConsultas> {
     _onConsultaChangedSubscription =
         consultasReference.onChildChanged.listen(_onConsultasUpdate);
   }
-
+//Destruccion de metodo vitales
   @override
   void dispose() {
     super.dispose();
     _onConsultaAddedSubscription.cancel();
     _onConsultaChangedSubscription.cancel();
   }
-
+//Lista basada en el contenido de la base de datos 
   List<Consultas> items;
 
   @override
@@ -56,7 +62,7 @@ class _ListaConsultasState extends State<ListaConsultas> {
     return buildStream();
   }
 
-/*--------------------------------///////////////////////////////////////---------------------------------------*/
+/*--------------------------------///////METODOS PARA EL MANEJO DE LA BASE DE DATOS ////////////////////////////////---------------------------------------*/
 
   void _onConsultasAdded(Event event) {
     setState(() {
@@ -113,7 +119,7 @@ class _ListaConsultasState extends State<ListaConsultas> {
                 )));
   }
 
-/*-----------------------------------------------------------------------////////////////////////////_-------------------------------------*/
+/*-----------------------------------------------------------------METODO QUE DIBUJARA LA LISTA GLOBAL DE CONSULTAS------////////////////////////////_-------------------------------------*/
 
   Widget _filter(BuildContext context, int position) {
     print('VE ESTE MENSAJE');

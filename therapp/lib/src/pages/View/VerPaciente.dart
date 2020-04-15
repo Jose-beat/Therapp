@@ -20,6 +20,7 @@ import 'package:therapp/src/pages/View/VerConsultas.dart';
 import 'package:therapp/src/pages/View/VerHabitos.dart';
 import 'package:therapp/src/pages/View/verSignosVitales.dart';
 
+/*METODO QUE SOLO MOSTRARA LOS DATOS DEL PACIENTE */
 class VerPaciente extends StatefulWidget {
   final Paciente paciente;
   final String idTerapeuta;
@@ -29,10 +30,12 @@ class VerPaciente extends StatefulWidget {
   _VerPacienteState createState() => _VerPacienteState();
 }
 
+//METODO DE BASE DE DATOS 
 final pacienteReference =
     FirebaseDatabase.instance.reference().child('paciente');
 
 class _VerPacienteState extends State<VerPaciente> {
+  //VARIABLE INICIALES
   Consultas consultas;
 
   List<Paciente> items;
@@ -42,7 +45,7 @@ class _VerPacienteState extends State<VerPaciente> {
     // TODO: implement initState
     super.initState();
   }
-
+//METODOS PARA DIBUJAR LA PANTALLA 
   @override
   Widget build(BuildContext context) {
     String nombre = widget.paciente.nombre;
@@ -83,6 +86,7 @@ class _VerPacienteState extends State<VerPaciente> {
                     indicatorColor: Colors.white,
                     labelColor: Colors.white,
                     isScrollable: true,
+                    //ARREGLO DEL TOOLBAR MENU
                     tabs: [
                       Tab(
                         text: 'Ficha Personal',
@@ -137,7 +141,7 @@ class _VerPacienteState extends State<VerPaciente> {
   }
 
 
-
+/*----------------------------METODOS Y CONTROL DE CRUD FIREBASE ---------------------------------------*/
   void _navigateToHabitos(BuildContext context, Habitos habitos) async {
     await Navigator.push(
       context,
@@ -188,7 +192,7 @@ class _VerPacienteState extends State<VerPaciente> {
                 )));
   }
 
-  
+   //----------------------METODO PARA DEFINIR UNA PANTALLA A MOSTRAR SEGUN LA CONECTIVIDAD A INTERNET -------------------------------------------
   Widget buildStream(){
     return StreamBuilder(
       stream: pacienteReference.onValue ,
@@ -280,7 +284,7 @@ class _VerPacienteState extends State<VerPaciente> {
       }
 
 }
-
+//METODO PARA CONTROLAR EL EL TOOLBAR PRINCIPAL 
 class _SliverAppBarDelegate extends SliverPersistentHeaderDelegate {
   _SliverAppBarDelegate(this._tabBar);
 

@@ -9,9 +9,11 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:therapp/src/pages/View/NavigationBar.dart';
 import 'package:therapp/src/pages/View/VerPaciente.dart';
 
-
+//METODO SPARA GUARDAR LAS FOTOS E IMAGENES 
 File image;
 String filename;
+
+/*CLASE PARA REGISTRAR PACIENTES */
 class RegistrarPaciente extends StatefulWidget {
   final Paciente paciente;
   final String userId;
@@ -26,7 +28,7 @@ final pacienteReference =
     FirebaseDatabase.instance.reference().child('paciente');
 
 class _RegistrarPacienteState extends State<RegistrarPaciente> {
-  
+  //VARIABLES INICIALES 
    TextEditingController _inputFieldDateController;
   final _formKey = GlobalKey<FormState>();
   List<Paciente> items;
@@ -40,7 +42,7 @@ class _RegistrarPacienteState extends State<RegistrarPaciente> {
   int edad = 0;
   String pacienteImage;
   String fecha;
-
+//METODOS PARA ESCOJER IMAGEN  O FOTO 
 
   pickerCam() async {
     File img = await ImagePicker.pickImage(source: ImageSource.camera);
@@ -77,7 +79,7 @@ class _RegistrarPacienteState extends State<RegistrarPaciente> {
     pacienteImage = widget.paciente.imagenPaciente;
     print(pacienteImage);
   }
-
+//METODO DE DIBUJO DE PANTALLA 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -173,7 +175,9 @@ class _RegistrarPacienteState extends State<RegistrarPaciente> {
                       
                      // generoOption(),
                       FlatButton(
+                        //METODO PARA ENVIAR DATOS A LA PLATAFORMA 
                           onPressed: () {
+                            //EXCEPCION PARA LA FOTO DE PERFIL
                            try{
                                if(_formKey.currentState.validate()){
 
@@ -274,7 +278,7 @@ class _RegistrarPacienteState extends State<RegistrarPaciente> {
       ),
     );
   }
-
+//METODO PARA CREAR LISTA DE GENEROS
 Widget _crearGenero(BuildContext context){
   if(widget.paciente.id == null){
      _sexoController.text = genero;
@@ -337,7 +341,7 @@ Widget _crearGenero(BuildContext context){
     );
   }
 
-
+//METODO PARA CREAR LISTA DE EDADES
 Widget _crearEdad(BuildContext context){
   if(widget.paciente.id == null){
      _edadController.text = edad.toString();
@@ -420,7 +424,7 @@ Widget _crearEdad(BuildContext context){
 
 
   
-
+//METODO PARA CREAR CALENDARIO
 Widget _crearFecha(BuildContext context){
 
     return TextFormField(
@@ -460,7 +464,7 @@ Widget _crearFecha(BuildContext context){
     
       context: context,
       initialDate: new DateTime.now(),
-      firstDate: new DateTime(2018),
+      firstDate: new DateTime(1900),
       lastDate: new DateTime(2025),
      //Cambiar el idioma del cuadro de fechas
      //mOSTRARA UN ERROR DE FORMA NORMAL SI NO EXISTE UNA DEPENDENCIA
@@ -482,7 +486,7 @@ Widget _crearFecha(BuildContext context){
 
   }
 
-
+//METODO PARA CREA ICONOS DE ELECCION DE FOTO O IMAGEN
   Widget imagenes(){
   return Column(
      
@@ -556,6 +560,7 @@ Widget _crearFecha(BuildContext context){
 
 
 }
+//METODO PARA FORMATO DE FORMULARIO 
 InputDecoration decoracion(String nombre, IconData icono){
   return InputDecoration(
     

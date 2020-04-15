@@ -7,12 +7,13 @@ import 'package:therapp/src/models/Terapeuta.dart';
 import 'package:therapp/src/pages/Register/RegistrarPaciente.dart';
 import 'package:therapp/src/pages/Register/RegistroPerfil.dart';
 import 'package:therapp/src/pages/View/Calendar.dart';
-import 'package:therapp/src/pages/View/Configure.dart';
 import 'package:therapp/src/pages/View/HomePage.dart';
 import 'package:therapp/src/pages/View/VerConsultas.dart';
 import 'package:therapp/src/pages/View/VerTerapeuta.dart';
 import 'package:therapp/src/providers/authentApp.dart';
 
+
+//ESTA CLASE SOLO SERA LA CARCASA DE CADA PAGINA PRINCIPAL 
 class NavigationAppBar extends StatefulWidget {
   final BaseAuth auth;
   final VoidCallback loginCallback;
@@ -29,19 +30,23 @@ class NavigationAppBar extends StatefulWidget {
   @override
   _NavigationAppBarState createState() => _NavigationAppBarState();
 }
-
+//METODO PARA LA BASE DE DATOS 
 final terapeutaReference =
     FirebaseDatabase.instance.reference().child('terapeuta');
 
-enum WhyFarther { harder, smarter, selfStarter, tradingCharter }
+
 
 class _NavigationAppBarState extends State<NavigationAppBar> {
+
+  //METODOS INICIALES
   Color colorTema = Colors.orange;
   Color colorSubTema = Colors.teal[300];
   StreamSubscription<Event> _onTerapeutaAddedSubscription;
   StreamSubscription<Event> _onTerapeutaChangedSubscription;
   List<Terapeuta> items;
   String imagenTerapeuta;
+
+  //METODOS AL INICIAR LA APP 
   @override
   void initState() {
     super.initState();
@@ -52,6 +57,8 @@ class _NavigationAppBarState extends State<NavigationAppBar> {
         terapeutaReference.onChildChanged.listen(_onTerapeutaUpdated);
   }
 
+
+//DESTRUCCION DE VARIABLES VITALES
   @override
   void dispose() {
     // TODO: implement dispose
@@ -59,18 +66,18 @@ class _NavigationAppBarState extends State<NavigationAppBar> {
     _onTerapeutaAddedSubscription.cancel();
     _onTerapeutaChangedSubscription.cancel();
   }
-
+//METODOS PAR EL CONTROL DE BOTONES DEL MENU
   String titulo = 'Lista de pacientes';
-  WhyFarther _onSelected;
+
 
   int _cIndex = 0;
-
+//METODO PARA INCREMENTAR LA VARIABLES DE PAGINA 
   void _incrementTab(int index) {
     setState(() {
       _cIndex = index;
     });
   }
-
+//METODO PARA CERRAR SESION
   signOut() async {
     try {
       await widget.auth.signOut();
@@ -79,10 +86,11 @@ class _NavigationAppBarState extends State<NavigationAppBar> {
       print(e);
     }
   }
-
+//METODO PARA DIBUJAR CADA PANTALLA INDICADA
   @override
   Widget build(BuildContext context) {
-/*El arrelgo que contiene  acada una de las pantallasa mostrar al usuario segun indique en los botones de navegacion*/
+/*El arrelgo que contiene  acada una de las 
+pantallas mostrar al usuario segun indique en los botones de navegacion*/
     List<Widget> _opciones = [
       /*Pagia principal*/
       HomePage(
@@ -113,6 +121,7 @@ class _NavigationAppBarState extends State<NavigationAppBar> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
+        //MOSTRAREMOS UN MENU DESPLEGABLE
           drawer: Drawer(
             child: ListView.builder(
               itemCount: items.length,
@@ -240,25 +249,6 @@ class _NavigationAppBarState extends State<NavigationAppBar> {
     }
   }
 
-  Widget _header() {
-    return DrawerHeader(
-        margin: EdgeInsets.zero,
-        padding: EdgeInsets.zero,
-        decoration: BoxDecoration(
-            image: DecorationImage(
-                fit: BoxFit.cover,
-                image: AssetImage('assets/images/icon-app.jpeg'))),
-        child: Stack(children: <Widget>[
-          Positioned(
-              bottom: 12.0,
-              left: 16.0,
-              child: Text("TherApp",
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.w500))),
-        ]));
-  }
 
 /*-------------------------------------OPCIONES DESPLEGABLES----------------------------*/
 
@@ -302,7 +292,7 @@ class _NavigationAppBarState extends State<NavigationAppBar> {
     );
   }
 
-/*-------------------------------------FRONTEND-----------------------------*/
+/*-------------------------------------FRONTEND DEL MENU DESPLEGABLE-----------------------------*/
 
   Widget _filter(BuildContext context, int position) {
     print("Usuario Actual :${items[position].id}");
@@ -352,7 +342,7 @@ class _NavigationAppBarState extends State<NavigationAppBar> {
             },
           ),
           Divider(
-            height: 240.0,
+            height: 280.0,
           ),
           ListTile(
               leading: Icon(

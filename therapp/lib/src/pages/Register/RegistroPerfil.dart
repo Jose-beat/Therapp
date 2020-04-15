@@ -10,6 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:therapp/src/pages/Login/LoginApp.dart';
 import 'package:therapp/src/providers/authentApp.dart';
 
+
+/*CLASE PARA REALIZAR EK REGISTRO DEL PERFIL */
 class RegistroPerfil extends StatefulWidget {
   final BaseAuth auth;
   final VoidCallback loginCallback;
@@ -35,6 +37,8 @@ final terapeutaReference =
     FirebaseDatabase.instance.reference().child('terapeuta');
 
 class _RegistroPerfilState extends State<RegistroPerfil> {
+
+  //VARIABLES INICALES 
   bool cambioFoto = false;
   File imagen;
   TextEditingController _inputFieldDateController;
@@ -72,7 +76,7 @@ class _RegistroPerfilState extends State<RegistroPerfil> {
     _inputFieldDateController =
         new TextEditingController(text: widget.terapeuta.nacimiento);
   }
-
+//METODO DE DIBUJO DE PANTALLA 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -109,7 +113,7 @@ class _RegistroPerfilState extends State<RegistroPerfil> {
           );
         }));
   }
-
+//METODO QUE DIBUJARA EL FORMULARIO 
   Widget registro(BuildContext context) {
     return Form(
       key: _formKey,
@@ -280,6 +284,7 @@ class _RegistroPerfilState extends State<RegistroPerfil> {
           ),
           Divider(),
           FlatButton(
+            //METODO DE ENVIO DE DATOS A LA PLATAFORMA 
               onPressed: () {
                 try {
                   if (_formKey.currentState.validate()) {
@@ -370,7 +375,7 @@ class _RegistroPerfilState extends State<RegistroPerfil> {
       ),
     );
   }
-
+//METODO PARA ELEGIR LA FOTO DE PERFIL 
   Widget _fotoPerifl() {
     return Column(children: <Widget>[
       Form(
@@ -400,7 +405,7 @@ class _RegistroPerfilState extends State<RegistroPerfil> {
                     color: Colors.white,
                   ),
                   IconButton(
-                    icon: Icon(Icons.collections),
+                    icon: Icon(Icons.add_photo_alternate),
                     onPressed: pickerGallery,
                     color: Colors.white,
                   ),
@@ -413,6 +418,7 @@ class _RegistroPerfilState extends State<RegistroPerfil> {
     ]);
   }
 
+//METODO DE CALENDARIO 
   Widget _crearFecha(BuildContext context) {
     return TextFormField(
       validator: (value) {
@@ -452,7 +458,7 @@ class _RegistroPerfilState extends State<RegistroPerfil> {
     DateTime picked = await showDatePicker(
       context: context,
       initialDate: new DateTime.now(),
-      firstDate: new DateTime(2018),
+      firstDate: new DateTime(1900),
       lastDate: new DateTime(2025),
       //Cambiar el idioma del cuadro de fechas
       //mOSTRARA UN ERROR DE FORMA NORMAL SI NO EXISTE UNA DEPENDENCIA
@@ -471,7 +477,7 @@ class _RegistroPerfilState extends State<RegistroPerfil> {
       });
     }
   }
-
+//METODOS PARA PROVEER DE ELEGIR UNA FOTO INSTANTANEA O DIRECTO DE LA GALERIA 
   pickerCam() async {
     File img = await ImagePicker.pickImage(source: ImageSource.camera);
     if (img != null) {
@@ -492,7 +498,7 @@ class _RegistroPerfilState extends State<RegistroPerfil> {
       });
     }
   }
-
+//METODO PARA EL REGISTRO DE LA IMAGEN
   void createData() async {
     var fullImageName = 'terapeuta-${_nombreController.text}' + '.jpg';
     var fullImageName2 = 'terapeuta-${_nombreController.text}' + '.jpg';
@@ -506,7 +512,7 @@ class _RegistroPerfilState extends State<RegistroPerfil> {
     var fullPathImage = part1 + fullImageName2;
     print(fullPathImage);
   }
-
+//METODO PARA DIBUJAR ICONOS DE ELECCION DE IMAGENES
   Widget imagenes() {
     return Column(children: <Widget>[
       Form(

@@ -4,7 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:therapp/src/models/Terapeuta.dart';
 import 'package:therapp/src/pages/Register/RegistroPerfil.dart';
 import 'package:therapp/src/providers/authentApp.dart';
+/*Esta clase se envarga de dibujar la pagina de logueo 
+ademas del registro del correo electronico y contraseña de un usuario que desee registrarse 
+haciendo un cambio de color segun su funcion (Naranja si es inicio de sesion y Verde-gris si es el registro)
 
+ */
 class LoginSignupPage extends StatefulWidget {
   LoginSignupPage({this.auth, this.loginCallback});
 
@@ -16,7 +20,7 @@ class LoginSignupPage extends StatefulWidget {
 }
 
 class _LoginSignupPageState extends State<LoginSignupPage> {
-  
+  //Estado inicial de todos los metodos
   Color colorRegistro = Colors.orange;
   String iniciar = 'Iniciar Sesion';
   String indicacion = 'Inicia sesion';
@@ -32,7 +36,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
   bool _isLoginForm;
   bool _isLoading;
   double logo = 30.0;
-  // Check if form is valid before perform login or signup
+  // Aqui cambiaremos el el formato de guardado del formulario segun su informacion
   bool validateAndSave() {
     final form = _formKey.currentState;
     if (form.validate()) {
@@ -41,7 +45,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
     }
     return false;
   }
-
+//Metodo que llevara al registro de nuevos usuarios, obteniendo el email indicado anteriormente
   void _createNewTerapeuta(
       BuildContext context, String email, String userId) async {
     await Navigator.push(
@@ -55,7 +59,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
                 )));
   }
 
-  // Perform login or signup
+  //  Aqui cambiaremos el el formato de formulario segun su informacion ademas del color de estado 
   void validateAndSubmit() async {
     setState(() {
       _errorMessage = "";
@@ -93,7 +97,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
       }
     }
   }
-
+//Definimos algunos metodos por defecto
   @override
   void initState() {
     colorRegistro = Colors.orange;
@@ -105,11 +109,12 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
     super.initState();
   }
 
+//Aqui solo devolveremos su estado normal al formulario
   void resetForm() {
     _formKey.currentState.reset();
     _errorMessage = "";
   }
-
+//Aqui cambiaremos cosas como el titulo, funcio de fomulario y color del tema
   void toggleFormMode() {
     resetForm();
     setState(() {
@@ -120,6 +125,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
     });
   }
 
+//Aqui dibujaremos nuestro registro completo
   @override
   Widget build(BuildContext context) {
     
@@ -141,7 +147,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
           ],
         ));
   }
-
+//Crearemos un estado de carga en formato circular
   Widget _showCircularProgress() {
     if (_isLoading) {
       return Center(child: CircularProgressIndicator());
@@ -152,29 +158,8 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
     );
   }
 
-//  void _showVerifyEmailSentDialog() {
-//    showDialog(
-//      context: context,
-//      builder: (BuildContext context) {
-//        // return object of type Dialog
-//        return AlertDialog(
-//          title: new Text("Verify your account"),
-//          content:
-//              new Text("Link to verify account has been sent to your email"),
-//          actions: <Widget>[
-//            new FlatButton(
-//              child: new Text("Dismiss"),
-//              onPressed: () {
-//                toggleFormMode();
-//                Navigator.of(context).pop();
-//              },
-//            ),
-//          ],
-//        );
-//      },
-//    );
-//  }
 
+//Este metodo solo integrara todo nuestro registro 
   Widget _showForm() {
     
     return new Container(
@@ -201,7 +186,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
           ),
         ));
   }
-
+//Metodo que mostrara mesajes de error segun valores en el formulario 
   Widget showErrorMessage(BuildContext context){
     if (_errorMessage.length > 0 && _errorMessage != null) {
       
@@ -219,7 +204,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
       );
     }
   }
-
+//Metodo para mostrar el logo de la app
   Widget showLogo() {
     return Hero(
       tag: 'hero',
@@ -233,7 +218,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
       ),
     );
   }
-
+//Entrada de email
   Widget showEmailInput() {
     return Padding(
       padding: const EdgeInsets.fromLTRB(0.0, 100.0, 0.0, 0.0),
@@ -261,7 +246,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
       ),
     );
   }
-
+//entrada de contraseña
   Widget showPasswordInput() {
     return Padding(
       padding: const EdgeInsets.fromLTRB(0.0, 15.0, 0.0, 0.0),
@@ -296,7 +281,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
       ),
     );
   }
-
+//Boton secundario que cambiara el estado del formulario 
   Widget showSecondaryButton() {
     return new FlatButton(
         child: new Text(
@@ -304,7 +289,7 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
             style: new TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500)),
         onPressed: toggleFormMode);
   }
-
+//Boton primario que realizara las acciones segun los valores introducidos
   Widget showPrimaryButton() {
     return new Padding(
         padding: EdgeInsets.fromLTRB(0.0, 45.0, 0.0, 0.0),

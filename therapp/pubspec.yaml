@@ -31,6 +31,7 @@ dependencies:
   intl: ^0.16.0
   table_calendar: ^2.2.3
   shared_preferences: ^0.5.4+5
+  flutter_launcher_icons: ^0.7.4
   
 
 
@@ -42,7 +43,10 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
-
+flutter_icons:
+  image_path: "assets/images/icon-app.jpeg"
+  android: true 
+  ios: true
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 

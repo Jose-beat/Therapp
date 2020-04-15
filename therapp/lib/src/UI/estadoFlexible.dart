@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
+/*Esta clase se encarga de definir un espacio 
+para ver la foto del paciente junto con datos basico como la edad y sexo del paciente*/
 class EspacioFlexible extends StatelessWidget {
+  /*Obtenemos los datos de la clase anterior*/
   final String imagen;
   final double appBarHeight = 66.0;
   final String sexo;
@@ -23,7 +26,7 @@ class EspacioFlexible extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
 
-
+                //Muetsra de la foto del paciente
                 ClipOval(
               child: FadeInImage(
                 fit: BoxFit.cover,
@@ -40,6 +43,7 @@ class EspacioFlexible extends StatelessWidget {
               ],
             ),
           ),
+          //Muetsra del sexo 
           Container(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -54,6 +58,8 @@ class EspacioFlexible extends StatelessWidget {
                             fontSize: 16.0)),
                   ),
                 ),
+
+                //Muestra de la edad
                 Container(
                   child: Padding(
                     padding: const EdgeInsets.only(bottom: 8.0, right: 8.0),

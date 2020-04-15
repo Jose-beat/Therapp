@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:therapp/src/models/Habitos.dart';
 import 'package:therapp/src/pages/Register/RegistrarHabitos.dart';
-
+/*METODO QUE NOS MOSTRARA UNA LISTA DE HABITOS DEL PACIENTE */
 class VerHabitos extends StatefulWidget {
   final Habitos habitos;
   final String pacienteId;
@@ -13,14 +13,14 @@ class VerHabitos extends StatefulWidget {
   @override
   _VerHabitosState createState() => _VerHabitosState();
 }
-
+//METODO DE BASE DE DATOS
 final habitosReference = FirebaseDatabase.instance.reference().child('habitos');
 
 class _VerHabitosState extends State<VerHabitos> {
   List<Habitos> items;
   StreamSubscription<Event> _onHabitosAddedSubscription;
   StreamSubscription<Event> _onHabitosChangedSubscription;
-
+//VARIABLES INICIALES 
   @override
   void initState() {
     super.initState();
@@ -30,20 +30,20 @@ class _VerHabitosState extends State<VerHabitos> {
     _onHabitosChangedSubscription =
         habitosReference.onChildChanged.listen(_onHabitosUpdate);
   }
-
+//DESTRUCCION DE VARIABLES ESENCIALES
   @override
   void dispose() {
     super.dispose();
     _onHabitosAddedSubscription.cancel();
     _onHabitosChangedSubscription.cancel();
   }
-
+//METODO PARA DIBUJAR LA PANTALLA INDICADA
   @override
   Widget build(BuildContext context) {
     return buildStream();
   }
 
-/*------------------------------------BACKEND----------------------------------------*/
+/*------------------------------------BACKEND Y MANEJO DEL CRUD FIREBASE----------------------------------------*/
   void _onHabitosAdded(Event event) {
     setState(() {
       items.add(new Habitos.fromSnapshot(event.snapshot));
@@ -73,7 +73,7 @@ class _VerHabitosState extends State<VerHabitos> {
                 )));
   }
 
-  /*-----FRONTEDN-----*/
+  /*-----FRONTEDN CON FILTROS DE DATOS -----*/
 
   Widget _filter(BuildContext context, int position) {
     if (items[position].paciente == widget.pacienteId) {
@@ -89,7 +89,7 @@ class _VerHabitosState extends State<VerHabitos> {
       );
     }
   }
-
+//FORMATO INDVIDUAL DE CADA ITEM
   Widget _info(BuildContext context, int position) {
     return Card(
       child: Column(
@@ -115,7 +115,7 @@ class _VerHabitosState extends State<VerHabitos> {
       ),
     );
   }
-
+//METODO PARA DAR FORMATO A LA LISTA DE CADA ITEM
   Widget _lista(
       String variable, BuildContext context, int position, String subtitulo) {
     return ListTile(
@@ -138,7 +138,7 @@ class _VerHabitosState extends State<VerHabitos> {
     );
   }
 
-  
+   //METODO PARA DEFINIR UNA PANTALLA A MOSTRAR SEGUN LA CONECTIVIDAD A INTERNET 
   Widget buildStream(){
     return StreamBuilder(
       stream: habitosReference.onValue ,

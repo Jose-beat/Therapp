@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:therapp/src/models/AntecedntesPatologicos.dart';
 
 import 'package:therapp/src/pages/Register/RegistrarAntcedentesPatologicos.dart';
-
+/*CLASE QUE MOSTRARA EL REGISTRO SELECCIONADO POR EL USUARIO DE SU PACIENTE */
 class VerAntecPatologicos extends StatefulWidget {
   final String pacienteId;
   final AntecedentesPatologicos antecedentesPatologicos;
@@ -15,14 +15,18 @@ class VerAntecPatologicos extends StatefulWidget {
   @override
   _VerAntecPatologicosState createState() => _VerAntecPatologicosState();
 }
-
+//METODO DE LA BASE DE DATOS 
 final antecPatReference =
     FirebaseDatabase.instance.reference().child('antecedentes_patologicos');
 
 class _VerAntecPatologicosState extends State<VerAntecPatologicos> {
+
+  //VARIABLES INICIALES
   StreamSubscription<Event> _onAntPatAddedSubscription;
   StreamSubscription<Event> _onAntPatChangedSubscription;
   List<AntecedentesPatologicos> items;
+
+  //VARIABLES AL INICIAR LA PANTALLA 
   @override
   void initState() {
     super.initState();
@@ -32,7 +36,7 @@ class _VerAntecPatologicosState extends State<VerAntecPatologicos> {
     _onAntPatChangedSubscription =
         antecPatReference.onChildChanged.listen(_onAntPatUpdate);
   }
-
+//METODO PARA DESTRUIR VARIABLES ESENCIALES
   @override
   void dispose() {
     // TODO: implement dispose
@@ -40,13 +44,13 @@ class _VerAntecPatologicosState extends State<VerAntecPatologicos> {
     _onAntPatAddedSubscription.cancel();
     _onAntPatChangedSubscription.cancel();
   }
-
+//METODO PARA DIBUJAR LA PANTALLA 
   @override
   Widget build(BuildContext context) {
     return buildStream();
   }
 
-  /*------------------------------------BACKEND----------------------------------------*/
+  /*------------------------------------BACKEND Y MANEJO DEL CRUD ----------------------------------------*/
   void _onAntPatAdded(Event event) {
     setState(() {
       items.add(new AntecedentesPatologicos.fromSnapshot(event.snapshot));
@@ -82,7 +86,7 @@ class _VerAntecPatologicosState extends State<VerAntecPatologicos> {
                       AntecedentesPatologicos(null, '', widget.pacienteId),
                 )));
   }
-
+// METODO PARA FILTRAR LOS DATOS DE LA BASE DE DATOS 
   Widget _filter(BuildContext context, int position) {
     if (items[position].idpaciente == widget.pacienteId) {
       print('WE NO MAMES ESTA ES LA ID DE LA CONSULTA ${items[position].id}');
@@ -101,7 +105,7 @@ class _VerAntecPatologicosState extends State<VerAntecPatologicos> {
       );
     }
   }
-
+//METODO PARA DAR FORMATO A EL CONJUNTO DE ITEMS EN CONJUNTO 
   Widget _info(BuildContext context, int position) {
     return Card(
       child: Column(
@@ -113,7 +117,7 @@ class _VerAntecPatologicosState extends State<VerAntecPatologicos> {
       ),
     );
   }
-
+//METODO QUE DARA FORMATO A CADA ITEM
   Widget _lista(
       String variable, BuildContext context, int position, String subtitulo) {
     return ListTile(
@@ -139,7 +143,7 @@ class _VerAntecPatologicosState extends State<VerAntecPatologicos> {
 
 
   
-  
+  //METODO PARA DEFINIR UNA PANTALLA A MOSTRAR SEGUN LA CONECTIVIDAD A INTERNET 
   Widget buildStream(){
     return StreamBuilder(
       stream: antecPatReference.onValue ,

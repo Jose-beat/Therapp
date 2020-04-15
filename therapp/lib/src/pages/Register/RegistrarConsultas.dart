@@ -4,7 +4,7 @@ import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:therapp/src/models/consultas.dart';
 
 
-
+/*METODO PARA REGISTRAR CONSULTAS */
 class ResConsultas extends StatefulWidget {
   final String idTerapeuta;
   final Consultas consultas;
@@ -21,7 +21,7 @@ final consultasReference =
 class _ResConsultasState extends State<ResConsultas> {
 
 
-
+//VARIABLES INICALES 
   final _formKey = GlobalKey<FormState>();
   List<Consultas> items;
   String _fecha;
@@ -38,7 +38,7 @@ class _ResConsultasState extends State<ResConsultas> {
     _motivoController =
         new TextEditingController(text: widget.consultas.motivos);
   }
-
+//METODO PARA DIBUJAR PANTALLA 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,7 +75,7 @@ class _ResConsultasState extends State<ResConsultas> {
                         FlatButton(
                             color: Colors.orange,
                             onPressed: () {
-
+                                  //METODO PARA ENVIAR DATOS A LA PLATAFORMA 
                                if(_formKey.currentState.validate()){
                               if (widget.consultas.id != null) {
                                 consultasReference
@@ -122,7 +122,7 @@ class _ResConsultasState extends State<ResConsultas> {
   }
 
 
-
+//METODO PARA CREAR CLAENDARIO
 Widget _crearFecha(BuildContext context){
 
     return TextFormField(
@@ -160,7 +160,7 @@ Widget _crearFecha(BuildContext context){
     DateTime picked = await showDatePicker(
       context: context,
       initialDate: new DateTime.now(),
-      firstDate: new DateTime(2018),
+      firstDate: new DateTime(1900),
       lastDate: new DateTime(2025),
      //Cambiar el idioma del cuadro de fechas
      //mOSTRARA UN ERROR DE FORMA NORMAL SI NO EXISTE UNA DEPENDENCIA
@@ -212,6 +212,7 @@ Widget _crearFecha(BuildContext context){
         );
 
   }
+  //METODO PARA CREAR RELOJ DE HORAS
 
    _seleccionHora(BuildContext context) async {
 
@@ -232,7 +233,7 @@ Widget _crearFecha(BuildContext context){
   }
 
 
-
+//METODO PARA FORMATO DE FORMULARIO 
 InputDecoration decoracion(String nombre, IconData icono){
   return InputDecoration(
     

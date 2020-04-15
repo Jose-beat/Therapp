@@ -1,7 +1,7 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:therapp/src/models/Habitos.dart';
-
+/*CLASE PARA REGISTRO DE HABITOS*/
 class ResHabitos extends StatefulWidget {
   final Habitos habitos;
 
@@ -14,6 +14,7 @@ class ResHabitos extends StatefulWidget {
 final habitosReference = FirebaseDatabase.instance.reference().child('habitos');
 
 class _ResHabitosState extends State<ResHabitos> {
+  //METODOS INICIALES 
   final _formKey = GlobalKey<FormState>();
   List<Habitos> items;
   TextEditingController _habitoAlimenticioController;
@@ -29,6 +30,8 @@ class _ResHabitosState extends State<ResHabitos> {
         new TextEditingController(text: widget.habitos.habitosHigiene);
   }
 
+
+//METODO PARA DIBUJAR PANTALLA
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,6 +75,7 @@ class _ResHabitosState extends State<ResHabitos> {
                       FlatButton(
                          color: Colors.orange,
                           onPressed: () {
+                            //METODO PARA ENVIAR DATOS A FIREBASE
                             if(_formKey.currentState.validate()){
                             if (widget.habitos.id != null) {
                               habitosReference.child(widget.habitos.id).set({
@@ -114,7 +118,7 @@ class _ResHabitosState extends State<ResHabitos> {
   }
 
 
-  
+  //METODO PARA FORMATO DEL FORMULARIO 
 InputDecoration decoracion(String nombre, IconData icono){
   return InputDecoration(
     

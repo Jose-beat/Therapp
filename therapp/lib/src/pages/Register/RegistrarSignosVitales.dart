@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:therapp/src/models/SignosVitales.dart';
 
+/*METODO PARA EL REGISTRO DE SIGNOS VITLKES*/
 class RegistroSignosVitales extends StatefulWidget {
   final SignosVitales signosVitales;
   RegistroSignosVitales({Key key, this.signosVitales}) : super(key: key);
@@ -14,6 +15,8 @@ final signosVitalesReference =
     FirebaseDatabase.instance.reference().child('signos_vitales');
 
 class _RegistroSignosVitalesState extends State<RegistroSignosVitales> {
+
+  //VARIABLES INICALES
     final _formKey = GlobalKey<FormState>();
   List<SignosVitales> items;
   String frecuenciaCardiActual = '70 - 190';
@@ -43,7 +46,7 @@ class _RegistroSignosVitalesState extends State<RegistroSignosVitales> {
     _tallaController =
         new TextEditingController(text: widget.signosVitales.talla.toString());
   }
-
+//METODOS PARA DIBUJAR FORMULARIO EN PANTALLA 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -97,6 +100,8 @@ class _RegistroSignosVitalesState extends State<RegistroSignosVitales> {
 
 
                       FlatButton(
+
+                        //METODO PARA EL ENVIO DE DATOS 
                           onPressed: () {
                             if(_formKey.currentState.validate()){
                             if (widget.signosVitales.id != null) {
@@ -141,7 +146,7 @@ class _RegistroSignosVitalesState extends State<RegistroSignosVitales> {
       ),
     );
   }
-
+  //METODO PARA CREAR LISTA DE FC
 Widget _crearCardiaco(BuildContext context){
   if(widget.signosVitales.id == null){
     _fcController.text = frecuenciaCardiActual;
@@ -215,7 +220,7 @@ Widget _crearCardiaco(BuildContext context){
     );
   }
 
-
+//METODO PARA CREAR LISTA DE FR
 Widget _crearRespiracion(BuildContext context){
   if(widget.signosVitales.id == null){
      _frController.text =  frecuenciaRespiratoryActual;
@@ -272,7 +277,7 @@ Widget _crearRespiracion(BuildContext context){
     );
   }
 
-
+//METODO PARA CREAR LISTA DE PESOS
 Widget _crearPeso(BuildContext context){
    if(widget.signosVitales.id == null){
       _pesoController.text = peso.toString();
@@ -303,6 +308,8 @@ Widget _crearPeso(BuildContext context){
     
 
 }
+
+
   Widget pesoOption() {
     return Container(
             margin: EdgeInsets.fromLTRB(0, 0, 0, 50),
@@ -341,7 +348,7 @@ Widget _crearPeso(BuildContext context){
     return peso;
   }
 
-  
+  //METODO PARA CREAR LISTA DE TALLAS
 Widget _crearTalla(BuildContext context){
    if(widget.signosVitales.id == null){
      _tallaController.text = talla;
@@ -405,7 +412,7 @@ Widget _crearTalla(BuildContext context){
     );
   }
 
-
+//METODO PARA CREAR CALENDARIO
 Widget _crearFecha(BuildContext context){
 
     return  TextFormField(
@@ -445,7 +452,7 @@ Widget _crearFecha(BuildContext context){
     DateTime picked = await showDatePicker(
       context: context,
       initialDate: new DateTime.now(),
-      firstDate: new DateTime(2018),
+      firstDate: new DateTime(1900),
       lastDate: new DateTime(2025),
      //Cambiar el idioma del cuadro de fechas
      //mOSTRARA UN ERROR DE FORMA NORMAL SI NO EXISTE UNA DEPENDENCIA
@@ -471,7 +478,7 @@ Widget _crearFecha(BuildContext context){
 
 
 
-
+//METODO PARA CREAR RELOJ DE HORA
   Widget _crearHora(BuildContext context){
     
      return TextFormField(
@@ -522,7 +529,7 @@ Widget _crearFecha(BuildContext context){
 
   }
 
-
+//METODO PARA FORMATO DEL FORMULARIO
 
 InputDecoration decoracion(String nombre, IconData icono, Color color){
   return InputDecoration(

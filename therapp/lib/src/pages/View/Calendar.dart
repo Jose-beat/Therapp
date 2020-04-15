@@ -9,6 +9,9 @@ import 'package:therapp/src/models/Paciente.dart';
 import 'package:therapp/src/models/consultas.dart';
 import 'package:therapp/src/pages/Register/RegistrarConsultas.dart';
 
+/*Esta clase se encarga de dibujar una pantalla que muestra un calendario 
+junto a una lista global de consultas ademas de su estatus*/
+
 class ConsultasActuales extends StatefulWidget {
   final String idTerapeuta;
   final String idPaciente;
@@ -21,10 +24,15 @@ class ConsultasActuales extends StatefulWidget {
   _ConsultasActualesState createState() => _ConsultasActualesState();
 }
 
+/*Definimos una instancia de la base de datos*/
 final consultasReference =
     FirebaseDatabase.instance.reference().child('Consultas');
 
 class _ConsultasActualesState extends State<ConsultasActuales> {
+
+/*Estado actual de cada dato */
+
+  bool _cargando = true;
   CalendarController _calendarController;
   Map<DateTime, List<dynamic>> _consultas;
   TextEditingController _consultaController;
@@ -36,6 +44,8 @@ class _ConsultasActualesState extends State<ConsultasActuales> {
   StreamSubscription<Event> _onConsultaAddedSubscription;
   StreamSubscription<Event> _onConsultaChangedSubscription;
 
+
+/* Definimos variables al arrancar la app*/
   @override
   void initState() {
     super.initState();
@@ -52,6 +62,15 @@ class _ConsultasActualesState extends State<ConsultasActuales> {
     _consultaController = TextEditingController();
     _selectedEvents = [];
   }
+  
+
+
+
+ 
+
+
+ /* Este metodo se encarga de dibujar cada consulta perteneciente al terapeurta, su 
+ hor, fecha y nombre del paciente*/
 
   dynamic _filter(BuildContext context, int position) {
     print('TERAPEUTA1: ${items[position].idTerapeuta}');
@@ -148,7 +167,7 @@ class _ConsultasActualesState extends State<ConsultasActuales> {
   }
 
 /*-------------------------------------------------------ATRIBUTOS DE CALENDARIO---------------------------------------------*/
-
+//Destruimos las variables vitales
   @override
   void dispose() {
     super.dispose();
@@ -159,11 +178,14 @@ class _ConsultasActualesState extends State<ConsultasActuales> {
   List<Paciente> itemPaciente;
   List<Consultas> items;
 
+
+//Metodo encargado de construir la pantalla
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
         children: <Widget>[
+          //Creamos un calendario al principio
           TableCalendar(
             onDaySelected: (date, consultas) {
               _selectedEvents = consultas;
@@ -203,15 +225,16 @@ class _ConsultasActualesState extends State<ConsultasActuales> {
     );
   }
 
-
+//Metodo que deifnira el contenido segun el estado de los datos, ya sea si 
+//No hay datos 
+//No hay conexion
+//Conexion baja
   Widget buildStream(){
     return StreamBuilder(
       stream: consultasReference.onValue ,
       builder:(BuildContext context, AsyncSnapshot<dynamic> snap ){
         if(snap.hasData && !snap.hasError && snap.data.snapshot.value != null){
-          if(!snap.hasData){
-            return Text('jajaj nel prro');
-          }
+         //Si todo sale bien la app dara la lista de consultas 
           return  ListView.builder(
                 scrollDirection: Axis.vertical,
                 shrinkWrap: true,
@@ -220,8 +243,9 @@ class _ConsultasActualesState extends State<ConsultasActuales> {
                   return _filter(context, position);
                 });
         }else{
-        
+        //Si hay errores regresamosun mensaje de error
           return Center(
+
           
             child:ListView(
                           children:<Widget> [Column(
@@ -246,8 +270,8 @@ class _ConsultasActualesState extends State<ConsultasActuales> {
                         Icons.signal_wifi_off,
                         color: Colors.grey,
                         size: 100.0,
-                       )          
-                  
+                       ),          
+                   
                    
 
                     
@@ -256,13 +280,13 @@ class _ConsultasActualesState extends State<ConsultasActuales> {
               ),]
             )
           );
-
+          
           
         }
       }
       );}
 
-  /*------------------                       ------------------*/
+  /*------------------METODOS PARA LA BASE DE DATOS QUE REALIZAN EL CRUD ------------------*/
 
   void _onConsultasAdded(Event event) {
     setState(() {
@@ -289,6 +313,8 @@ class _ConsultasActualesState extends State<ConsultasActuales> {
         ));
   }
 
+
+//Metodo que definira el estado de la consulta
   Widget consultaPendiente(DateTime ahora, String diaConsultaT, position) {
     DateTime valorDia = DateTime.parse(diaConsultaT);
     dynamic estorboDia = ahora.day < 10 ? 0 : '';
@@ -312,6 +338,8 @@ class _ConsultasActualesState extends State<ConsultasActuales> {
       }
     }
   }
+
+  //Diseño del icono de estado 
 
   Widget estado(int position, String estado, Color color) {
     return Row(

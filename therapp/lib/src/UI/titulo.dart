@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 
+/*Clase que solo determinara el formato del titulo al entrar al expediente 
+del paciente indicado 
+*/
 class Titulo extends StatelessWidget {
 
   const Titulo({Key key,this.nombre,this.apellidos}) : super(key: key);
+  //Obtenemos los datos de la clase que ejecuta la base de datos 
    final  String nombre;
    final  String apellidos;
    final double barHeight = 66.0;
@@ -13,7 +17,7 @@ class Titulo extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          
+          //Definimos el formato del titulo principal
 
           Container(child: Padding(
             padding: const EdgeInsets.all(16.0),

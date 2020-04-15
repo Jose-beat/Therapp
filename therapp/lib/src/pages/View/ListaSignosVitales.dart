@@ -6,6 +6,8 @@ import 'package:therapp/src/models/SignosVitales.dart';
 import 'package:therapp/src/pages/Register/RegistrarSignosVitales.dart';
 import 'package:therapp/src/pages/View/verSignosVitales.dart';
 
+
+/*ESTA CLASE MOSTRARA LA LISTA DE SIGNOS VITALES BASANDOSE EN LAS FECHAS DE REGISTRO DE CADA PACIENTE*/
 class ListaSignosVitales extends StatefulWidget {
   final SignosVitales signosVitales;
   final String pacienteId;
@@ -15,7 +17,7 @@ class ListaSignosVitales extends StatefulWidget {
   @override
   _ListaSignosVitalesState createState() => _ListaSignosVitalesState();
 }
-
+//METODO DE LA BASE DE DAROS 
 final signosReference =
     FirebaseDatabase.instance.reference().child('signos_vitales');
 
@@ -23,6 +25,8 @@ class _ListaSignosVitalesState extends State<ListaSignosVitales> {
   StreamSubscription<Event> _onSignosAddedSubscription;
   StreamSubscription<Event> _onSignosChangedSubscription;
 
+
+//VARIABLES AL INICIAR LA PANTALLA
   @override
   void initState() {
     super.initState();
@@ -32,14 +36,14 @@ class _ListaSignosVitalesState extends State<ListaSignosVitales> {
     _onSignosChangedSubscription =
         signosReference.onChildChanged.listen(_onSignosUpdate);
   }
-
+//DESTRUCCION DE VARIABLES VITALES
   @override
   void dispose() {
     super.dispose();
     _onSignosAddedSubscription.cancel();
     _onSignosChangedSubscription.cancel();
   }
-
+//CREARCION DE ARREGLO PARA GUARDAR LOS DATOS 
   List<SignosVitales> items;
   @override
   Widget build(BuildContext context) {
@@ -47,6 +51,7 @@ class _ListaSignosVitalesState extends State<ListaSignosVitales> {
    
     
   }
+/*-----------------------------------------METODOS PARA EL MANEJO DE CRUD DE CADA REGISTRO*/
 
   void _onSignosAdded(Event event) {
     setState(() {
@@ -98,7 +103,7 @@ class _ListaSignosVitalesState extends State<ListaSignosVitales> {
                   fechasignoVital: fechaSignos,
                 )));
   }
-
+//------------------------METODO QUE FILTRARA LOS DATOS DE LA TABLA Y LOS DIBUJARA CON UNA LISTA 
   Widget _filter(BuildContext context, int position) {
     if (items[position].paciente == widget.pacienteId) {
       print('SIGNOS VITALES${items[position].id}');
@@ -113,7 +118,7 @@ class _ListaSignosVitalesState extends State<ListaSignosVitales> {
       );
     }
   }
-
+//FORMATO PARA CADA VISTA DEL REGISTROS
   Widget _info(BuildContext context, int position) {
     return Card(
       child: Column(
@@ -124,7 +129,7 @@ class _ListaSignosVitalesState extends State<ListaSignosVitales> {
       ),
     );
   }
-
+//FORMATO DEL CONETNIDO 
   Widget _lista(
       String variable, BuildContext context, int position, String subtitulo) {
     return ListTile(
@@ -157,7 +162,7 @@ class _ListaSignosVitalesState extends State<ListaSignosVitales> {
         ],
       ),*/
   }
-
+//FORMATO DE LA LISTA EN PANTALLA 
   Widget estiloLista(String titulo, String subtitulo, BuildContext context) {
     return Row(
       children: <Widget>[
@@ -172,7 +177,7 @@ class _ListaSignosVitalesState extends State<ListaSignosVitales> {
     );
   }
 
-
+//METODO QUE NOS MOSTRARAR EL CONTENIDO SEGUN LA CONECTIVIDAD Y VITALIDAD DE LA BASE DE DATOS 
   Widget buildStream(){
     return StreamBuilder(
       stream: signosVitalesReference.onValue ,

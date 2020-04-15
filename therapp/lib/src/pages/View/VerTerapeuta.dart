@@ -3,9 +3,12 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:therapp/src/models/Terapeuta.dart';
+import 'package:therapp/src/pages/Login/LoginApp.dart';
 import 'package:therapp/src/pages/Register/RegistroPerfil.dart';
 import 'package:therapp/src/providers/authentApp.dart';
 
+
+/*METODO PARA VER INFORMACION DE PERFIL*/
 class VerTerapeuta extends StatefulWidget {
   final BaseAuth auth;
   final String userId;
@@ -18,14 +21,17 @@ class VerTerapeuta extends StatefulWidget {
   @override
   _VerTerapeutaState createState() => _VerTerapeutaState();
 }
-
+//METODO DE BASE DE DATOS 
 final terapeutaReference =
     FirebaseDatabase.instance.reference().child('terapeuta');
 
 class _VerTerapeutaState extends State<VerTerapeuta> {
+  //METODOS INICIALES
   String nombres;
+  //METODO PARA CERRAR SESION
   signOut() async {
     try {
+
       await widget.auth.signOut();
       widget.logoutCallback();
     } catch (e) {
@@ -37,6 +43,8 @@ class _VerTerapeutaState extends State<VerTerapeuta> {
   StreamSubscription<Event> _onTerapeutaChangedSubscription;
   List<Terapeuta> items;
   String imagenTerapeuta;
+
+  //METODOS INICIALES AL INICIAR LA PANTALLA 
   @override
   void initState() {
     super.initState();
@@ -46,7 +54,7 @@ class _VerTerapeutaState extends State<VerTerapeuta> {
     _onTerapeutaChangedSubscription =
         terapeutaReference.onChildChanged.listen(_onTerapeutaUpdated);
   }
-
+//DESTRUCCION DE VARIABLES ESCENCIALES
   @override
   void dispose() {
     // TODO: implement dispose
@@ -54,16 +62,19 @@ class _VerTerapeutaState extends State<VerTerapeuta> {
     _onTerapeutaAddedSubscription.cancel();
     _onTerapeutaChangedSubscription.cancel();
   }
-
+//METODO  PARA DIBUJAR LA PANTALLA
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: widget.activado ? AppBar(title: Text('Perfil')) : null,
+        appBar: widget.activado ? AppBar(
+          title: Text('Perfil'),
+          backgroundColor: Colors.teal[300]
+          ) : null,
         body: buildStream()
         );
   }
 
-/*-------------------------------------------------------BACKEND--------------------------------------- */
+/*-------------------------------------------------------BACKEND Y CONTROL DE FIREBASE --------------------------------------- */
 
   void _onTerapeutaAdded(Event event) {
     setState(() {
@@ -86,9 +97,12 @@ class _VerTerapeutaState extends State<VerTerapeuta> {
       setState(() {
         items.removeAt(position);
         widget.auth.deleteUser();
-        return signOut;
+         
       });
+      signOut();
+      Navigator.pop(context);
     });
+  
   }
 
   void _navigateToTerapeuta(BuildContext context, Terapeuta terapeuta) async {
@@ -103,7 +117,7 @@ class _VerTerapeutaState extends State<VerTerapeuta> {
     );
   }
 
-/*-------------------------------------FRONTEND-----------------------------*/
+/*-------------------------------------FRONTEND Y FILTRO DE DATOS -----------------------------*/
 
   Widget _filter(BuildContext context, int position) {
     print("Usuario Actual :${items[position].id}");
@@ -156,7 +170,7 @@ class _VerTerapeutaState extends State<VerTerapeuta> {
       );
     }
   }
-
+//METODO PARA EL FORMATO DE CADA ITEM
   Widget _info(BuildContext context, int position) {
     return Card(
       child: Column(
@@ -192,7 +206,7 @@ class _VerTerapeutaState extends State<VerTerapeuta> {
       ),
     );
   }
-
+//METODO PARA EL FORMATO DE TODOS LOS ITEMS
   Widget _lista(
       String tipo, String variable, BuildContext context, int position) {
     return ListTile(
@@ -203,7 +217,7 @@ class _VerTerapeutaState extends State<VerTerapeuta> {
               onPressed: () => _navigateToTerapeuta(context, items[position]))*/
     );
   }
-
+//METODO QUE ELIMINARA Y CERRARALA SESION DEL USUARIO 
   Widget _delete(BuildContext context, Terapeuta terapeuta, int position) {
     return FlatButton(
       color: Colors.teal[500],
@@ -217,8 +231,9 @@ class _VerTerapeutaState extends State<VerTerapeuta> {
       onPressed: () => _confirmacion(context, items[position], position),
     );
   }
-
+//MUESTRA DE ALERTCARD PARAB CONFIRMAR LA ELIMINACION 
   void _confirmacion(BuildContext context, Terapeuta terapeuta, int position) {
+
     showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -251,7 +266,7 @@ class _VerTerapeutaState extends State<VerTerapeuta> {
           );
         });
   }
-
+//METODO PARA EDITAR EL PERFIL 
   Widget _update(BuildContext context, Terapeuta terapeuta, int position) {
     return FlatButton(
       color: Colors.orange,
@@ -267,7 +282,7 @@ class _VerTerapeutaState extends State<VerTerapeuta> {
       },
     );
   }
-
+ //----------------------METODO PARA DEFINIR UNA PANTALLA A MOSTRAR SEGUN LA CONECTIVIDAD A INTERNET -------------------------------------------
   Widget buildStream(){
     return StreamBuilder(
       stream: terapeutaReference.onValue ,

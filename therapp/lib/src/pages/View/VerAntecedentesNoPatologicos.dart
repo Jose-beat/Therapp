@@ -6,6 +6,8 @@ import 'package:therapp/src/models/AntecedentesNoPatologicos.dart';
 import 'package:therapp/src/models/AntecedntesPatologicos.dart';
 import 'package:therapp/src/pages/Register/RegistrarAntecedentesNoPatologicos.dart';
 
+
+/*ESTA CLASE SOLO MOSTRARA LOS DATOS DE CADA REGISTRO SELECCIONADO POR EL USUARIO */
 class VerAntecNoPatologico extends StatefulWidget {
   final String pacienteId;
   final AntecedentesNoPatologicos antecedentesNoPatologicos;
@@ -84,6 +86,8 @@ class _VerAntecNoPatologicoState extends State<VerAntecNoPatologico> {
                 )));
   }
 
+  //METODO PARA FILTRAR CADA UNO DE LOS DATOS DE LA  BASE DE DATOS 
+
   Widget _filter(BuildContext context, int position) {
     if (items[position].idpaciente == widget.pacienteId) {
       print('${items[position].id}');
@@ -99,6 +103,7 @@ class _VerAntecNoPatologicoState extends State<VerAntecNoPatologico> {
     }
   }
 
+//METODO QUE DRARA FORMATO A LAS LISTAS EN PANTALLA 
   Widget _info(BuildContext context, int position) {
     return Card(
       child: Column(
@@ -110,6 +115,8 @@ class _VerAntecNoPatologicoState extends State<VerAntecNoPatologico> {
       ),
     );
   }
+
+  //METODO QUE DARA FORMATO A CADA ITEM DE LA PANTALLA 
 
   Widget _lista(
       String variable, BuildContext context, int position, String subtitulo) {
@@ -131,7 +138,7 @@ class _VerAntecNoPatologicoState extends State<VerAntecNoPatologico> {
     );
   }
 
-  
+  //METODO PARA REVISAR LA CONEXION A INTERNET, POR LO CAUL MOSTRARA CADA PANTALLA SEGUN LA CONECTIVIDAD
   Widget buildStream(){
     return StreamBuilder(
       stream: antecNoPatReference.onValue ,
