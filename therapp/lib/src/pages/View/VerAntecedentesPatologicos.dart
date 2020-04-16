@@ -121,7 +121,7 @@ class _VerAntecPatologicosState extends State<VerAntecPatologicos> {
   Widget _lista(
       String variable, BuildContext context, int position, String subtitulo) {
     return ListTile(
-      contentPadding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+ 
       title: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -130,7 +130,7 @@ class _VerAntecPatologicosState extends State<VerAntecPatologicos> {
             width: 110.0,
           ),
           VerticalDivider(
-            width: 110.0,
+            width: 45.0,
           ),
           IconButton(
               icon: Icon(Icons.edit),

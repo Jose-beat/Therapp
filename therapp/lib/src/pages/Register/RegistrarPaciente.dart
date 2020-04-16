@@ -88,9 +88,11 @@ class _RegistrarPacienteState extends State<RegistrarPaciente> {
         backgroundColor: Colors.teal[500],
         title: Text('Editar Registro'),
       ),
-      body: ListView(
+      body: Builder(
+        builder: (BuildContext context ){
+          return ListView(
         children: <Widget>[
-          imagenes(),
+           imagenes(),
           Container(
             child: Card(
               child: Center(
@@ -275,7 +277,9 @@ class _RegistrarPacienteState extends State<RegistrarPaciente> {
             ),
           ),
         ],
-      ),
+      );
+        },
+      )
     );
   }
 //METODO PARA CREAR LISTA DE GENEROS
@@ -575,6 +579,49 @@ InputDecoration decoracion(String nombre, IconData icono){
               color: Colors.grey,
             ));
 }
+
+
+ Widget _fotoPerifl() {
+    return Column(children: <Widget>[
+      Form(
+        child: Column(
+          children: <Widget>[
+            Container(
+              height: 200.0,
+              width: 200.0,
+              decoration: BoxDecoration(
+                border: Border.all(width: 5.5, color: Colors.black),
+              ),
+              padding: EdgeInsets.all(5.0),
+              child: pacienteImage != null
+                  ? Image.network(pacienteImage + '?alt=media')
+                  : Image.asset('assets/images/photo-null.jpeg'),
+            ),
+            Container(
+              width: 200.0,
+              decoration: BoxDecoration(
+                  color: Colors.black, border: Border.all(color: Colors.black)),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  IconButton(
+                    icon: Icon(Icons.camera_alt),
+                    onPressed: pickerCam,
+                    color: Colors.white,
+                  ),
+                  IconButton(
+                    icon: Icon(Icons.add_photo_alternate),
+                    onPressed: pickerGallery,
+                    color: Colors.white,
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    ]);
+  }
 
 
 

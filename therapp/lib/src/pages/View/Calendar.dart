@@ -104,8 +104,7 @@ class _ConsultasActualesState extends State<ConsultasActuales> {
         ];
       }
 
-      _selectedEvents = _consultas[dia];
-
+      
       print(_consultas);
 
       print('WE NO MAMES ESTA ES LA ID DE LA CONSULTA ${items[position].id}');
@@ -195,7 +194,8 @@ class _ConsultasActualesState extends State<ConsultasActuales> {
             locale: 'es_MX',
             calendarController: _calendarController,
             calendarStyle: CalendarStyle(
-                todayColor: Colors.orange, selectedColor: Colors.teal[500]),
+                todayColor: Colors.orange, 
+                selectedColor: Colors.teal[500]),
           ),
           Card(
             child: Text(
