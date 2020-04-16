@@ -89,25 +89,9 @@ class _HomePageState extends State<HomePage>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(children: <Widget>[
-        Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-                Text('No hay pacientes registrados', style: TextStyle(color: Colors.grey, fontSize: 12.0)),
-                Text('Para crear un nuevo paciente pulse la pestaña', style: TextStyle(color: Colors.grey,  fontSize: 12.0)),
-                Divider(
-                  color:Colors.white
-                ),
-                Icon(Icons.person_add, color: Colors.grey,),
-                Text('Añadir paciente', style: TextStyle(color: Colors.grey)),
-            ],
-          ),
-        ),
-      
-        buildStream(),
+      body:  buildStream(),
        
-      ]),
+   
     );
   }
 

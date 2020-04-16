@@ -44,7 +44,7 @@ dev_dependencies:
     sdk: flutter
 
 flutter_icons:
-  image_path: "assets/logo_icon.png"
+  image_path: "assets/appstore.png"
   android: true 
   ios: true
 # For information on the generic Dart part of this file, see the
