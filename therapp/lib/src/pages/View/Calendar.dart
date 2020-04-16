@@ -328,9 +328,30 @@ class _ConsultasActualesState extends State<ConsultasActuales> {
       print('SI SE CUMPLE');
       return estado(position, 'Consulta del dia ', Colors.green);
     } else {
-      if (valorDia.day > ahora.day ||
-          valorDia.month > ahora.month ||
-          valorDia.year > ahora.year) {
+      if (valorDia.day < ahora.day &&
+          valorDia.month < ahora.month &&
+          valorDia.year > ahora.year || 
+
+          valorDia.day < ahora.day &&
+          valorDia.month > ahora.month &&
+          valorDia.year > ahora.year ||
+
+          valorDia.day > ahora.day &&
+          valorDia.month > ahora.month &&
+          valorDia.year > ahora.year ||
+
+          valorDia.day > ahora.day &&
+          valorDia.month == ahora.month &&
+          valorDia.year == ahora.year ||
+
+          valorDia.day == ahora.day &&
+          valorDia.month > ahora.month &&
+          valorDia.year == ahora.year ||
+
+          valorDia.day == ahora.day &&
+          valorDia.month == ahora.month &&
+          valorDia.year > ahora.year
+          ) {
         return estado(position, 'Consulta Pendiente', Colors.blue);
       } else {
         print('No SE CUMPLE');
