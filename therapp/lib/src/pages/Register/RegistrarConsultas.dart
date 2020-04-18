@@ -57,8 +57,9 @@ class _ResConsultasState extends State<ResConsultas> {
                       children: <Widget>[
                         Divider(),
                         TextFormField(
+                           
                           controller: _motivoController,
-                          style: TextStyle(fontSize: 17.0, color: Colors.orange),
+                          style: TextStyle(fontSize: 17.0),
                           decoration: decoracion('Motivo de consulta',Icons.assignment_ind),
                                validator: (value){
                               value=_motivoController.text;
@@ -126,6 +127,7 @@ class _ResConsultasState extends State<ResConsultas> {
 Widget _crearFecha(BuildContext context){
 
     return TextFormField(
+     
        validator: (value){
                               value=_inputFieldDateController.text;
                             if(value.isEmpty){

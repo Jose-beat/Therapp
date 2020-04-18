@@ -122,7 +122,7 @@ class _RegistroPerfilState extends State<RegistroPerfil> {
           TextFormField(
             keyboardType: TextInputType.text,
             controller: _nombreController,
-            style: TextStyle(fontSize: 17.0, color: Colors.deepOrangeAccent),
+            style: TextStyle(fontSize: 17.0),
             decoration: new InputDecoration(
                 filled: true,
                 fillColor: Colors.grey[200],
@@ -145,7 +145,7 @@ class _RegistroPerfilState extends State<RegistroPerfil> {
           TextFormField(
             keyboardType: TextInputType.text,
             controller: _apellidosController,
-            style: TextStyle(fontSize: 17.0, color: Colors.deepOrangeAccent),
+            style: TextStyle(fontSize: 17.0),
             decoration: new InputDecoration(
                 prefixIcon: new Icon(
                   Icons.person,
@@ -170,7 +170,7 @@ class _RegistroPerfilState extends State<RegistroPerfil> {
           TextFormField(
             keyboardType: TextInputType.text,
             controller: _clinicaController,
-            style: TextStyle(fontSize: 17.0, color: Colors.deepOrangeAccent),
+            style: TextStyle(fontSize: 17.0),
             decoration: new InputDecoration(
                 prefixIcon: new Icon(
                   Icons.local_hospital,
@@ -193,7 +193,7 @@ class _RegistroPerfilState extends State<RegistroPerfil> {
           TextFormField(
             keyboardType: TextInputType.text,
             controller: _cedulaController,
-            style: TextStyle(fontSize: 17.0, color: Colors.deepOrangeAccent),
+            style: TextStyle(fontSize: 17.0),
             decoration: new InputDecoration(
                 prefixIcon: new Icon(
                   Icons.book,
@@ -216,7 +216,7 @@ class _RegistroPerfilState extends State<RegistroPerfil> {
           TextFormField(
             keyboardType: TextInputType.text,
             controller: _especialidadController,
-            style: TextStyle(fontSize: 17.0, color: Colors.deepOrangeAccent),
+            style: TextStyle(fontSize: 17.0),
             decoration: new InputDecoration(
                 prefixIcon: new Icon(
                   Icons.turned_in_not,
@@ -239,7 +239,7 @@ class _RegistroPerfilState extends State<RegistroPerfil> {
           TextFormField(
             keyboardType: TextInputType.phone,
             controller: _telefonoController,
-            style: TextStyle(fontSize: 17.0, color: Colors.deepOrangeAccent),
+            style: TextStyle(fontSize: 17.0),
             decoration: new InputDecoration(
                 prefixIcon: new Icon(
                   Icons.phone_iphone,
@@ -263,7 +263,7 @@ class _RegistroPerfilState extends State<RegistroPerfil> {
             enabled: false,
             keyboardType: TextInputType.emailAddress,
             controller: _emailController,
-            style: TextStyle(fontSize: 17.0, color: Colors.deepOrangeAccent),
+            style: TextStyle(fontSize: 17.0),
             decoration: new InputDecoration(
                 prefixIcon: new Icon(
                   Icons.mail,

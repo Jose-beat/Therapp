@@ -6,7 +6,7 @@ class SignosVitales {
   String _id;
   String _fc;
   String _fr;
-  int _peso;
+  String _peso;
   String _talla;
   String _idpaciente;
   String _fechaSignosVitales;
@@ -28,7 +28,7 @@ class SignosVitales {
   String get id => _id;
   String get fc => _fc;
   String get fr => _fr;
-  int get peso => _peso;
+  String get peso => _peso;
   String get talla => _talla;
   String get fechaSignos => _fechaSignosVitales;
   String get hora => _hora;

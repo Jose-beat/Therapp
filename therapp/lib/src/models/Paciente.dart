@@ -6,7 +6,7 @@ class Paciente {
   String _nombre;
   String _apellidos;
   String _nacimiento;
-  int _edad;
+  String _edad;
   String _ocupacion;
   String _sexo;
   String _terapeuta;
@@ -30,7 +30,7 @@ class Paciente {
   String get nombre => _nombre;
   String get apellidos => _apellidos;
   String get nacimiento => _nacimiento;
-  int get edad => _edad;
+  String get edad => _edad;
   String get ocupacion => _ocupacion;
   String get sexo => _sexo;
   String get terapeuta => _terapeuta;

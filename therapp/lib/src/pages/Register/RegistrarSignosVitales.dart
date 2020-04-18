@@ -21,7 +21,7 @@ class _RegistroSignosVitalesState extends State<RegistroSignosVitales> {
   List<SignosVitales> items;
   String frecuenciaCardiActual = '70 - 190';
   String frecuenciaRespiratoryActual = '30 - 80';
-  int peso = 40;
+
   String talla = 'XS';
   String _fecha;
   TextEditingController _inputFieldDateController;
@@ -86,7 +86,7 @@ class _RegistroSignosVitalesState extends State<RegistroSignosVitales> {
                      
                               respiratoryOption(),
                              
-                              pesoOption(),
+                              Divider( height: 60.0,),
                           
                               tallaOption(),
                             ],
@@ -124,7 +124,7 @@ class _RegistroSignosVitalesState extends State<RegistroSignosVitales> {
                                 'frecuencia cardiaca': frecuenciaCardiActual,
                                 'frecuencia respiratoria':
                                     frecuenciaRespiratoryActual,
-                                'peso': peso,
+                                'peso': _pesoController.text,
                                 'talla': talla,
                                 'fecha':_inputFieldDateController.text,
                                 'hora':_inputFieldHoraController.text,
@@ -200,6 +200,7 @@ Widget _crearCardiaco(BuildContext context){
         onChanged: (String newValue) {
           setState(() {
             frecuenciaCardiActual = newValue;
+            _fcController.text = frecuenciaCardiActual;
           });
         },
         items: <String>[
@@ -264,6 +265,7 @@ Widget _crearRespiracion(BuildContext context){
         onChanged: (String newValue) {
           setState(() {
             frecuenciaRespiratoryActual = newValue;
+            _frController.text = frecuenciaRespiratoryActual;
           });
         },
         items: <String>['30 - 80', '20 - 40', '20 - 30', '20 - 25', '15 - 20']
@@ -279,13 +281,11 @@ Widget _crearRespiracion(BuildContext context){
 
 //METODO PARA CREAR LISTA DE PESOS
 Widget _crearPeso(BuildContext context){
-   if(widget.signosVitales.id == null){
-      _pesoController.text = peso.toString();
-  }
+  
     return  Container(
       width: 150.0,
       child: TextFormField(
-           readOnly: true,
+           
           validator: (value){
             value=_pesoController.text;
             if(value.isEmpty){
@@ -294,8 +294,8 @@ Widget _crearPeso(BuildContext context){
           },
           //Pasamos la fecha por aqui
           controller: _pesoController,
-          //Desactivamos la accion interactiva
-          enableInteractiveSelection: false,
+          keyboardType: TextInputType.number,
+          
          //Añadir estilo a la caja de texto
           decoration: decoracion('Peso', Icons.straighten, Colors.purple[200]),
             
@@ -309,44 +309,6 @@ Widget _crearPeso(BuildContext context){
 
 }
 
-
-  Widget pesoOption() {
-    return Container(
-            margin: EdgeInsets.fromLTRB(0, 0, 0, 50),
-      child: DropdownButton<int>(
-        value: peso,
-        
-        iconSize: 24,
-        elevation: 16,
-        style: TextStyle(color: Colors.purple[200]),
-        underline: Container(
-          height: 2,
-          color: Colors.purple[200],
-        ),
-        onChanged: (int newValue) {
-          setState(() {
-            peso = newValue;
-          });
-        },
-        items: pesos().map<DropdownMenuItem<int>>((dynamic value) {
-          return DropdownMenuItem<int>(
-            value: value,
-            child: Text('$value'),
-          );
-        }).toList(),
-      ),
-    );
-  }
-
-  List pesos() {
-    List<int> peso = [];
-
-    for (var i = 30; i < 100; i += 10) {
-      peso.add(i);
-      print(i);
-    }
-    return peso;
-  }
 
   //METODO PARA CREAR LISTA DE TALLAS
 Widget _crearTalla(BuildContext context){
@@ -399,6 +361,7 @@ Widget _crearTalla(BuildContext context){
         onChanged: (String newValue) {
           setState(() {
             talla = newValue;
+            _tallaController.text = talla;
           });
         },
         items: <String>['XS', 'S', 'M', 'L', 'XL', 'XXL']

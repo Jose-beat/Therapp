@@ -129,15 +129,21 @@ class _VerAntecPatologicosState extends State<VerAntecPatologicos> {
           VerticalDivider(
             width: 110.0,
           ),
-          VerticalDivider(
-            width: 65.0,
+        
+
+        ],
+      ),
+      subtitle: Row(
+        children:<Widget>[
+          Text('$subtitulo'),
+            VerticalDivider(
+            width: 80.0,
           ),
           IconButton(
               icon: Icon(Icons.edit),
               onPressed: () => _navigateToAntPat(context, items[position]))
-        ],
-      ),
-      subtitle: Text('$subtitulo'),
+          ]
+        ),
     );
   }
 

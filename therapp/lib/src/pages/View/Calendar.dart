@@ -67,7 +67,7 @@ class _ConsultasActualesState extends State<ConsultasActuales> {
 
 //Cronometro para el manejo de la caga de datos 
   Future<Timer> startTime() async {
-    var _duration = Duration(seconds: 5);
+    var _duration = Duration(seconds: 10);
     return Timer(_duration, cambioDatos);
   }
 
@@ -117,7 +117,7 @@ class _ConsultasActualesState extends State<ConsultasActuales> {
             children: <Widget>[
               Text('${items[position].fechaConsulta}'),
               Text('${items[position].horaConsulta}'),
-              Text('${items[position].nombre} ${items[position].nombre}'),
+              Text('${items[position].nombre} ${items[position].apellidos}'),
             ],
           ),
         ));
@@ -128,7 +128,7 @@ class _ConsultasActualesState extends State<ConsultasActuales> {
               children: <Widget>[
                 Text('${items[position].fechaConsulta}'),
                 Text('${items[position].horaConsulta}'),
-                Text('${items[position].nombre} ${items[position].nombre}'),
+                Text('${items[position].nombre} ${items[position].apellidos}'),
               ],
             ),
           )
@@ -232,13 +232,17 @@ class _ConsultasActualesState extends State<ConsultasActuales> {
             color: Colors.teal[300],
             
             width: 350.0,
-            height: 50.0,
+            height: 40.0,
             child: ListTile(
-              contentPadding: EdgeInsets.fromLTRB(0, 0, 40, 0),
+              contentPadding: EdgeInsets.fromLTRB(0, 0, 0, 0),
               title: Text(
                 'Consultas Globales',
                 textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.headline,
+                  style: TextStyle(
+
+                    color: Colors.white,
+
+                  ),
               ),
             ),
           ),
@@ -374,7 +378,9 @@ class _ConsultasActualesState extends State<ConsultasActuales> {
       print('SI SE CUMPLE');
       return estado(position, 'Consulta del dia ', Colors.green);
     } else {
-      if (valorDia.day < ahora.day &&
+      if (
+          valorDia.year > ahora.year ||
+          valorDia.day < ahora.day &&
           valorDia.month < ahora.month &&
           valorDia.year > ahora.year || 
 
@@ -396,7 +402,19 @@ class _ConsultasActualesState extends State<ConsultasActuales> {
 
           valorDia.day == ahora.day &&
           valorDia.month == ahora.month &&
-          valorDia.year > ahora.year
+          valorDia.year > ahora.year ||
+
+          valorDia.day < ahora.day &&
+          valorDia.month < ahora.month &&
+          valorDia.year > ahora.year ||
+
+          valorDia.day < ahora.day &&
+          valorDia.month < ahora.month &&
+          valorDia.year > ahora.year ||
+          
+          valorDia.day < ahora.day &&
+          valorDia.month > ahora.month &&
+          valorDia.year == ahora.year
           ) {
         return estado(position, 'Consulta Pendiente', Colors.blue);
       } else {

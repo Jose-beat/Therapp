@@ -51,8 +51,9 @@ class _ResAntecedentesPatologicosState
                       children: <Widget>[
                         Divider(),
                         TextFormField(
+                          maxLines: 1,
                           controller: _enfermedadController,
-                          style: TextStyle(fontSize: 17.0, color: Colors.pink),
+                          style: TextStyle(fontSize: 17.0),
                           decoration: decoracion('Enfermedad', Icons.accessibility_new),
 
 

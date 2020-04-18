@@ -38,6 +38,7 @@ final terapeutaReference =
 
 class _NavigationAppBarState extends State<NavigationAppBar> {
 
+  bool _cargando = true;
   //METODOS INICIALES
   Color colorTema = Colors.orange;
   Color colorSubTema = Colors.teal[300];
@@ -55,6 +56,39 @@ class _NavigationAppBarState extends State<NavigationAppBar> {
         terapeutaReference.onChildAdded.listen(_onTerapeutaAdded);
     _onTerapeutaChangedSubscription =
         terapeutaReference.onChildChanged.listen(_onTerapeutaUpdated);
+  }
+
+  
+//Cronometro para el manejo de la caga de datos 
+  Future<Timer> startTime() async {
+    var _duration = Duration(seconds: 5);
+    return Timer(_duration, cambioDatos);
+  }
+
+  Widget _progresoCircular() {
+    print(_cargando.toString());
+
+    if (_cargando == true) {
+      print(_cargando.toString());
+
+      return Center(
+        child: CircularProgressIndicator(
+          value: null,
+          valueColor: AlwaysStoppedAnimation<Color>(Colors.orange),
+        ),
+      );
+    } else {
+      return Container();
+    }
+  }
+
+ 
+//METODO QUE CAMBIARA EL ESTADO DEL METODO ANTERIOR 
+  void cambioDatos() {
+
+    
+      _cargando = false;
+
   }
 
 
@@ -106,7 +140,7 @@ pantallas mostrar al usuario segun indique en los botones de navegacion*/
 
 /*Pagina para crear el expediente de paciente */
       RegistrarPaciente(
-        paciente: Paciente(null, '', '', '', 0, '', '', widget.userId, ''),
+        paciente: Paciente(null, '', '', '', '', '', '', widget.userId, ''),
         userId: widget.userId,
         app: false,
       ),
@@ -128,20 +162,22 @@ pantallas mostrar al usuario segun indique en los botones de navegacion*/
       home: Scaffold(
         //MOSTRAREMOS UN MENU DESPLEGABLE
           drawer: Drawer(
-            child: ListView.builder(
-              itemCount: items.length,
-              itemBuilder: (context, position) {
-                return _filter(context, position);
-              },
-            ),
+            child: buildStream(),
           ),
           appBar: AppBar(
             actions: <Widget>[
-              IconButton(icon: Icon(Icons.directions_run), 
-              onPressed: signOut)
+              VerticalDivider(
+                width: 0.0,
+              ),
+              IconButton(
+                
+                 icon: Icon(Icons.directions_run), 
+
+                onPressed: signOut
+              )
             ],
             elevation: 0.0,
-            title: Text(titulo, style: TextStyle(color: Colors.black)),
+            title: Text(titulo, style: TextStyle(color: Colors.black, fontSize: 15.0)),
             backgroundColor: colorTema,
             actionsIconTheme: IconThemeData(color: Colors.black),
             
@@ -230,7 +266,7 @@ pantallas mostrar al usuario segun indique en los botones de navegacion*/
         MaterialPageRoute(
             builder: (context) => RegistrarPaciente(
                   paciente:
-                      Paciente(null, '', '', '', 0, '', '', widget.userId, ''),
+                      Paciente(null, '', '', '', '', '', '', widget.userId, ''),
                   userId: widget.userId,
                 )));
   }
@@ -364,9 +400,7 @@ pantallas mostrar al usuario segun indique en los botones de navegacion*/
                           )));
             },
           ),
-          Divider(
-            height: 280.0,
-          ),
+        Divider(),
           ListTile(
               leading: Icon(
                 Icons.keyboard_capslock,
@@ -387,4 +421,76 @@ pantallas mostrar al usuario segun indique en los botones de navegacion*/
 
     
   }
+
+
+
+  
+//METODO QUE VERA EL ESTADO DE LA REDA PARA DEFINIR EJECUTAR YA SEA LA LISTA DE PACIENTES O UN MENSAJE DE ERROR 
+  Widget buildStream(){
+    return StreamBuilder(
+      stream: terapeutaReference.onValue ,
+      builder:(BuildContext context, AsyncSnapshot<dynamic> snap ){
+        
+
+        if(snap.hasData && !snap.hasError != null){
+           return   ListView.builder(
+              itemCount: items.length,
+              itemBuilder: (context, position) {
+                return _filter(context, position);
+              },
+            );
+        }else {
+          return errorRed();
+        }
+  
+       
+        
+      }
+      );
+  }
+
+  Widget errorRed(){
+     return  Center(
+          
+            child:Stack(
+                          children:<Widget> [
+                           
+                            Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                            children:<Widget>[
+
+                        Text( 'No se ha conectado a una red',
+                        style: TextStyle(
+                          color: Colors.red
+                        ),),
+
+
+                        Text( 'Favor de conectarse y reiniciar la aplicacion',
+                        style: TextStyle(
+                          color: Colors.grey
+                        ), ),
+                      Icon(
+                        Icons.signal_wifi_off,
+                        color: Colors.grey,
+                          size: 100.0,
+                       ),
+                    
+                    _progresoCircular()
+           
+                   
+
+                    
+                
+                ]
+              ),
+            
+              
+              ]
+            )
+          );
+
+  }
+
 }
+
+

@@ -157,23 +157,29 @@ class _VerAntecNoPatologicoState extends State<VerAntecNoPatologico> {
   Widget _lista(
       String variable, BuildContext context, int position, String subtitulo) {
     return ListTile(
+      dense: true,
       contentPadding: EdgeInsets.fromLTRB(0, 0, 0, 0),
       title: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text('$variable', style: Theme.of(context).textTheme.headline),
-          VerticalDivider(
-            width: 110.0,
-          ),
-          VerticalDivider(
-            width: 100.0,
+          Text('$variable', style: Theme.of(context).textTheme.headline, maxLines: 2,),
+
+        
+         
+         
+        ],
+      ),
+      subtitle: Row(
+        children: <Widget>[
+          Text('$subtitulo'),
+           VerticalDivider(
+            width: 50.0,
           ),
           IconButton(
               icon: Icon(Icons.edit),
               onPressed: () => _navigateToAntNoPat(context, items[position]))
         ],
       ),
-      subtitle: Text('$subtitulo'),
     );
   }
 

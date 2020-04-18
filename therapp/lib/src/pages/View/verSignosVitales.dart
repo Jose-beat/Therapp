@@ -96,7 +96,7 @@ class _VerSignosVitalesState extends State<VerSignosVitales> {
         MaterialPageRoute(
             builder: (context) => RegistroSignosVitales(
                   signosVitales: SignosVitales(
-                      null, '', '', 0, '', widget.pacienteId, '', ''),
+                      null, '', '', '', '', widget.pacienteId, '', ''),
                 )));
   }
 

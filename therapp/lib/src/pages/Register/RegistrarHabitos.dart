@@ -51,7 +51,7 @@ class _ResHabitosState extends State<ResHabitos> {
                       Divider(),
                       TextFormField(
                         controller: _habitoAlimenticioController,
-                        style: TextStyle(fontSize: 17.0, color: Colors.green),
+                        style: TextStyle(fontSize: 17.0,),
                         decoration: decoracion('Habitos alimenticios',Icons.favorite_border),
                         validator: (value){
                               value=_habitoAlimenticioController.text;
@@ -63,7 +63,7 @@ class _ResHabitosState extends State<ResHabitos> {
                       Divider(),
                       TextFormField(
                         controller: _habitoHigieneController,
-                        style: TextStyle(fontSize: 17.0, color: Colors.green),
+                        style: TextStyle(fontSize: 17.0),
                         decoration: decoracion('Habitos de higene',Icons.drag_handle),
                         validator: (value){
                               value=_habitoHigieneController.text;

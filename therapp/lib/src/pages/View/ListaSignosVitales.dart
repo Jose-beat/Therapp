@@ -120,7 +120,7 @@ bool _cargando = true;
         MaterialPageRoute(
             builder: (context) => RegistroSignosVitales(
                   signosVitales: SignosVitales(
-                      null, '', '', 0, '', widget.pacienteId, '', ''),
+                      null, '', '', '', '', widget.pacienteId, '', ''),
                 )));
   }
 

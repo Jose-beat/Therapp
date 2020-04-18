@@ -39,7 +39,7 @@ class _RegistrarPacienteState extends State<RegistrarPaciente> {
   TextEditingController _ocupacionController;
   TextEditingController _sexoController;
   String genero = 'Masculino';
-  int edad = 0;
+
   String pacienteImage;
   String fecha;
 //METODOS PARA ESCOJER IMAGEN  O FOTO 
@@ -103,7 +103,7 @@ class _RegistrarPacienteState extends State<RegistrarPaciente> {
                       TextFormField(
                           controller: _nombreController,
                           style:
-                              TextStyle(fontSize: 17.0, color: Colors.deepPurple),
+                              TextStyle(fontSize: 17.0),
                           decoration: decoracion('Nombre',Icons.people),
                            validator: (value){
                               value=_nombreController.text;
@@ -117,7 +117,7 @@ class _RegistrarPacienteState extends State<RegistrarPaciente> {
                       TextFormField(
                           controller: _apellidosController,
                           style:
-                              TextStyle(fontSize: 17.0, color: Colors.deepPurple),
+                              TextStyle(fontSize: 17.0),
                           decoration: decoracion('Apellidos',Icons.people),
                           
                            validator: (value){
@@ -134,7 +134,7 @@ class _RegistrarPacienteState extends State<RegistrarPaciente> {
                       TextFormField(
                           controller: _ocupacionController,
                           style:
-                              TextStyle(fontSize: 17.0, color: Colors.deepPurple),
+                              TextStyle(fontSize: 17.0),
                           decoration: decoracion('Ocupacion',Icons.assignment),
                           
                            validator: (value){
@@ -154,7 +154,7 @@ class _RegistrarPacienteState extends State<RegistrarPaciente> {
                         children: <Widget>[
                           _crearGenero(context),
                           VerticalDivider(
-                            width: 60.0,
+                            width: 20.0,
                           ),
                            generoOption()
                         ],
@@ -164,10 +164,7 @@ class _RegistrarPacienteState extends State<RegistrarPaciente> {
                         mainAxisAlignment: MainAxisAlignment.center,
                        children: <Widget>[
                          _crearEdad(context),
-                       VerticalDivider(
-                            width: 90.0,
-                          ),
-                          edadOption(),
+                   
                        ],
                      ),
                      
@@ -177,6 +174,7 @@ class _RegistrarPacienteState extends State<RegistrarPaciente> {
                       
                      // generoOption(),
                       FlatButton(
+                          color: Colors.teal[300],
                         //METODO PARA ENVIAR DATOS A LA PLATAFORMA 
                           onPressed: () {
                             //EXCEPCION PARA LA FOTO DE PERFIL
@@ -195,7 +193,7 @@ class _RegistrarPacienteState extends State<RegistrarPaciente> {
 
                                var fullPathImage = part1 + fullImageName2;
                                print(fullPathImage);
-                   
+                             
                               genero = widget.paciente.sexo;
                               pacienteReference.child(widget.paciente.id).set({
                                 'nombre': _nombreController.text,
@@ -228,7 +226,7 @@ class _RegistrarPacienteState extends State<RegistrarPaciente> {
                                 'nombre': _nombreController.text,
                                 'apellidos': _apellidosController.text,
                                 'nacimiento': _inputFieldDateController.text,
-                                'edad': edad,
+                                'edad': _edadController.text,
                                 'ocupacion': _ocupacionController.text,
                                 'sexo': genero,
                                 'terapeuta': widget.userId,
@@ -269,7 +267,7 @@ class _RegistrarPacienteState extends State<RegistrarPaciente> {
                           
                             print('${_nombreController.text}');
                           },
-                          child: Text('Registrar Paciente'))
+                          child: Text('Registrar Paciente', style: TextStyle(color: Colors.white)))
                     ],
                   ),
                 ),
@@ -282,13 +280,14 @@ class _RegistrarPacienteState extends State<RegistrarPaciente> {
       )
     );
   }
+
 //METODO PARA CREAR LISTA DE GENEROS
 Widget _crearGenero(BuildContext context){
   if(widget.paciente.id == null){
      _sexoController.text = genero;
   }
     return Container(
-      width: 150.0,
+      width: 180.0,
       child: TextFormField(
         
          validator: (value){
@@ -302,7 +301,7 @@ Widget _crearGenero(BuildContext context){
         //Desactivamos la accion interactiva
         enableInteractiveSelection: false,
        //Añadir estilo a la caja de texto
-        decoration: decoracion('Genero',Icons.account_balance,'Genero'),
+        decoration: decoracion('Genero',Icons.account_balance,'Sexo'),
       ),
     );
 
@@ -311,50 +310,52 @@ Widget _crearGenero(BuildContext context){
 }
 
   Widget generoOption() {
-    return DropdownButton<String>(
-      value: genero,
-    
-      iconSize: 24,
-      elevation: 16,
-      style: TextStyle(color: Colors.teal[500]),
-      underline: Container(
-        height: 2,
-        color: Colors.teal[500],
-      ),
-      onChanged: (String newValue) {
-        setState(() {
-          genero = newValue;
-          newValue=_sexoController.text;
-        });
-      },
-      items: <String>['Femenino', 'Masculino']
-          .map<DropdownMenuItem<String>>((String value) {
-        if (widget.paciente.id != null) {
-          return DropdownMenuItem<String>(
-              value: value,
-              child: Text(value)
-              );
+    return Container(
+      margin: EdgeInsets.fromLTRB(0.0, 0, 0.0,0),
+      child: DropdownButton<String>(
+        value: genero,
+      
+        iconSize: 24,
+        elevation: 16,
+        style: TextStyle(color: Colors.teal[500]),
+        underline: Container(
+          height: 2,
+          color: Colors.teal[500],
+        ),
+        onChanged: (String newValue) {
+          setState(() {
+            genero = newValue;
+            _sexoController.text = genero;
+          });
+        },
+        items: <String>['Femenino', 'Masculino']
+            .map<DropdownMenuItem<String>>((String value) {
+          if (widget.paciente.id != null) {
+            return DropdownMenuItem<String>(
+                value: value,
+                child: Text(value)
+                );
 
-        } else {
-          return DropdownMenuItem<String>(
-            value: value,
-            child: Text(value),
-          );
-        }
-      }).toList(),
+          } else {
+            return DropdownMenuItem<String>(
+              value: value,
+              child: Text(value),
+            );
+          }
+        }).toList(),
+      ),
     );
   }
 
 //METODO PARA CREAR LISTA DE EDADES
 Widget _crearEdad(BuildContext context){
-  if(widget.paciente.id == null){
-     _edadController.text = edad.toString();
-  }
+  
     
     return Container(
-      margin: EdgeInsets.fromLTRB(0.0, 0, 20.0,0),
-      width: 150.0,
+      margin: EdgeInsets.fromLTRB(0.0, 0, 110.0,0),
+      width: 180.0,
       child: TextFormField(
+         keyboardType: TextInputType.number,
          validator: (value){
                          value=_edadController.text;
                        if(value.isEmpty){
@@ -370,11 +371,7 @@ Widget _crearEdad(BuildContext context){
 
            
         
-          onTap: (){
-            //Quitar el foco que significa que el teclado no se activara
-            FocusScope.of(context).requestFocus(new FocusNode());
-            edadOption();
-          },
+         
       ),
     );
 
@@ -382,49 +379,6 @@ Widget _crearEdad(BuildContext context){
 
 }
 
-
-  Widget edadOption() {
-    return DropdownButton<int>(
-      value: edad,
-
-      iconSize: 24,
-      elevation: 16,
-      style: TextStyle(color: Colors.teal[500]),
-      underline: Container(
-        height: 2,
-        color: Colors.teal[500],
-      ),
-      onChanged: (int newValue) {
-        setState(() {
-          edad = newValue;
-         
-        });
-      },
-      items: edades().map<DropdownMenuItem<int>>((dynamic value) {
-        if (widget.paciente.id != null) {
-          return DropdownMenuItem<int>(
-            value: value,
-            child: Text('$value'),
-          );
-        } else {
-          return DropdownMenuItem<int>(
-            value: value,
-            child: Text('$value'),
-          );
-        }
-      }).toList(),
-    );
-  }
-
-  List edades() {
-    List<int> edades = [];
-
-    for (var i = 0; i < 100; i++) {
-      edades.add(i);
-      print(i);
-    }
-    return edades;
-  }
 
 
   

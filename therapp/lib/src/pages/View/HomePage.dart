@@ -51,7 +51,7 @@ class _HomePageState extends State<HomePage>
 
 //Cronometro para el manejo de la caga de datos 
   Future<Timer> startTime() async {
-    var _duration = Duration(seconds: 5);
+    var _duration = Duration(seconds: 10);
     return Timer(_duration, cambioDatos);
   }
 
@@ -61,7 +61,6 @@ class _HomePageState extends State<HomePage>
   
     super.initState();
     startTime();
-    
     items = new List();
     _onPacienteAddedSubscription =
         pacienteReference.onChildAdded.listen(_onPacienteAdded);
@@ -164,43 +163,20 @@ class _HomePageState extends State<HomePage>
 
   
 
-//Metodo que dibujara la lista de pacientes
-  Widget _lista(){
 
-        return   ListView.builder(
-            itemCount: items.length,
-            itemBuilder: (context, position) {
-             
-              return _filter(context, position);
-            },
-          );
-  
-
-    
-  }
 //Metodo para filtrar cada dato segun el terapeuta
   Widget _filter(BuildContext context, int position) {
 
-
-    try{
-      
       print("item :${items[position].id}");
       if (items[position].terapeuta == widget.userId) {
-        cambioDatos();
-      print(_cargando.toString());
-   
-      print('${items[position].id}');
+      print('IDE DE MI PACIENTE NO DE OTROS${items[position].id}');
       print('$position');
       return _paciente(context, position);
     } else {
-      _cargando = true;
-      return Container(
-       
-      );
+    
+      return Container();
     }
-    }catch(e){
-      return Text(e);
-    }
+   
     
 
 
@@ -273,8 +249,13 @@ class _HomePageState extends State<HomePage>
         
 
         if(snap.hasData && !snap.hasError != null){
-          _progresoCircular();
-          return  _lista();
+           return   ListView.builder(
+            itemCount: items.length,
+            itemBuilder: (context, position) {
+             
+              return _filter(context, position);
+            },
+          );
         }else {
           return errorRed();
         }
