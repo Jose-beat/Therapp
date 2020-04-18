@@ -17,6 +17,7 @@ class VerHabitos extends StatefulWidget {
 final habitosReference = FirebaseDatabase.instance.reference().child('habitos');
 
 class _VerHabitosState extends State<VerHabitos> {
+  bool _cargando = true;
   List<Habitos> items;
   StreamSubscription<Event> _onHabitosAddedSubscription;
   StreamSubscription<Event> _onHabitosChangedSubscription;
@@ -42,6 +43,41 @@ class _VerHabitosState extends State<VerHabitos> {
   Widget build(BuildContext context) {
     return buildStream();
   }
+
+  
+  
+//Cronometro para el manejo de la caga de datos 
+  Future<Timer> startTime() async {
+    var _duration = Duration(seconds: 5);
+    return Timer(_duration, cambioDatos);
+  }
+
+  Widget _progresoCircular() {
+    print(_cargando.toString());
+
+    if (_cargando == true) {
+      print(_cargando.toString());
+
+      return Center(
+        child: CircularProgressIndicator(
+          value: null,
+          valueColor: AlwaysStoppedAnimation<Color>(Colors.orange),
+        ),
+      );
+    } else {
+      return Container();
+    }
+  }
+
+ 
+//METODO QUE CAMBIARA EL ESTADO DEL METODO ANTERIOR 
+  void cambioDatos() {
+
+    
+      _cargando = false;
+
+  }
+
 
 /*------------------------------------BACKEND Y MANEJO DEL CRUD FIREBASE----------------------------------------*/
   void _onHabitosAdded(Event event) {
@@ -143,7 +179,7 @@ class _VerHabitosState extends State<VerHabitos> {
     return StreamBuilder(
       stream: habitosReference.onValue ,
       builder:(BuildContext context, AsyncSnapshot<dynamic> snap ){
-        if(snap.hasData && !snap.hasError && snap.data.snapshot.value != null){
+        if(snap.hasData && !snap.hasError ){
           
           return   Scaffold(
       body: ListView.builder(
@@ -185,9 +221,9 @@ class _VerHabitosState extends State<VerHabitos> {
                         Icons.signal_wifi_off,
                         color: Colors.grey,
                         size: 100.0,
-                       )          
+                       ),          
                   
-                   
+                   _progresoCircular()
 
                     
                 

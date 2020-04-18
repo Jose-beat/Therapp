@@ -159,9 +159,7 @@ class _VerConsultasState extends State<VerConsultas> {
               '$variable',
               style: Theme.of(context).textTheme.headline,
             ),
-            IconButton(
-                icon: Icon(Icons.edit),
-                onPressed: () => _navigateToConsultas(context, items[position]))
+          
           ],
         ),
         subtitle: Text('$subtitulo'));

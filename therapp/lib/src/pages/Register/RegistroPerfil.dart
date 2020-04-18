@@ -388,9 +388,21 @@ class _RegistroPerfilState extends State<RegistroPerfil> {
                 border: Border.all(width: 5.5, color: Colors.black),
               ),
               padding: EdgeInsets.all(5.0),
-              child: widget.terapeuta.imagen != null
+             child: FadeInImage(
+                fit: BoxFit.cover,
+                width: 200.0,
+                height: 200.0,
+                fadeInCurve: Curves.bounceIn,
+                placeholder: AssetImage('assets/images/icon-app.jpeg'),
+                image: widget.terapeuta.imagen != null
+                    ? NetworkImage(widget.terapeuta.imagen + '?alt=media')
+                    : AssetImage('assets/images/photo-null.jpeg'),
+              ),
+              
+              
+            /*   widget.terapeuta.imagen != null
                   ? Image.network(widget.terapeuta.imagen + '?alt=media')
-                  : Image.asset('assets/images/photo-null.jpeg'),
+                  : Image.asset('assets/images/photo-null.jpeg'),*/
             ),
             Container(
               width: 200.0,
@@ -529,11 +541,12 @@ class _RegistroPerfilState extends State<RegistroPerfil> {
                   ? Image.asset('assets/images/photo-null.jpeg')
                   : Image.file(imagen),
             ),
-            Container(
+             Container(
               width: 200.0,
               decoration: BoxDecoration(
                   color: Colors.black, border: Border.all(color: Colors.black)),
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   IconButton(
                     icon: Icon(Icons.camera_alt),
@@ -541,9 +554,10 @@ class _RegistroPerfilState extends State<RegistroPerfil> {
                     color: Colors.white,
                   ),
                   IconButton(
-                      icon: Icon(Icons.calendar_today),
-                      onPressed: pickerGallery,
-                      color: Colors.white),
+                    icon: Icon(Icons.add_photo_alternate),
+                    onPressed: pickerGallery,
+                    color: Colors.white,
+                  ),
                 ],
               ),
             ),

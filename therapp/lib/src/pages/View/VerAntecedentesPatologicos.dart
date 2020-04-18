@@ -20,7 +20,7 @@ final antecPatReference =
     FirebaseDatabase.instance.reference().child('antecedentes_patologicos');
 
 class _VerAntecPatologicosState extends State<VerAntecPatologicos> {
-
+  bool _cargando = true;
   //VARIABLES INICIALES
   StreamSubscription<Event> _onAntPatAddedSubscription;
   StreamSubscription<Event> _onAntPatChangedSubscription;
@@ -130,7 +130,7 @@ class _VerAntecPatologicosState extends State<VerAntecPatologicos> {
             width: 110.0,
           ),
           VerticalDivider(
-            width: 45.0,
+            width: 65.0,
           ),
           IconButton(
               icon: Icon(Icons.edit),
@@ -141,6 +141,41 @@ class _VerAntecPatologicosState extends State<VerAntecPatologicos> {
     );
   }
 
+  
+  
+//Cronometro para el manejo de la caga de datos 
+  Future<Timer> startTime() async {
+    var _duration = Duration(seconds: 5);
+    return Timer(_duration, cambioDatos);
+  }
+
+  Widget _progresoCircular() {
+    print(_cargando.toString());
+
+    if (_cargando == true) {
+      print(_cargando.toString());
+
+      return Center(
+        child: CircularProgressIndicator(
+          value: null,
+          valueColor: AlwaysStoppedAnimation<Color>(Colors.orange),
+        ),
+      );
+    } else {
+      return Container();
+    }
+  }
+
+ 
+//METODO QUE CAMBIARA EL ESTADO DEL METODO ANTERIOR 
+  void cambioDatos() {
+
+    
+      _cargando = false;
+
+  }
+
+
 
   
   //METODO PARA DEFINIR UNA PANTALLA A MOSTRAR SEGUN LA CONECTIVIDAD A INTERNET 
@@ -148,7 +183,7 @@ class _VerAntecPatologicosState extends State<VerAntecPatologicos> {
     return StreamBuilder(
       stream: antecPatReference.onValue ,
       builder:(BuildContext context, AsyncSnapshot<dynamic> snap ){
-        if(snap.hasData && !snap.hasError && snap.data.snapshot.value != null){
+        if(snap.hasData && !snap.hasError ){
           
           return  Scaffold(
       body: ListView.builder(
@@ -189,8 +224,8 @@ class _VerAntecPatologicosState extends State<VerAntecPatologicos> {
                         Icons.signal_wifi_off,
                         color: Colors.grey,
                         size: 100.0,
-                       )          
-                  
+                       ),          
+                  _progresoCircular()
                    
 
                     

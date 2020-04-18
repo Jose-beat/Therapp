@@ -33,7 +33,7 @@ final consultasReference =
     FirebaseDatabase.instance.reference().child('Consultas');
 
 class _ListaConsultasState extends State<ListaConsultas> {
-
+  bool _cargando = true;
   //Variables iniciales
   StreamSubscription<Event> _onConsultaAddedSubscription;
   StreamSubscription<Event> _onConsultaChangedSubscription;
@@ -119,6 +119,42 @@ class _ListaConsultasState extends State<ListaConsultas> {
                 )));
   }
 
+
+  
+  
+//Cronometro para el manejo de la caga de datos 
+  Future<Timer> startTime() async {
+    var _duration = Duration(seconds: 5);
+    return Timer(_duration, cambioDatos);
+  }
+
+  Widget _progresoCircular() {
+    print(_cargando.toString());
+
+    if (_cargando == true) {
+      print(_cargando.toString());
+
+      return Center(
+        child: CircularProgressIndicator(
+          value: null,
+          valueColor: AlwaysStoppedAnimation<Color>(Colors.orange),
+        ),
+      );
+    } else {
+      return Container();
+    }
+  }
+
+ 
+//METODO QUE CAMBIARA EL ESTADO DEL METODO ANTERIOR 
+  void cambioDatos() {
+
+    
+      _cargando = false;
+
+  }
+
+
 /*-----------------------------------------------------------------METODO QUE DIBUJARA LA LISTA GLOBAL DE CONSULTAS------////////////////////////////_-------------------------------------*/
 
   Widget _filter(BuildContext context, int position) {
@@ -186,7 +222,7 @@ class _ListaConsultasState extends State<ListaConsultas> {
     return StreamBuilder(
       stream: consultasReference.onValue ,
       builder:(BuildContext context, AsyncSnapshot<dynamic> snap ){
-        if(snap.hasData && !snap.hasError && snap.data.snapshot.value != null){
+        if(snap.hasData && !snap.hasError ){
           
           return   Scaffold(
         body: ListView.builder(
@@ -204,7 +240,11 @@ class _ListaConsultasState extends State<ListaConsultas> {
           return Center(
           
             child:ListView(
-                          children:<Widget> [Column(
+                          children:<Widget> [
+                            
+                            
+                            
+                            Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                             children:<Widget>[
 
@@ -226,8 +266,9 @@ class _ListaConsultasState extends State<ListaConsultas> {
                         Icons.signal_wifi_off,
                         color: Colors.grey,
                         size: 100.0,
-                       )          
+                       ),           
                   
+                    _progresoCircular()
                    
 
                     
@@ -241,5 +282,12 @@ class _ListaConsultasState extends State<ListaConsultas> {
         }
       }
       );}
+
+
+
+
+
+
+
 
 }

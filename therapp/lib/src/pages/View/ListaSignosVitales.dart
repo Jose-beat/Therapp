@@ -25,7 +25,7 @@ class _ListaSignosVitalesState extends State<ListaSignosVitales> {
   StreamSubscription<Event> _onSignosAddedSubscription;
   StreamSubscription<Event> _onSignosChangedSubscription;
 
-
+bool _cargando = true;
 //VARIABLES AL INICIAR LA PANTALLA
   @override
   void initState() {
@@ -51,6 +51,41 @@ class _ListaSignosVitalesState extends State<ListaSignosVitales> {
    
     
   }
+
+  
+//Cronometro para el manejo de la caga de datos 
+  Future<Timer> startTime() async {
+    var _duration = Duration(seconds: 5);
+    return Timer(_duration, cambioDatos);
+  }
+
+  Widget _progresoCircular() {
+    print(_cargando.toString());
+
+    if (_cargando == true) {
+      print(_cargando.toString());
+
+      return Center(
+        child: CircularProgressIndicator(
+          value: null,
+          valueColor: AlwaysStoppedAnimation<Color>(Colors.orange),
+        ),
+      );
+    } else {
+      return Container();
+    }
+  }
+
+ 
+//METODO QUE CAMBIARA EL ESTADO DEL METODO ANTERIOR 
+  void cambioDatos() {
+
+    
+      _cargando = false;
+
+  }
+
+ 
 /*-----------------------------------------METODOS PARA EL MANEJO DE CRUD DE CADA REGISTRO*/
 
   void _onSignosAdded(Event event) {
@@ -182,7 +217,7 @@ class _ListaSignosVitalesState extends State<ListaSignosVitales> {
     return StreamBuilder(
       stream: signosVitalesReference.onValue ,
       builder:(BuildContext context, AsyncSnapshot<dynamic> snap ){
-        if(snap.hasData && !snap.hasError && snap.data.snapshot.value != null){
+        if(snap.hasData && !snap.hasError ){
           
           return  Scaffold(
       body: ListView.builder(
@@ -222,8 +257,8 @@ class _ListaSignosVitalesState extends State<ListaSignosVitales> {
                         Icons.signal_wifi_off,
                         color: Colors.grey,
                         size: 100.0,
-                       )          
-                  
+                       ) ,         
+                  _progresoCircular()
                    
 
                     

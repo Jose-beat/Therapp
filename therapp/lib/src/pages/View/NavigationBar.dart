@@ -119,6 +119,11 @@ pantallas mostrar al usuario segun indique en los botones de navegacion*/
     ];
 
     return MaterialApp(
+      title: 'TherApp',
+      themeMode: ThemeMode.dark,
+       theme: ThemeData(
+        primaryColor: Colors.white
+      ),
       debugShowCheckedModeBanner: false,
       home: Scaffold(
         //MOSTRAREMOS UN MENU DESPLEGABLE
@@ -131,10 +136,15 @@ pantallas mostrar al usuario segun indique en los botones de navegacion*/
             ),
           ),
           appBar: AppBar(
+            actions: <Widget>[
+              IconButton(icon: Icon(Icons.directions_run), 
+              onPressed: signOut)
+            ],
             elevation: 0.0,
-            title: Text(titulo, style: TextStyle(color: Colors.white)),
+            title: Text(titulo, style: TextStyle(color: Colors.black)),
             backgroundColor: colorTema,
             actionsIconTheme: IconThemeData(color: Colors.black),
+            
             
           ),
 
@@ -228,9 +238,11 @@ pantallas mostrar al usuario segun indique en los botones de navegacion*/
 /*---------------BOTON DE PERFIL--------------------------------*/
 
   void titulos(int posicion) {
+
     switch (posicion) {
       case 0:
         titulo = 'Lista de pacientes';
+       
         break;
       case 1:
         titulo = 'Calendario de consultas';
@@ -239,7 +251,7 @@ pantallas mostrar al usuario segun indique en los botones de navegacion*/
         titulo = 'Registro de pacientes';
         break;
       case 3:
-        titulo = 'perfil';
+        titulo = 'Perfil';
         break;
       case 4:
         titulo = 'Otra funcion';
@@ -250,7 +262,7 @@ pantallas mostrar al usuario segun indique en los botones de navegacion*/
   }
 
 
-/*-------------------------------------OPCIONES DESPLEGABLES----------------------------*/
+
 
 /*-------------------------------------------------------BACKEND--------------------------------------- */
 
@@ -297,10 +309,21 @@ pantallas mostrar al usuario segun indique en los botones de navegacion*/
   Widget _filter(BuildContext context, int position) {
     print("Usuario Actual :${items[position].id}");
     print("USER ID: ${widget.userId}");
-
+    String nombreCompleto;
+    String correo;
+    String imagen;
     if (items[position].id == widget.userId) {
-      print('${items[position].id}');
+     nombreCompleto = items[position].nombre +' '+ items[position].apellidos;
+     correo = items[position].email;
+     imagen = items[position].imagen;
+     print(nombreCompleto);
 
+    } else {
+      return Container(
+        width: 0.0,
+        height: 0.0,
+      );
+    }
       return Column(
         children: <Widget>[
           UserAccountsDrawerHeader(
@@ -311,8 +334,8 @@ pantallas mostrar al usuario segun indique en los botones de navegacion*/
               Navigator.pop(context);
             },
             accountName:
-                Text("${items[position].nombre} ${items[position].apellidos}"),
-            accountEmail: Text("${items[position].email}"),
+                Text(nombreCompleto),
+            accountEmail: Text(correo),
             currentAccountPicture: ClipOval(
               child: FadeInImage(
                 fit: BoxFit.cover,
@@ -321,7 +344,7 @@ pantallas mostrar al usuario segun indique en los botones de navegacion*/
                 fadeInCurve: Curves.bounceIn,
                 placeholder: AssetImage('assets/images/icon-app.jpeg'),
                 image: items[position].imagen != null
-                    ? NetworkImage(items[position].imagen + '?alt=media')
+                    ? NetworkImage(imagen + '?alt=media')
                     : AssetImage('assets/images/photo-null.jpeg'),
               ),
             ),
@@ -361,11 +384,7 @@ pantallas mostrar al usuario segun indique en los botones de navegacion*/
           ),
         ],
       );
-    } else {
-      return Container(
-        width: 0.0,
-        height: 0.0,
-      );
-    }
+
+    
   }
 }

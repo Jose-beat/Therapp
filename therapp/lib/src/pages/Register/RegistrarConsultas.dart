@@ -59,7 +59,7 @@ class _ResConsultasState extends State<ResConsultas> {
                         TextFormField(
                           controller: _motivoController,
                           style: TextStyle(fontSize: 17.0, color: Colors.orange),
-                          decoration: decoracion('Motivo de consulta',Icons.calendar_today),
+                          decoration: decoracion('Motivo de consulta',Icons.assignment_ind),
                                validator: (value){
                               value=_motivoController.text;
                             if(value.isEmpty){
@@ -198,7 +198,7 @@ Widget _crearFecha(BuildContext context){
       //Desactivamos la accion interactiva
       enableInteractiveSelection: false,
      //Añadir estilo a la caja de texto
-      decoration: decoracion('Hora de la consulta', Icons.airline_seat_legroom_extra),
+      decoration: decoracion('Hora de la consulta', Icons.alarm),
         
   
    

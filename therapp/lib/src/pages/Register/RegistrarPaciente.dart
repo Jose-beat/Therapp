@@ -302,7 +302,7 @@ Widget _crearGenero(BuildContext context){
         //Desactivamos la accion interactiva
         enableInteractiveSelection: false,
        //Añadir estilo a la caja de texto
-        decoration: decoracion('Genero',Icons.account_balance),
+        decoration: decoracion('Genero',Icons.account_balance,'Genero'),
       ),
     );
 
@@ -366,7 +366,7 @@ Widget _crearEdad(BuildContext context){
         //Desactivamos la accion interactiva
         enableInteractiveSelection: false,
        //Añadir estilo a la caja de texto
-        decoration: decoracion('Edad',Icons.person_outline),
+        decoration: decoracion('Edad',Icons.person_outline,'Edad'),
 
            
         
@@ -565,9 +565,10 @@ Widget _crearFecha(BuildContext context){
 
 }
 //METODO PARA FORMATO DE FORMULARIO 
-InputDecoration decoracion(String nombre, IconData icono){
+InputDecoration decoracion(String nombre, IconData icono,[String label]){
   return InputDecoration(
-    
+    suffix: label == null
+    ? null : Text('$label'),
     border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(0.0),
         ),

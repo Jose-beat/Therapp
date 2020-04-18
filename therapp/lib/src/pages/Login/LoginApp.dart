@@ -133,7 +133,8 @@ class _LoginSignupPageState extends State<LoginSignupPage> {
       appBar: AppBar(
         title: Text(indicacion,
         style: TextStyle(
-          fontSize: 15.0
+          fontSize: 15.0,
+          color: Colors.white
         ),
         ),
        

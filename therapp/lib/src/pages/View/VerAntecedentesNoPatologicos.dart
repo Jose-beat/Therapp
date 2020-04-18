@@ -23,6 +23,8 @@ final antecNoPatReference =
     FirebaseDatabase.instance.reference().child('antecedentes_no_patologicos');
 
 class _VerAntecNoPatologicoState extends State<VerAntecNoPatologico> {
+
+  bool _cargando = true;
   StreamSubscription<Event> _onAntNoPatAddedSubscription;
   StreamSubscription<Event> _onAntNoPatChangedSubscription;
   List<AntecedentesNoPatologicos> items;
@@ -86,6 +88,40 @@ class _VerAntecNoPatologicoState extends State<VerAntecNoPatologico> {
                 )));
   }
 
+  
+  
+//Cronometro para el manejo de la caga de datos 
+  Future<Timer> startTime() async {
+    var _duration = Duration(seconds: 5);
+    return Timer(_duration, cambioDatos);
+  }
+
+  Widget _progresoCircular() {
+    print(_cargando.toString());
+
+    if (_cargando == true) {
+      print(_cargando.toString());
+
+      return Center(
+        child: CircularProgressIndicator(
+          value: null,
+          valueColor: AlwaysStoppedAnimation<Color>(Colors.orange),
+        ),
+      );
+    } else {
+      return Container();
+    }
+  }
+
+ 
+//METODO QUE CAMBIARA EL ESTADO DEL METODO ANTERIOR 
+  void cambioDatos() {
+
+    
+      _cargando = false;
+
+  }
+
   //METODO PARA FILTRAR CADA UNO DE LOS DATOS DE LA  BASE DE DATOS 
 
   Widget _filter(BuildContext context, int position) {
@@ -129,6 +165,9 @@ class _VerAntecNoPatologicoState extends State<VerAntecNoPatologico> {
           VerticalDivider(
             width: 110.0,
           ),
+          VerticalDivider(
+            width: 100.0,
+          ),
           IconButton(
               icon: Icon(Icons.edit),
               onPressed: () => _navigateToAntNoPat(context, items[position]))
@@ -143,7 +182,7 @@ class _VerAntecNoPatologicoState extends State<VerAntecNoPatologico> {
     return StreamBuilder(
       stream: antecNoPatReference.onValue ,
       builder:(BuildContext context, AsyncSnapshot<dynamic> snap ){
-        if(snap.hasData && !snap.hasError && snap.data.snapshot.value != null){
+        if(snap.hasData && !snap.hasError){
           
           return  Scaffold(
     
@@ -185,9 +224,9 @@ class _VerAntecNoPatologicoState extends State<VerAntecNoPatologico> {
                         Icons.signal_wifi_off,
                         color: Colors.grey,
                         size: 100.0,
-                       )          
+                       ),          
                   
-                   
+                   _progresoCircular()
 
                     
                 

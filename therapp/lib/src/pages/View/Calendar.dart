@@ -48,6 +48,7 @@ class _ConsultasActualesState extends State<ConsultasActuales> {
 /* Definimos variables al arrancar la app*/
   @override
   void initState() {
+    startTime();
     super.initState();
     final _selectedDay = DateTime.now();
     items = new List();
@@ -64,7 +65,37 @@ class _ConsultasActualesState extends State<ConsultasActuales> {
   }
   
 
+//Cronometro para el manejo de la caga de datos 
+  Future<Timer> startTime() async {
+    var _duration = Duration(seconds: 5);
+    return Timer(_duration, cambioDatos);
+  }
 
+  Widget _progresoCircular() {
+    print(_cargando.toString());
+
+    if (_cargando == true) {
+      print(_cargando.toString());
+
+      return Center(
+        child: CircularProgressIndicator(
+          value: null,
+          valueColor: AlwaysStoppedAnimation<Color>(Colors.orange),
+        ),
+      );
+    } else {
+      return Container();
+    }
+  }
+
+ 
+//METODO QUE CAMBIARA EL ESTADO DEL METODO ANTERIOR 
+  void cambioDatos() {
+
+    
+      _cargando = false;
+
+  }
 
  
 
@@ -197,10 +228,18 @@ class _ConsultasActualesState extends State<ConsultasActuales> {
                 todayColor: Colors.orange, 
                 selectedColor: Colors.teal[500]),
           ),
-          Card(
-            child: Text(
-              'Consultas Globales',
-                style: Theme.of(context).textTheme.headline,
+          Container(
+            color: Colors.teal[300],
+            
+            width: 350.0,
+            height: 50.0,
+            child: ListTile(
+              contentPadding: EdgeInsets.fromLTRB(0, 0, 40, 0),
+              title: Text(
+                'Consultas Globales',
+                textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.headline,
+              ),
             ),
           ),
          /* ..._selectedEvents.map((event) => Container(
@@ -233,6 +272,8 @@ class _ConsultasActualesState extends State<ConsultasActuales> {
     return StreamBuilder(
       stream: consultasReference.onValue ,
       builder:(BuildContext context, AsyncSnapshot<dynamic> snap ){
+
+
         if(snap.hasData && !snap.hasError && snap.data.snapshot.value != null){
          //Si todo sale bien la app dara la lista de consultas 
           return  ListView.builder(
@@ -244,41 +285,46 @@ class _ConsultasActualesState extends State<ConsultasActuales> {
                 });
         }else{
         //Si hay errores regresamosun mensaje de error
-          return Center(
+          return Stack(
+                      children:<Widget>[ 
+                      
+                        Center(
 
-          
-            child:ListView(
-                          children:<Widget> [Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                            children:<Widget>[
+            
+              child:ListView(
+                            children:<Widget> [Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                              children:<Widget>[
 
-                        Text( 'No se ha conectado a una red',
-                        style: TextStyle(
-                          color: Colors.red
-                        ),),
+                          Text( 'No se ha conectado a una red',
+                          style: TextStyle(
+                            color: Colors.red
+                          ),),
 
 
-                        Text( 'Favor de conectarse y reiniciar la aplicacion',
-                        style: TextStyle(
-                          color: Colors.grey
-                        ), ),
-                        Divider(
-                          height: 30.0,
-                          color: Colors.white
-                        ),
-                      Icon(
-                        Icons.signal_wifi_off,
-                        color: Colors.grey,
-                        size: 100.0,
-                       ),          
-                   
-                   
+                          Text( 'Favor de conectarse y reiniciar la aplicacion',
+                          style: TextStyle(
+                            color: Colors.grey
+                          ), ),
+                          Divider(
+                            height: 30.0,
+                            color: Colors.white
+                          ),
+                        Icon(
+                          Icons.signal_wifi_off,
+                          color: Colors.grey,
+                          size: 100.0,
+                         ),          
+                     
+                      _progresoCircular(),
 
-                    
-                
-                ]
-              ),]
-            )
+                      
+                  
+                  ]
+                ),]
+              )
+            ),
+             ]
           );
           
           

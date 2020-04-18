@@ -60,7 +60,7 @@ class _HomePageState extends State<HomePage>
   void initState() {
   
     super.initState();
-  
+    startTime();
     
     items = new List();
     _onPacienteAddedSubscription =
@@ -75,7 +75,7 @@ class _HomePageState extends State<HomePage>
     _onPacienteAddedSubscription.cancel();
     _onPacienteupdatedSubscription.cancel();
   }
-
+  
 //Metodo implementado para cerrar sesion
   signOut() async {
     try {
@@ -145,7 +145,7 @@ class _HomePageState extends State<HomePage>
       return Center(
         child: CircularProgressIndicator(
           value: null,
-          valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
+          valueColor: AlwaysStoppedAnimation<Color>(Colors.orange),
         ),
       );
     } else {
@@ -156,16 +156,18 @@ class _HomePageState extends State<HomePage>
  
 //METODO QUE CAMBIARA EL ESTADO DEL METODO ANTERIOR 
   void cambioDatos() {
-    setState(() {
+
       datos = !datos;
       _cargando = false;
-    });
+
   }
+
+  
 
 //Metodo que dibujara la lista de pacientes
   Widget _lista(){
 
-    return   ListView.builder(
+        return   ListView.builder(
             itemCount: items.length,
             itemBuilder: (context, position) {
              
@@ -173,21 +175,27 @@ class _HomePageState extends State<HomePage>
             },
           );
   
+
+    
   }
 //Metodo para filtrar cada dato segun el terapeuta
   Widget _filter(BuildContext context, int position) {
+
+
     try{
       
       print("item :${items[position].id}");
       if (items[position].terapeuta == widget.userId) {
+        cambioDatos();
       print(_cargando.toString());
-      numeroPacientes += 1;
+   
       print('${items[position].id}');
       print('$position');
-      print('NUMERO DE PACIENTES $numeroPacientes');
       return _paciente(context, position);
     } else {
+      _cargando = true;
       return Container(
+       
       );
     }
     }catch(e){
@@ -205,6 +213,7 @@ class _HomePageState extends State<HomePage>
       child: Center(
         child: Column(
           children: <Widget>[
+      
             ClipOval(
               child: FadeInImage(
                 fit: BoxFit.cover,
@@ -261,16 +270,28 @@ class _HomePageState extends State<HomePage>
     return StreamBuilder(
       stream: pacienteReference.onValue ,
       builder:(BuildContext context, AsyncSnapshot<dynamic> snap ){
-       
-        if(snap.hasData && !snap.hasError && snap.data.snapshot.value != null){
-          
-          return  _lista();
-        }else{
         
-          return  Center(
+
+        if(snap.hasData && !snap.hasError != null){
+          _progresoCircular();
+          return  _lista();
+        }else {
+          return errorRed();
+        }
+  
+       
+        
+      }
+      );
+  }
+
+  Widget errorRed(){
+     return  Center(
           
             child:Stack(
-                          children:<Widget> [Column(
+                          children:<Widget> [
+                           
+                            Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                             children:<Widget>[
 
@@ -289,7 +310,7 @@ class _HomePageState extends State<HomePage>
                         color: Colors.grey,
                           size: 100.0,
                        ),
-
+                       _progresoCircular(),
                              
            
                    
@@ -304,9 +325,6 @@ class _HomePageState extends State<HomePage>
             )
           );
 
-          
-        }
-      }
-      );
   }
+
 }
