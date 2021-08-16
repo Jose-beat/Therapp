@@ -1,8 +1,0 @@
-lA CARPETA PAGES CONTIENE SECCIONES DIVIDIDAS SEGUN LA FUNCION DE CADA PANTALLA, YA SEA POR:
-
-.LOGUEO (/login)
-.REGISTRO(/Register)
-.VISTAS(/VIEW)
-
-sobre el metodo streamBuilder se tiliza como un reemplazo del try-catch para revisar la conexion
-a internet, por lo tanto se utilizo este metodo en vez de un try-catch normal

@@ -1,1 +1,0 @@
-Solo usaremos esta carpeta para los metodos usados por el login y su acceso o registro a usuarios
