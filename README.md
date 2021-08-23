@@ -1,6 +1,6 @@
-# therapp
+# TherApp
 
-Medical app
+Aplicacion Medica
 
 ## Getting Started
 
