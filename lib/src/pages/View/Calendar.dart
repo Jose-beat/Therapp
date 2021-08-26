@@ -33,7 +33,7 @@ class _ConsultasActualesState extends State<ConsultasActuales> {
 /*Estado actual de cada dato */
 
   bool _cargando = true;
-  CalendarController _calendarController;
+  CalendarBuilders _calendarController;
   Map<DateTime, List<dynamic>> _consultas;
   TextEditingController _consultaController;
   List<dynamic> _selectedEvents;
@@ -58,7 +58,7 @@ class _ConsultasActualesState extends State<ConsultasActuales> {
     _onConsultaChangedSubscription =
         consultasReference.onChildChanged.listen(_onConsultasUpdate);
 
-    _calendarController = CalendarController();
+    _calendarController = CalendarBuilders();
     _consultas = {};
     _consultaController = TextEditingController();
     _selectedEvents = [];
@@ -221,12 +221,19 @@ class _ConsultasActualesState extends State<ConsultasActuales> {
               _selectedEvents = consultas;
               print(_selectedEvents);
             },*/
-            events: _consultas,
+            focusedDay: DateTime.now(),
+            firstDay: DateTime.utc(1950, 1, 1),
+            lastDay: DateTime.now(),
+            calendarBuilders: _calendarController,
+            eventLoader: (day){
+              return _consultas[day];
+            },
             locale: 'es_MX',
-            calendarController: _calendarController,
+            
             calendarStyle: CalendarStyle(
-                todayColor: Colors.orange, 
-                selectedColor: Colors.teal[500]),
+                todayDecoration: BoxDecoration(color: Colors.orange),
+                selectedDecoration: BoxDecoration(color: Colors.teal[500]),              
+                ),
           ),
           Container(
             color: Colors.teal[300],

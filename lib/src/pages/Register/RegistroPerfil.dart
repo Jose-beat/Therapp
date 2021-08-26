@@ -40,7 +40,7 @@ class _RegistroPerfilState extends State<RegistroPerfil> {
 
   //VARIABLES INICALES 
   bool cambioFoto = false;
-  File imagen;
+  File _imagen;
   TextEditingController _inputFieldDateController;
 
   final _formKey = GlobalKey<FormState>();
@@ -295,9 +295,9 @@ class _RegistroPerfilState extends State<RegistroPerfil> {
                           'terapeuta-${_nombreController.text}-$fecha' + '.jpg';
                       var fullImageName2 =
                           'terapeuta-${_nombreController.text}-$fecha' + '.jpg';
-                      final StorageReference ref =
-                          FirebaseStorage.instance.ref().child(fullImageName);
-                      final StorageUploadTask task = ref.putFile(imagen);
+                      final FirebaseStorage instantce = FirebaseStorage.instance;
+                      final Reference ref = instantce.ref().child(fullImageName);
+                      final UploadTask task = ref.putFile(_imagen);
 
                       var part1 =
                           'https://firebasestorage.googleapis.com/v0/b/therapp-33c50.appspot.com/o/';
@@ -328,9 +328,9 @@ class _RegistroPerfilState extends State<RegistroPerfil> {
                           'terapeuta-${_nombreController.text}-$fecha' + '.jpg';
                       var fullImageName2 =
                           'terapeuta-${_nombreController.text}-$fecha' + '.jpg';
-                      final StorageReference ref =
-                          FirebaseStorage.instance.ref().child(fullImageName);
-                      final StorageUploadTask task = ref.putFile(imagen);
+                      final FirebaseStorage instance = FirebaseStorage.instance;
+                      final Reference ref = instance.ref().child(fullImageName);
+                      final UploadTask task = ref.putFile(_imagen);
 
                       var part1 =
                           'https://firebasestorage.googleapis.com/v0/b/therapp-33c50.appspot.com/o/';
@@ -491,9 +491,9 @@ class _RegistroPerfilState extends State<RegistroPerfil> {
   }
 //METODOS PARA PROVEER DE ELEGIR UNA FOTO INSTANTANEA O DIRECTO DE LA GALERIA 
   pickerCam() async {
-    File img = await ImagePicker.pickImage(source: ImageSource.camera);
+    File img = (await ImagePicker().pickImage(source: ImageSource.camera)) as File;
     if (img != null) {
-      imagen = img;
+      _imagen = img;
       setState(() {
         cambioFoto = true;
       });
@@ -501,25 +501,24 @@ class _RegistroPerfilState extends State<RegistroPerfil> {
   }
 
   pickerGallery() async {
-    File img = await ImagePicker.pickImage(source: ImageSource.gallery);
+    await ImagePicker().pickImage(source: ImageSource.gallery).then((image) => {
+      setState((){
+        _imagen = (image) as File;
+        print("Se escojio una imagen");
+        print(_imagen);
+      })
+    });
 
-    if (img != null) {
-      imagen = img;
-      setState(() {
-        cambioFoto = true;
-      });
-    }
   }
 //METODO PARA EL REGISTRO DE LA IMAGEN
   void createData() async {
     var fullImageName = 'terapeuta-${_nombreController.text}' + '.jpg';
     var fullImageName2 = 'terapeuta-${_nombreController.text}' + '.jpg';
-    final StorageReference ref =
-        FirebaseStorage.instance.ref().child(fullImageName);
-    final StorageUploadTask task = ref.putFile(imagen);
+    final FirebaseStorage instance = FirebaseStorage.instance;
+    final Reference ref = instance.ref().child(fullImageName);
+    final UploadTask task = ref.putFile(_imagen);
 
-    var part1 =
-        'https://firebasestorage.googleapis.com/v0/b/therapp-33c50.appspot.com/o/';
+    var part1 = 'https://firebasestorage.googleapis.com/v0/b/therapp-33c50.appspot.com/o/';
 
     var fullPathImage = part1 + fullImageName2;
     print(fullPathImage);
@@ -537,9 +536,9 @@ class _RegistroPerfilState extends State<RegistroPerfil> {
                 border: Border.all(width: 5.5, color: Colors.black),
               ),
               padding: EdgeInsets.all(5.0),
-              child: imagen == null
+              child: _imagen == null
                   ? Image.asset('assets/images/photo-null.jpeg')
-                  : Image.file(imagen),
+                  : Image.file(_imagen),
             ),
              Container(
               width: 200.0,

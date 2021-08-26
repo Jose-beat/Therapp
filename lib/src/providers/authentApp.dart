@@ -8,7 +8,8 @@ abstract class BaseAuth {
   Future<String> signIn(String email, String password);
   Future<String> signUp(String email, String password);
 //Metodo para obtener al usuario actual
-  Future<FirebaseUser> getCurrentUser();
+  
+  Future<User> getCurrentUser();
   //Metodo para la verificacion de email(Omitido en la primera version de la app)
   Future<void> sendEmailVerification();
   //Metodo para cerrar sesion
@@ -25,25 +26,25 @@ class Autho implements BaseAuth {
   /*Metodos de acceso para el inicio de sesion (signIn) y el registro de un usuario (signUp)*/
   @override
   Future<String> signIn(String email, String password) async {
-    AuthResult result = await _firebaseAuth.signInWithEmailAndPassword(
+    UserCredential result = await _firebaseAuth.signInWithEmailAndPassword(
         email: email, password: password);
-    FirebaseUser user = result.user;
+    User user = result.user;
     return user.uid;
   }
 
   @override
   Future<String> signUp(String email, String password) async {
-    AuthResult result = await _firebaseAuth.createUserWithEmailAndPassword(
+    UserCredential result = await _firebaseAuth.createUserWithEmailAndPassword(
         email: email, password: password);
-    FirebaseUser user = result.user;
+    User user = result.user;
     return user.uid;
   }
 
 //Metodo para obtener al usuario actual
 
   @override
-  Future<FirebaseUser> getCurrentUser() async {
-    FirebaseUser user = await _firebaseAuth.currentUser();
+  Future<User> getCurrentUser() async {
+    User user = await _firebaseAuth.currentUser;
     return user;
   }
 //Metodo para cerrar la sesion  
@@ -55,20 +56,20 @@ class Autho implements BaseAuth {
 //Metodo de verificacion email (omitido en la primera version de la app)
   @override
   Future<void> sendEmailVerification() async {
-    FirebaseUser user = await _firebaseAuth.currentUser();
+    User user = await _firebaseAuth.currentUser;
     return user.sendEmailVerification();
   }
 
   @override
   Future<bool> isEmailVerified() async {
-    FirebaseUser user = await _firebaseAuth.currentUser();
-    return user.isEmailVerified;
+    User user = await _firebaseAuth.currentUser;
+    return user.emailVerified;
   }
 
 //Metodo para eliminacion de usuarios
   @override
   Future<void> deleteUser() async {
-    FirebaseUser user = await _firebaseAuth.currentUser();
+    User user = await _firebaseAuth.currentUser;
     return user.delete();
   }
 }

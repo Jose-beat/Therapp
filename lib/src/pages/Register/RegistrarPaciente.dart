@@ -1,5 +1,5 @@
+//import 'dart:html';
 import 'dart:io';
-
 import 'package:date_format/date_format.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +10,7 @@ import 'package:therapp/src/pages/View/NavigationBar.dart';
 import 'package:therapp/src/pages/View/VerPaciente.dart';
 
 //METODO SPARA GUARDAR LAS FOTOS E IMAGENES 
+File lala;
 File image;
 String filename;
 
@@ -44,17 +45,19 @@ class _RegistrarPacienteState extends State<RegistrarPaciente> {
   String fecha;
 //METODOS PARA ESCOJER IMAGEN  O FOTO 
 
-  pickerCam() async {
-    File img = await ImagePicker.pickImage(source: ImageSource.camera);
+  Future  pickerCam() async {
+    //FORMA 1
+   await ImagePicker().pickImage(source: ImageSource.camera).then((image) {    
+     setState(() {    
+       image = image;    
+     });    
+   });    
     // File img = await ImagePicker.pickImage(source: ImageSource.camera);
-    if (img != null) {
-      image = img;
-      setState(() {});
-    }
   }
 
   pickerGallery() async {
-    File img = await ImagePicker.pickImage(source: ImageSource.gallery);
+    //FORMA 2
+    File img = (await ImagePicker().pickImage(source: ImageSource.gallery )) as File;
     // File img = await ImagePicker.pickImage(source: ImageSource.camera);
     if (img != null) {
       image = img;
@@ -186,8 +189,10 @@ class _RegistrarPacienteState extends State<RegistrarPaciente> {
                                     new DateTime.now(), [yyyy, '-', mm, '-', dd]);
                                var fullImageName = 'paciente-${_nombreController.text}-$fecha' + '.jpg';
                                var fullImageName2 = 'paciente-${_nombreController.text}-$fecha' + '.jpg';
-                               final StorageReference ref = FirebaseStorage.instance.ref().child(fullImageName);
-                               final StorageUploadTask task = ref.putFile(image);
+                               final FirebaseStorage instance = FirebaseStorage.instance;
+                               Reference ref = instance.ref().child(fullImageName);
+                               //final StorageReference ref = FirebaseStorage.instance.ref().child(fullImageName);
+                               final UploadTask task = ref.putFile(image);
 
                                var part1 = 'https://firebasestorage.googleapis.com/v0/b/therapp-33c50.appspot.com/o/';
 
@@ -213,8 +218,10 @@ class _RegistrarPacienteState extends State<RegistrarPaciente> {
 
                                var fullImageName = 'terapeuta-${_nombreController.text}-$fecha' + '.jpg';
                                var fullImageName2 = 'terapeuta-${_nombreController.text}-$fecha' + '.jpg';
-                               final StorageReference ref = FirebaseStorage.instance.ref().child(fullImageName);
-                               final StorageUploadTask task = ref.putFile(image);
+                               //Se actualizo esta linea 
+                               final FirebaseStorage instance = FirebaseStorage.instance;
+                               final Reference ref = instance.ref().child(fullImageName);
+                               final UploadTask task = ref.putFile(image);
 
                                var part1 = 'https://firebasestorage.googleapis.com/v0/b/therapp-33c50.appspot.com/o/';
 
